@@ -5,6 +5,7 @@ function App() {
     const sohwansa = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
     const userName = "승수몬";
     const link = sohwansa + userName + '?api_key=' + Riot_API_Key;
+    const newLink = 'http://ddragon.leagueoflegends.com/cdn/12.11.1/data/ko_KR/champion.json';
 
 
 
@@ -12,9 +13,10 @@ function App() {
 
     const getUser = async () => {
         const json = await (
-            await fetch(link)
+            await fetch(newLink)
         ).json();
-        setMe(JSON.stringify(json, null, '\t'));
+        console.log(json);
+        setMe(JSON.stringify(json.data.Aatrox, null, "\t"));
     }
 
     useEffect(() => {
