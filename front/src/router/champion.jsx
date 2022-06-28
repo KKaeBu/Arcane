@@ -4,6 +4,7 @@ function Champion() {
     const mainDiv = document.getElementsByClassName("mainDisplay");
     const btnDiv = document.getElementsByClassName("button_div");
     const listBtn = document.getElementById("champList");
+    const info = document.getElementById("champInfo");
 
     const champion_url =
         "http://ddragon.leagueoflegends.com/cdn/12.11.1/data/ko_KR/champion.json";
@@ -32,6 +33,16 @@ function Champion() {
                     const btn_text = document.createTextNode(
                         JSON.stringify(champions[key].name, null, "\t")
                     );
+                    btn.onclick = function () {
+                        if (display === champions) {
+                            info.style.display = "block";
+                            setDisplay(champions[key]);
+                            setStyle({ display: "block" });
+                        } else if (display !== champions) {
+                            setDisplay(champions);
+                            setStyle({ display: "none" });
+                        }
+                    };
                     btn.appendChild(btn_text);
                     btnDiv[0].appendChild(btn);
                 }
@@ -42,6 +53,7 @@ function Champion() {
         const backBtn_text = document.createTextNode("뒤로가기");
         backBtn.onclick = function () {
             btnDiv[0].style.display = "none";
+            info.style.display = "none";
             this.remove();
             listBtn.style.display = "inline";
         };
@@ -50,27 +62,18 @@ function Champion() {
         listBtn.style.display = "none";
     };
 
-    const handleAatroxClick = () => {
-        if (display === champions) {
-            setDisplay(champions.Aatrox);
-            setStyle({ display: "block" });
-        } else if (display !== champions) {
-            setDisplay(champions);
-            setStyle({ display: "none" });
-        }
-    };
-
     return (
         <div className="mainDisplay">
             <h1>Riot API Practice</h1>
             <h3>champion data</h3>
             <div className="button_div"></div>
-            <button onClick={handleAatroxClick}>아트록스</button>
             <button id="champList" onClick={showChampBtn}>
                 챔피언 목록
             </button>
-            <div style={style}>
-                <span> {JSON.stringify(display, null, "\t")}</span>
+            <div>
+                <span id="champInfo" style={style}>
+                    {JSON.stringify(display, null, "\t")}
+                </span>
                 {/* <table>
                     <th>name</th>
                     <th>title</th>
