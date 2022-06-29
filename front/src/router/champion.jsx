@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./champion.css";
 
 function Champion() {
     const mainDiv = document.getElementsByClassName("mainDisplay");
