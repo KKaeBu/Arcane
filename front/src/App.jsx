@@ -16,7 +16,7 @@ function App() {
             await fetch(newLink)
         ).json();
         console.log(json);
-        setMe(JSON.stringify(json.data.Aatrox, null, "\t"));
+        setMe(json.data.Aatrox);
     }
 
     useEffect(() => {
@@ -26,7 +26,7 @@ function App() {
     return (
         <div className="mainDisplay">
             <h1>Riot API Practice</h1>
-            <div>{me}</div>
+            <div>{JSON.stringify(me)}</div>
         </div>
     );
 }
