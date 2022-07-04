@@ -5,9 +5,4 @@ import Champ from "./router/champion.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-    <>
-        <App />
-        <Champ />
-    </>
-);
+root.render(<App />);
