@@ -1,8 +1,5 @@
-
-
 class Riot {
     summoner() {
-        
         return 5;
     }
 

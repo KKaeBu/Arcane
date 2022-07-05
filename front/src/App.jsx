@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MainDisplay from "./page/main";
+import Champion from "../src/router/champion.jsx";
 
 function App() {
-    const [lodding, setLodding] = useState(false);
+    const [loading, setLoading] = useState(false);
     const callMain = async () => {
         console.log("엑시오스 작동");
         axios
             .get("/main") // mainDisplay
             .then((res) => {
-                console.log(res.data);
-                setLodding(true);
+                console.log(JSON.stringify(res.data.hi));
+                setLoading(true);
             })
-            .catch((error) => console.log("error 발생!!!!"));
+            .catch((error) => console.log(error));
     };
 
     useEffect(() => {
@@ -21,7 +22,7 @@ function App() {
 
     return (
         <div className="App">
-            {lodding ? <MainDisplay /> : <h1>Front axios connecting...</h1>}
+            {loading ? <Champion /> : <h1>Front axios connecting...</h1>}
         </div>
     );
 }
