@@ -1,33 +1,10 @@
-// import Parser from "html-react-parser";
-
-// //const api_key = "RGAPI-9721701b-198e-49bf-8f62-64392614a92d";
-// //const base_url = "https://kr.api.riotgames.com"
-// var champion_info = {};
-// const getchamp = async () => {
-//     const response = await fetch(
-//         "http://ddragon.leagueoflegends.com/cdn/12.11.1/data/ko_KR/champion.json"
-//     );
-//     const data = await response.json();
-//     //console.log(Object.keys(champion_info));
-//     Object.keys(data.data).forEach((element) => {
-//         champion_info.name = element;
-//         //console.log(champion_info);
-//     });
-//     console.log(champion_info);
-//     //return JSON.stringify(champion_info);
-// };
-
-// function Champ() {
-//     return (
-//         <div>
-//             {(async () => {
-//                 await getchamp();
-//                 // return champion_info;
-//             })()}
 import { useState, useEffect } from "react";
 import "./champion.css";
+import Riot from "../network/riotAPI.js";
 
 function Champion() {
+    const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
+
     const mainDiv = document.getElementsByClassName("mainDisplay");
     const btnDiv = document.getElementsByClassName("button_div");
     const listBtn = document.getElementById("champList");
@@ -52,8 +29,8 @@ function Champion() {
     const [champion_img, setImg] = useState({}); // 챔피언 img API를 저장함
 
     const getChamp = async () => {
-        const json = await (await fetch(champion_url)).json();
-
+        //const json = await (await fetch(champion_url)).json();
+        const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
         setDisplay(json.data, null, "\t");
     }; // 챔피언 API를 받아옴 비동기 처리함
@@ -63,20 +40,14 @@ function Champion() {
     }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
     const showChampBtn = async () => {
-        // const champArr = Object.values(champions);
-        //const arr = Object.entries(champions);
-
-        // let newArr = champArr.map((item) => item.name);
         const champArr = Object.values(champions).sort((a, b) =>
             a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
         );
         console.log(champArr);
 
-        // champions.map((c)=>{
-        //     c.name
-        // })
         // 챔피언 목록 버튼을 누르면 실행되는 함수
         btnDiv[0].style.display = "block"; // btn div보이게 설정
+
         if (btnDiv[0].childNodes.length === 0) {
             // btn div가 비었다면 실행
             for (const key in champions) {

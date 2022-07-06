@@ -1,6 +1,5 @@
 import express from "express";
 import "express-async-errors";
-import * as championData from "../data/championData.js";
 
 const router = express.Router();
 
