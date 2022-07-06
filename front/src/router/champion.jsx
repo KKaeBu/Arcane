@@ -41,8 +41,8 @@ function Champion() {
         "http://ddragon.leagueoflegends.com/cdn/12.11.1/data/ko_KR/champion.json";
     // LOL 챔피언 정보 API
     const [style, setStyle] = useState({ display: "none" });
-    const [champions, setChampion] = useState({}); // 챔피언 API 데이터를 저장
-    const [display, setDisplay] = useState({}); // 표시할 챔피언의 데이터를 저장 초기값은 전체 챔피언 데이터
+    const [champions, setChampion] = useState([]); // 챔피언 API 데이터를 저장
+    const [display, setDisplay] = useState([]); // 표시할 챔피언의 데이터를 저장 초기값은 전체 챔피언 데이터
 
     const [skill_q, setQ] = useState({});
     const [skill_w, setW] = useState({});
@@ -63,6 +63,18 @@ function Champion() {
     }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
     const showChampBtn = async () => {
+        // const champArr = Object.values(champions);
+        //const arr = Object.entries(champions);
+
+        // let newArr = champArr.map((item) => item.name);
+        const champArr = Object.values(champions).sort((a, b) =>
+            a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+        );
+        console.log(champArr);
+
+        // champions.map((c)=>{
+        //     c.name
+        // })
         // 챔피언 목록 버튼을 누르면 실행되는 함수
         btnDiv[0].style.display = "block"; // btn div보이게 설정
         if (btnDiv[0].childNodes.length === 0) {
