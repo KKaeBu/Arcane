@@ -22,6 +22,29 @@ class Riot_API {
         const json = getFetch(link);
         return json;
     }
+
+    // 특정 챔피언 정보 불러오기
+    async getChampion(champion_id) {
+        const link = `http://ddragon.leagueoflegends.com/cdn/${
+            this.#Version
+        }/data/${this.#Language}/champion/${champion_id}.json`;
+        const json = getFetch(link);
+        return json;
+    }
+
+    getChampionIcon(champion_id) {
+        const link = `https://ddragon.leagueoflegends.com/cdn/${
+            this.#Version
+        }/img/champion/${champion_id}.png`;
+        return link;
+    }
+
+    getSkillIcon(skill_id) {
+        const link = `https://ddragon.leagueoflegends.com/cdn/${
+            this.#Version
+        }/img/spell/${skill_id}.png`;
+        return link;
+    }
 }
 
 async function getFetch(link) {

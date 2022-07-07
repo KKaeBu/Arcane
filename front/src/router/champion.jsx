@@ -14,9 +14,6 @@ function Champion() {
     // listBtn > 챔피언 목록을 불러오는 버튼
     // info > 챔피언 정보 표시할 span태그
 
-    const champion_url =
-        "http://ddragon.leagueoflegends.com/cdn/12.11.1/data/ko_KR/champion.json";
-    // LOL 챔피언 정보 API
     const [style, setStyle] = useState({ display: "none" });
     const [champions, setChampion] = useState([]); // 챔피언 API 데이터를 저장
     const [display, setDisplay] = useState([]); // 표시할 챔피언의 데이터를 저장 초기값은 전체 챔피언 데이터
@@ -43,73 +40,51 @@ function Champion() {
         const champArr = Object.values(champions).sort((a, b) =>
             a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
         );
-        console.log(champArr);
+        // Object.values 메소드는 오브젝트의 value값만 추출한 후 새로운 배열을 반환함
+        // 새롭게 만든 배열은 sort메소드를 통해 정렬하는데, 이때 각 배열의 속성값들은 전부 오브젝트임
+        // (champions 오브젝트는 오브젝트 안에 또 다른 오브젝트들이 들어가있는 형식이기 때문)
+        // 각 배열의 속성값인 오브젝트들에서 name이라는 key값의 value들을 비교해서 sort 정렬을 함
+        // 이때 각 name의 value값들은 한글이라서 그런지 toLowerCase라는 소문자로 변경하는 메소드를 사용하지 않으면 정렬이 안됨
+        // sort메소드는 비교값 중에 앞 인덱스 값이 더 크면 양수를 반환해 순서를 바꾸고, 아니라면 음수를 반환해 인덱스 순서 유지
+        // 그래서 a.name과 b.name을 비교해 앞의 것이 더 크다면 1을 반환해 sorting하게 한다
 
         // 챔피언 목록 버튼을 누르면 실행되는 함수
         btnDiv[0].style.display = "block"; // btn div보이게 설정
 
         if (btnDiv[0].childNodes.length === 0) {
             // btn div가 비었다면 실행
-            for (const key in champions) {
-                // champions 오브젝트 데이터 각각의 key값으로 for문 실행
-                const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입할거
+            for (let i = 0; i < champArr.length; i++) {
+                console.log(champArr[i].id);
+                // 모든 champArr배열의 속성값에 대해 실행하도록 반복문을 설정
+                const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입
+                btn_img.src = riot.getChampionIcon(champArr[i].id); // 버튼안에 넣을 이미지
+                const btn = document.createElement("button"); // champions 오브젝트 각각 버튼 생성 누르면 챔피언정보 보여줄것임
+                const btn_text = document.createTextNode(champArr[i].name); // 버튼 텍스트 삽입
+                btn.appendChild(btn_img); // 각 버튼에 아까 받아온 이미지 append
+                btn.onclick = async function () {
+                    // 각 버튼 onClick시 실행할 함수 정의
 
-                // 챔피언 목록 object의 key값들
-                if (champions.hasOwnProperty(key)) {
-                    btn_img.src =
-                        "https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/" +
-                        champions[key].id +
-                        ".png"; // 버튼안에 넣을 이미지
-                    const btn = document.createElement("button"); // champions 오브젝트 각각 버튼 생성 누르면 챔피언정보 보여줄것임
-                    const btn_text = document.createTextNode(
-                        // 챔피언 이름을 버튼에 표시하는데, quotes("",'')는 replace 함수로 지워버림
-                        JSON.stringify(champions[key].name, null, "\t").replace(
-                            /['"]+/g,
-                            ""
-                        )
-                    );
-                    btn.appendChild(btn_img); // 각 버튼에 아까 받아온 이미지 append
-                    btn.onclick = async function () {
-                        // 각 버튼 onClick시 실행할 함수 정의
-                        // const q_img = document.createElement("img");
-                        // const w_img = document.createElement("img");
-                        // const e_img = document.createElement("img");
-                        // const r_img = document.createElement("img");
+                    if (display === champions) {
+                        // 이 if문은 특정 챔피언 눌렀다가 다시 누르면 챔피언정보 들어가게 하려한건데 작동을안함
+                        info.style.display = "block"; // 챔피언 정보를 표시할 info의 display속성을 block으로 > 안보였던 span태그를 보이게한다는것
+                        const json = await riot.getChampion(champArr[i].id); // 각 챔피언 정보를 받아옴
 
-                        if (display === champions) {
-                            // 이 if문은 특정 챔피언 눌렀다가 다시 누르면 챔피언정보 들어가게 하려한건데 작동을안함
-                            info.style.display = "block"; // 챔피언 정보를 표시할 info의 display속성을 block으로 > 안보였던 span태그를 보이게한다는것
-                            const json = await (
-                                await fetch(
-                                    "http://ddragon.leagueoflegends.com/cdn/10.6.1/data/ko_KR/champion/" +
-                                        champions[key].id +
-                                        ".json"
-                                )
-                            ).json();
-                            setQ(json.data[key].spells[0]);
-                            setW(json.data[key].spells[1]);
-                            setE(json.data[key].spells[2]);
-                            setR(json.data[key].spells[3]);
-                            //setDisplay(json.data[key].spells); // display에 champions오브젝트의 해당key 값으로
-                            // for (const key_2 in json.data[key].spells[0]) {
-                            //     console.log(json.data[key].spells[0].id);
-                            // }
+                        setQ(json.data[champArr[i].id].spells[0]);
+                        setW(json.data[champArr[i].id].spells[1]);
+                        setE(json.data[champArr[i].id].spells[2]);
+                        setR(json.data[champArr[i].id].spells[3]);
+                        // 각 챔피언의 스킬 정보 설정
 
-                            setImg(
-                                "https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/" +
-                                    champions[key].id +
-                                    ".png"
-                            ); // img도 display와 마찬가지로 해당key값의 이미지로
-                            setStyle({ display: "block" });
-                        } else if (display !== champions) {
-                            // 작동 안됨
-                            setDisplay(champions);
-                            setStyle({ display: "none" });
-                        }
-                    };
-                    btn.appendChild(btn_text); // 각 버튼에 위에서 설정해던 text 집어넣음
-                    btnDiv[0].appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야됨
-                }
+                        setImg(riot.getChampionIcon(champArr[i].id)); // img도 display와 마찬가지로 해당key값의 이미지로
+                        setStyle({ display: "block" });
+                    } else if (display !== champions) {
+                        // 작동 안됨
+                        setDisplay(champions);
+                        setStyle({ display: "none" });
+                    }
+                };
+                btn.appendChild(btn_text); // 각 버튼에 위에서 설정해던 text 집어넣음
+                btnDiv[0].appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야함
             }
         }
 
@@ -135,44 +110,19 @@ function Champion() {
             <span id="champInfo" style={style}>
                 <img src={champion_img} alt="" />
                 <br />
-                <img
-                    src={
-                        "http://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/" +
-                        skill_q.id +
-                        ".png"
-                    }
-                    alt=""
-                />
+
+                {/* getSkillIcon 함수는 파라메터로 받아온 해당 스킬의 이미지 주소를 반환함  */}
+
+                <img src={riot.getSkillIcon(skill_q.id)} alt="" />
                 {JSON.stringify(skill_q.name, null, "\t")}
                 <br />
-                <img
-                    src={
-                        "http://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/" +
-                        skill_w.id +
-                        ".png"
-                    }
-                    alt=""
-                />
+                <img src={riot.getSkillIcon(skill_w.id)} alt="" />
                 {JSON.stringify(skill_w.name, null, "\t")}
                 <br />
-                <img
-                    src={
-                        "http://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/" +
-                        skill_e.id +
-                        ".png"
-                    }
-                    alt=""
-                />
+                <img src={riot.getSkillIcon(skill_e.id)} alt="" />
                 {JSON.stringify(skill_e.name, null, "\t")}
                 <br />
-                <img
-                    src={
-                        "http://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/" +
-                        skill_r.id +
-                        ".png"
-                    }
-                    alt=""
-                />
+                <img src={riot.getSkillIcon(skill_r.id)} alt="" />
                 {JSON.stringify(skill_r.name, null, "\t")}
                 <br />
                 {/* {JSON.stringify(display.title, null, "\t")}
@@ -181,24 +131,8 @@ function Champion() {
                 <br />
             </span>
             <div className="button_div"></div>
-
-            <div>
-                {/* <table>
-                    <th>name</th>
-                    <th>title</th>
-                    <th>difficulty</th>
-                    <tr>
-                        <td>{JSON.stringify(display.name, null, "\t")}</td>
-                        <td>{JSON.stringify(display.title, null, "\t")}</td>
-                        <td>{JSON.stringify(display.info, null, "\t")}</td>
-                    </tr>
-                </table> */}
-            </div>
         </div>
     );
 }
 
-{
-    /* export default Champ; */
-}
 export default Champion;
