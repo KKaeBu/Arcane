@@ -9,6 +9,7 @@ function Champion() {
     const btnDiv = document.getElementsByClassName("button_div");
     const listBtn = document.getElementById("champList");
     const info = document.getElementById("champInfo");
+    // ===========================================
     // mainDiv > 이 div 안에 champion컴포넌트 내용이 들어감
     // btnDiv > 버튼을 집어넣을 div
     // listBtn > 챔피언 목록을 불러오는 버튼
@@ -40,6 +41,7 @@ function Champion() {
         const champArr = Object.values(champions).sort((a, b) =>
             a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
         );
+        // ============== 챔피언을 가나다 순으로 정렬 ==============
         // Object.values 메소드는 오브젝트의 value값만 추출한 후 새로운 배열을 반환함
         // 새롭게 만든 배열은 sort메소드를 통해 정렬하는데, 이때 각 배열의 속성값들은 전부 오브젝트임
         // (champions 오브젝트는 오브젝트 안에 또 다른 오브젝트들이 들어가있는 형식이기 때문)
