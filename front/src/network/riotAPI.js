@@ -21,7 +21,7 @@ class Riot_API {
 
     // 특정 챔피언 일러스트 불러오기
     // 매개변수 
-    getChampionIllustration(champion) {
+    async getChampionIllustration(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_0.jpg`;
     }
     
