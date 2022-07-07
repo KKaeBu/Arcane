@@ -1,3 +1,21 @@
 .mainDisplay {
     width: 100%;
 }
+
+.mainDisplayWrapper {
+
+}
+
+/* backgrdound */
+.championIllustration {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover 로 해주니까 윗부분이 잘림 */
+    background-size: cover;
+    /* 이미지 어둡게 해주기 */
+    filter: brightness(65%); 
+}

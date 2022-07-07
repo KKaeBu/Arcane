@@ -13,8 +13,12 @@ function MainDisplay() {
   const getChampion = async () => {
     const json = await riot.getAllChampions(); // 모든 챔피언 정보 불러오기
     // random 한 챔피언을 선택하도록 해야함
-    const img = riot.getChampionIllustration(json.data.Gnar.id); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
-    console.log(json);
+    const allChampCount = Object.keys(json.data).length; // 총 챔피언 개수
+    const chooseRandomChampNumber = Math.floor(Math.random() * allChampCount); // 랜덤한 챔피언 번호 선택
+    const chooseRandomChamp = Object.keys(json.data)[chooseRandomChampNumber]; // 뽑힌 챔피언 이름 가져오기
+    
+    const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+
     setChamp(json.data.Aatrox); // 챔피언 정보 객체 저장
     setIllust(img); // 챔피언 일러스트 링크 저장
   };
@@ -26,8 +30,8 @@ function MainDisplay() {
 
   return (
     <div className="mainDisplay">
+      <Topbar />
       <div className="mainDisplayWrapper">
-        <Topbar />
         <img
           src={illust}
           alt="Champion Illustration"

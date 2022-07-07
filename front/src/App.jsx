@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import MainDisplay from "./page/main";
+import MainDisplay from "./page/Main";
 
 function App() {
     const [lodding, setLodding] = useState(false);
