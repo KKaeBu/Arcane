@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MainDisplay from "./page/main";
-import Champion from "./page/champion.jsx";
+import Champion from "./page/champion/champion.jsx";
 
 function App() {
     const [loading, setLoading] = useState(false);

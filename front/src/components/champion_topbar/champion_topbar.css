@@ -1,0 +1,21 @@
+.topbarContainer {
+    color: white;
+    background-color: rgb(145, 146, 255);
+    position: sticky;
+    top: 0;
+    padding-top: 0.5%;
+    padding-left: 2%;
+}
+
+.topbarContainer > button {
+    color: rgb(62, 224, 230);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2%;
+    margin-bottom: 0;
+}
+
+.topbarContainer > button:hover {
+    border-bottom: 2px solid white;
+    color: white;
+    cursor: pointer;
+}

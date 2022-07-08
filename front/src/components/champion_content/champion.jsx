@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./champion.css";
-import Riot from "../network/riotAPI.js";
+import Riot from "../../network/riotAPI.js";
 
 function Champion() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
@@ -31,6 +31,7 @@ function Champion() {
         const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
         setDisplay(json.data, null, "\t");
+        await showChampBtn();
     }; // 챔피언 API를 받아옴 비동기 처리함
 
     useEffect(() => {
@@ -56,7 +57,6 @@ function Champion() {
         if (btnDiv[0].childNodes.length === 0) {
             // btn div가 비었다면 실행
             for (let i = 0; i < champArr.length; i++) {
-                console.log(champArr[i].id);
                 // 모든 champArr배열의 속성값에 대해 실행하도록 반복문을 설정
                 const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입
                 btn_img.src = riot.getChampionIcon(champArr[i].id); // 버튼안에 넣을 이미지
@@ -90,25 +90,12 @@ function Champion() {
             }
         }
 
-        const backBtn = document.createElement("button"); // 뒤로가기버튼
-        const backBtn_text = document.createTextNode("뒤로가기");
-        backBtn.onclick = function () {
-            btnDiv[0].style.display = "none"; // 버튼들 있는 div 다시 안보이게 display none
-            info.style.display = "none"; // info span태그도 none
-            this.remove(); // 뒤로가기 한 후 자기자신(뒤로가기버튼) 삭제
-            listBtn.style.display = "inline"; // 챔피언 리스트 버튼들 다시 표시
-        };
-        backBtn.appendChild(backBtn_text);
-        mainDiv[0].insertBefore(backBtn, info);
+        mainDiv[0].insertBefore(btnDiv, info);
         listBtn.style.display = "none";
     };
 
     return (
         <div className="mainDisplay">
-            <h1>챔피언 정보</h1>
-            <button id="champList" onClick={showChampBtn}>
-                챔피언 목록
-            </button>
             <span id="champInfo" style={style}>
                 <img src={champion_img} alt="" />
                 <br />
@@ -133,6 +120,13 @@ function Champion() {
                 <br />
             </span>
             <div className="button_div"></div>
+            {/* 아래 버튼은 컴포넌트가 실행됐을때 자동으로 showChampBtn을 한번 실행하도록 임의로 넣은것 
+            수정 요망 */}
+            <button
+                style={{ display: "none" }}
+                id="champList"
+                onClick={showChampBtn()}
+            ></button>
         </div>
     );
 }
