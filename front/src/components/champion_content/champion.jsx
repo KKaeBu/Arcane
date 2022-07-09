@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import "./champion.css";
 import Riot from "../../network/riotAPI.js";
+import "./champion.css";
 
 function Champion() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
@@ -61,7 +61,15 @@ function Champion() {
                 const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입
                 btn_img.src = riot.getChampionIcon(champArr[i].id); // 버튼안에 넣을 이미지
                 const btn = document.createElement("button"); // champions 오브젝트 각각 버튼 생성 누르면 챔피언정보 보여줄것임
-                const btn_text = document.createTextNode(champArr[i].name); // 버튼 텍스트 삽입
+                btn_img.setAttribute("id", "champion_img");
+                var btn_text;
+                if (champArr[i].name.length > 7) {
+                    btn_text = document.createTextNode(
+                        champArr[i].name.substr(0, 5) + ".."
+                    );
+                } else {
+                    btn_text = document.createTextNode(champArr[i].name); // 버튼 텍스트 삽입
+                }
                 btn.appendChild(btn_img); // 각 버튼에 아까 받아온 이미지 append
                 btn.onclick = async function () {
                     // 각 버튼 onClick시 실행할 함수 정의
@@ -89,7 +97,6 @@ function Champion() {
                 btnDiv[0].appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야함
             }
         }
-
         mainDiv[0].insertBefore(btnDiv, info);
         listBtn.style.display = "none";
     };

@@ -3,3 +3,14 @@ button {
     border: none;
     background-color: transparent;
 }
+
+#champion_img {
+    display: block;
+    width: 82px;
+    height: 82px;
+}
+
+.mainDisplay {
+    margin-left: 100px;
+    margin-right: 100px;
+}

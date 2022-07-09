@@ -19,3 +19,8 @@
     color: white;
     cursor: pointer;
 }
+
+.topbarContainer > #selected {
+    border-bottom: 2px solid white;
+    color: white;
+}
