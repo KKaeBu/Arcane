@@ -8,6 +8,7 @@
 }
 
 .topbarContainer > button {
+    font-size: small;
     color: rgb(62, 224, 230);
     border-bottom: 2px solid transparent;
     padding-bottom: 2%;
@@ -23,4 +24,19 @@
 .topbarContainer > #selected {
     border-bottom: 2px solid white;
     color: white;
+}
+
+#link {
+    font-size: small;
+    text-decoration: none;
+    color: rgb(62, 224, 230);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2%;
+    margin-bottom: 0;
+}
+
+#link:hover {
+    border-bottom: 2px solid white;
+    color: white;
+    cursor: pointer;
 }

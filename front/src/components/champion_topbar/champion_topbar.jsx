@@ -1,6 +1,7 @@
 import "./champion_topbar.css";
 import Champion from "../champion_content/champion.jsx";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function ChampionTopBar() {
     const info_button = document.getElementsByClassName("info_button");
@@ -18,7 +19,9 @@ function ChampionTopBar() {
     return (
         <>
             <div className="topbarContainer">
-                <button>홈</button>
+                <Link to="/" id="link">
+                    홈
+                </Link>
                 <button className="info_button" onClick={changeState}>
                     챔피언 정보
                 </button>

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import Riot from "../../network/riotAPI.js";
+import { useNavigate } from "react-router-dom";
+import ChampionInfo from "../../page/champion_info/championInfo.jsx";
 import "./champion.css";
 
 function Champion() {
+    const navigate = useNavigate();
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
 
     const mainDiv = document.getElementsByClassName("mainDisplay");
@@ -73,7 +76,7 @@ function Champion() {
                 btn.appendChild(btn_img); // 각 버튼에 아까 받아온 이미지 append
                 btn.onclick = async function () {
                     // 각 버튼 onClick시 실행할 함수 정의
-
+                    navigate(`/champions/${champArr[i].id}`);
                     if (display === champions) {
                         // 이 if문은 특정 챔피언 눌렀다가 다시 누르면 챔피언정보 들어가게 하려한건데 작동을안함
                         info.style.display = "block"; // 챔피언 정보를 표시할 info의 display속성을 block으로 > 안보였던 span태그를 보이게한다는것

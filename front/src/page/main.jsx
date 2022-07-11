@@ -17,7 +17,11 @@ function MainDisplay() {
         getChampion();
     }, []);
 
-    return <div className="mainDisplayContainer"></div>;
+    return (
+        <div className="mainDisplayContainer">
+            <h1>This is Main</h1>
+        </div>
+    );
 }
 
 export default MainDisplay;
