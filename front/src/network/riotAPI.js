@@ -1,5 +1,5 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-7d1291b3-b690-4b73-863c-87ba0408d9be";
+    #Riot_API_Key = "RGAPI-baeb6eb0-1db6-43dd-a667-d5760da01209";
     #Language = "ko_KR";
     #Version = "12.11.1";
 
@@ -24,6 +24,7 @@ class Riot_API {
     async getChampionIllustration(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_0.jpg`;
     }
+
     
 }
 
