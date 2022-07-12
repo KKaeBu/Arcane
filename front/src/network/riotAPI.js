@@ -33,6 +33,7 @@ class Riot_API {
     }
 
     getChampionIcon(champion_id) {
+        console.log("championid " + champion_id);
         const link = `https://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/champion/${champion_id}.png`;
@@ -40,6 +41,7 @@ class Riot_API {
     }
 
     getSkillIcon(skill_id) {
+        console.log("skill " + skill_id);
         const link = `https://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/spell/${skill_id}.png`;

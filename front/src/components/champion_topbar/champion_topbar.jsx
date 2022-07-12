@@ -11,6 +11,7 @@ function ChampionTopBar() {
         setContent(!showContent);
         if (document.getElementById("selected")) {
             info_button[0].removeAttribute("id");
+            info_button[0].setAttribute("id", "link");
         } else {
             info_button[0].setAttribute("id", "selected");
         }
@@ -22,9 +23,14 @@ function ChampionTopBar() {
                 <Link to="/" id="link">
                     홈
                 </Link>
-                <button className="info_button" onClick={changeState}>
+                <Link
+                    to="/champions"
+                    id="link"
+                    className="info_button"
+                    onClick={changeState}
+                >
                     챔피언 정보
-                </button>
+                </Link>
             </div>
             {showContent && <Champion />}
         </>

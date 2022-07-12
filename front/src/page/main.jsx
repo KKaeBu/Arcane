@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Riot from "../network/riotAPI.js";
+import ChampionTopBar from "./../components/champion_topbar/champion_topbar";
 
 function MainDisplay() {
     // const userName = "승수몬";
@@ -19,6 +20,7 @@ function MainDisplay() {
 
     return (
         <div className="mainDisplayContainer">
+            <ChampionTopBar />
             <h1>This is Main</h1>
         </div>
     );

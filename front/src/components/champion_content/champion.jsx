@@ -30,7 +30,6 @@ function Champion() {
     const [champion_img, setImg] = useState({}); // 챔피언 img API를 저장함
 
     const getChamp = async () => {
-        //const json = await (await fetch(champion_url)).json();
         const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
         setDisplay(json.data, null, "\t");
@@ -103,7 +102,6 @@ function Champion() {
         mainDiv[0].insertBefore(btnDiv, info);
         listBtn.style.display = "none";
     };
-
     return (
         <div className="mainDisplay">
             <span id="champInfo" style={style}>
@@ -124,9 +122,6 @@ function Champion() {
                 <img src={riot.getSkillIcon(skill_r.id)} alt="" />
                 {JSON.stringify(skill_r.name, null, "\t")}
                 <br />
-                {/* {JSON.stringify(display.title, null, "\t")}
-                <br />
-                {JSON.stringify(display.lore, null, "\t")} */}
                 <br />
             </span>
             <div className="button_div"></div>
