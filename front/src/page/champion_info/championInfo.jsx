@@ -39,26 +39,16 @@ function ChampionInfo() {
         const Q_img = document.createElement("img");
         Q_img.setAttribute("src", riot.getSkillIcon(skill_q.id));
 
-        mainDiv[0].appendChild(Q_img);
         mainDiv[0].appendChild(img_tag);
+        mainDiv[0].appendChild(Q_img);
     };
     // *************************************************************
     return (
         <div className="main">
             <ChampionTopBar />
-            {/* <img src={champion_img} alt="" />
-            <img src={riot.getSkillIcon(skill_q.id)} alt="" />
-            {JSON.stringify(skill_q.name, null, "\t")}
-            <br />
-            <img src={riot.getSkillIcon(skill_w.id)} alt="" />
-            {JSON.stringify(skill_w.name, null, "\t")}
-            <br />
-            <img src={riot.getSkillIcon(skill_e.id)} alt="" />
-            {JSON.stringify(skill_e.name, null, "\t")}
-            <br />
-            <img src={riot.getSkillIcon(skill_r.id)} alt="" />
-            {JSON.stringify(skill_r.name, null, "\t")}
-            <br /> */}
+            <div className=""></div>
+
+            {/* 밑 버튼은 showChampInfo함수를 자동으로 실행하기위해서 해놓음 수정요망 */}
             <button
                 style={{ display: "none" }}
                 onClick={showChampInfo()}
