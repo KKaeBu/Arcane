@@ -32,8 +32,11 @@ class Riot_API {
         return json;
     }
 
+    async getInfo(json, id) {
+        return json.data[id];
+    }
+
     getChampionIcon(champion_id) {
-        console.log("championid " + champion_id);
         const link = `https://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/champion/${champion_id}.png`;
@@ -41,10 +44,16 @@ class Riot_API {
     }
 
     getSkillIcon(skill_id) {
-        console.log("skill " + skill_id);
         const link = `https://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/spell/${skill_id}.png`;
+        return link;
+    }
+
+    getPassiveIcon(passive_id) {
+        const link = `http://ddragon.leagueoflegends.com/cdn/${
+            this.#Version
+        }/img/passive/${passive_id}`;
         return link;
     }
 }
