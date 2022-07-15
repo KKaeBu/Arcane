@@ -80,6 +80,7 @@ function ChampionInfo() {
         r_img.setAttribute("src", riot.getSkillIcon(skill_r.id));
         r_img.setAttribute("id", "skillIcon");
 
+        // 각 Div에 skill 이미지 append => 이미지들 개별적인 Div에 들어감
         champIconDiv[0].appendChild(img_tag);
         passiveIconDiv[0].appendChild(passive_img);
         qIconDiv[0].appendChild(q_img);
@@ -93,22 +94,34 @@ function ChampionInfo() {
         passive_name.innerHTML = skill_passive.name;
         const passive_description = document.createElement("p");
         passive_description.innerHTML = skill_passive.description;
+
         const q_name = document.createElement("p");
         q_name.innerHTML = skill_q.name;
         const q_description = document.createElement("p");
         q_description.innerHTML = skill_q.description;
+        const q_tooltip = document.createElement("p");
+        q_tooltip.innerHTML = skill_q.tooltip;
+
         const w_name = document.createElement("p");
         w_name.innerHTML = skill_w.name;
         const w_description = document.createElement("p");
         w_description.innerHTML = skill_w.description;
+        const w_tooltip = document.createElement("p");
+        w_tooltip.innerHTML = skill_w.tooltip;
+
         const e_name = document.createElement("p");
         e_name.innerHTML = skill_e.name;
         const e_description = document.createElement("p");
         e_description.innerHTML = skill_e.description;
+        const e_tooltip = document.createElement("p");
+        e_tooltip.innerHTML = skill_e.tooltip;
+
         const r_name = document.createElement("p");
         r_name.innerHTML = skill_r.name;
         const r_description = document.createElement("p");
         r_description.innerHTML = skill_r.description;
+        const r_tooltip = document.createElement("p");
+        r_tooltip.innerHTML = skill_r.tooltip;
 
         passiveInfoDiv[0].setAttribute("id", "invisible");
         qInfoDiv[0].setAttribute("id", "invisible");
@@ -116,6 +129,7 @@ function ChampionInfo() {
         eInfoDiv[0].setAttribute("id", "invisible");
         rInfoDiv[0].setAttribute("id", "invisible");
 
+        // 마우스 hover 효과를 이벤트리스너를 통해 구현
         passiveIconDiv[0].addEventListener("mouseover", function () {
             passiveInfoDiv[0].removeAttribute("id", "invisible");
         });
@@ -149,14 +163,22 @@ function ChampionInfo() {
 
         passiveInfoDiv[0].appendChild(passive_name);
         passiveInfoDiv[0].appendChild(passive_description);
+
         qInfoDiv[0].appendChild(q_name);
         qInfoDiv[0].appendChild(q_description);
+        qInfoDiv[0].appendChild(q_tooltip);
+
         wInfoDiv[0].appendChild(w_name);
         wInfoDiv[0].appendChild(w_description);
+        wInfoDiv[0].appendChild(w_tooltip);
+
         eInfoDiv[0].appendChild(e_name);
         eInfoDiv[0].appendChild(e_description);
+        eInfoDiv[0].appendChild(e_tooltip);
+
         rInfoDiv[0].appendChild(r_name);
         rInfoDiv[0].appendChild(r_description);
+        rInfoDiv[0].appendChild(r_tooltip);
     };
 
     return (

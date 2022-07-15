@@ -1,35 +1,41 @@
 .topbarContainer {
     color: white;
-    background-color: rgb(145, 146, 255);
+    background-color: black;
     position: sticky;
     top: 0;
     padding-bottom: 2.1%;
     padding-top: 2%;
     padding-left: 2%;
+    border-bottom: 1px solid #fbceb1;
 }
 
 #link {
-    font-size: small;
+    font-family: "LOLFontBold";
+    font-size: medium;
+    font-weight: bold;
     text-decoration: none;
-    color: rgb(62, 224, 230);
-    border-bottom: 2px solid transparent;
+    color: #fbceb1;
     padding-bottom: 2.1%;
-    margin-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
     margin-bottom: 0;
 }
 
 #link:hover {
-    border-bottom: 2px solid white;
-    color: white;
+    background: linear-gradient(to top, #fff1e781, 15%, transparent);
+    color: rgb(235, 217, 217);
     cursor: pointer;
 }
 
 #selected {
-    font-size: small;
+    font-family: "LOLFontBold";
+    font-size: medium;
+    font-weight: bold;
     text-decoration: none;
     padding-bottom: 2.1%;
-    margin-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
     margin-bottom: 0;
-    border-bottom: 2px solid white;
-    color: white;
+    background: linear-gradient(to top, #fff1e781, 15%, rgb(0, 41, 9));
+    color: rgb(235, 217, 217);
 }
