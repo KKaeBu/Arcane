@@ -110,7 +110,7 @@ function Champion() {
 
                 {/* getSkillIcon 함수는 파라메터로 받아온 해당 스킬의 이미지 주소를 반환함  */}
 
-                <img src={riot.getSkillIcon(skill_q.id)} alt="" />
+                {/* <img src={riot.getSkillIcon(skill_q.id)} alt="" />
                 {JSON.stringify(skill_q.name, null, "\t")}
                 <br />
                 <img src={riot.getSkillIcon(skill_w.id)} alt="" />
@@ -120,10 +120,11 @@ function Champion() {
                 {JSON.stringify(skill_e.name, null, "\t")}
                 <br />
                 <img src={riot.getSkillIcon(skill_r.id)} alt="" />
-                {JSON.stringify(skill_r.name, null, "\t")}
+                {JSON.stringify(skill_r.name, null, "\t")} */}
                 <br />
                 <br />
-            </span>
+            </span>{" "}
+            <h1>챔피언을 선택해 주세요!</h1>
             <div className="button_div"></div>
             {/* 아래 버튼은 컴포넌트가 실행됐을때 자동으로 showChampBtn을 한번 실행하도록 임의로 넣은것 
             수정 요망 */}
