@@ -1,5 +1,5 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-baeb6eb0-1db6-43dd-a667-d5760da01209";
+    #Riot_API_Key = "RGAPI-f45d8616-a0f5-452f-8bd0-57981ad00b8b";
     #Language = "ko_KR";
     #Version = "12.11.1";
 
@@ -23,9 +23,7 @@ class Riot_API {
     // 매개변수 
     async getChampionIllustration(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_0.jpg`;
-    }
-
-    
+    }  
 }
 
 async function getFetch(link) {

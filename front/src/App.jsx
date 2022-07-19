@@ -20,11 +20,12 @@ function App() {
     
     return (
       <div className="App">
-        {lodding ? (
+        {/* {lodding ? (
           <MainDisplay />
         ) : (
           <h1>Front axios connecting...</h1>
-        )}
+        )} */}
+        <MainDisplay />
       </div>
     );
 }
