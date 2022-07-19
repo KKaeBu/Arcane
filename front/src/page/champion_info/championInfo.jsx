@@ -30,6 +30,7 @@ function ChampionInfo() {
     const [skill_e, setE] = useState({});
     const [skill_r, setR] = useState({});
     const [champion_img, setImg] = useState({});
+    const [champion_key, setKey] = useState({});
 
     const getChamp = async () => {
         const json = await riot.getChampion(id);
@@ -42,6 +43,13 @@ function ChampionInfo() {
         setW(info.spells[1]);
         setE(info.spells[2]);
         setR(info.spells[3]);
+        if (info.key < 10) {
+            setKey("000" + info.key);
+        } else if (info.key < 100) {
+            setKey("00" + info.key);
+        } else if (info.key < 1000) {
+            setKey("0" + info.key);
+        }
 
         // 각 스킬의 정보를 저장
         setImg(riot.getChampionIcon(id)); // img도 display와 마찬가지로 해당key값의 이미지로
@@ -142,11 +150,17 @@ function ChampionInfo() {
         qIconDiv[0].addEventListener("mouseout", function () {
             qInfoDiv[0].setAttribute("id", "invisible");
         });
+        qIconDiv[0].addEventListener("click", function () {
+            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_Q1.webm`;
+        });
         wIconDiv[0].addEventListener("mouseover", function () {
             wInfoDiv[0].removeAttribute("id", "invisible");
         });
         wIconDiv[0].addEventListener("mouseout", function () {
             wInfoDiv[0].setAttribute("id", "invisible");
+        });
+        wIconDiv[0].addEventListener("click", function () {
+            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_W1.webm`;
         });
         eIconDiv[0].addEventListener("mouseover", function () {
             eInfoDiv[0].removeAttribute("id", "invisible");
@@ -154,11 +168,17 @@ function ChampionInfo() {
         eIconDiv[0].addEventListener("mouseout", function () {
             eInfoDiv[0].setAttribute("id", "invisible");
         });
+        eIconDiv[0].addEventListener("click", function () {
+            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_E1.webm`;
+        });
         rIconDiv[0].addEventListener("mouseover", function () {
             rInfoDiv[0].removeAttribute("id", "invisible");
         });
         rIconDiv[0].addEventListener("mouseout", function () {
             rInfoDiv[0].setAttribute("id", "invisible");
+        });
+        rIconDiv[0].addEventListener("click", function () {
+            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_R1.webm`;
         });
 
         passiveInfoDiv[0].appendChild(passive_name);
@@ -204,7 +224,6 @@ function ChampionInfo() {
                     </div>
                 </div>
             </div>
-
             {/* 밑 버튼은 showChampInfo함수를 자동으로 실행하기위해서 해놓음 수정요망 */}
             <button
                 style={{ display: "none" }}

@@ -21,7 +21,7 @@ function MainDisplay() {
     return (
         <div className="mainDisplayContainer">
             <ChampionTopBar />
-            <h1>This is Main</h1>
+            <h1 id="title">This is Main</h1>
         </div>
     );
 }

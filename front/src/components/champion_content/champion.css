@@ -6,7 +6,7 @@ button {
     color: #fbceb1;
 }
 
-button:hover {
+button:hover > #champion_img {
     border: 1px solid #fbceb1;
 }
 
@@ -22,7 +22,7 @@ button:hover {
     background-color: black;
 }
 
-h1 {
+.mainDisplay > h1 {
     font-family: LOLFontBold;
     font-weight: normal;
     text-align: center;
