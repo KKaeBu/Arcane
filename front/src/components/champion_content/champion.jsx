@@ -1,33 +1,18 @@
 import { useState, useEffect } from "react";
 import Riot from "../../network/riotAPI.js";
 import { useNavigate } from "react-router-dom";
-import ChampionInfo from "../../page/champion_info/championInfo.jsx";
 import "./champion.css";
 
 function Champion() {
     const Version = "12.11.1";
     const navigate = useNavigate();
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
-
-    const mainDiv = document.getElementsByClassName("mainDisplay");
     const btnDiv = document.getElementsByClassName("button_div");
-    const listBtn = document.getElementById("champList");
-    // ===========================================
-    // mainDiv > 이 div 안에 champion컴포넌트 내용이 들어감
     // btnDiv > 버튼을 집어넣을 div
-    // listBtn > 챔피언 목록을 불러오는 버튼
-    // info > 챔피언 정보 표시할 span태그
 
     const [champions, setChampion] = useState([]); // 챔피언 API 데이터를 저장
 
-    const [skill_q, setQ] = useState({});
-    const [skill_w, setW] = useState({});
-    const [skill_e, setE] = useState({});
-    const [skill_r, setR] = useState({});
-
-    const [champion_img, setImg] = useState({}); // 챔피언 img API를 저장함
-
-    const testArr = Object.values(champions);
+    const preloading_data = Object.values(champions);
 
     const getChamp = async () => {
         const json = await riot.getAllChampions();
@@ -49,7 +34,6 @@ function Champion() {
             let imgR = new Image();
             let imgP = new Image();
             let info = await riot.getChampion(testArr[i].id);
-            //console.log(info.data[testArr[i].id].passive.image.full);
             c_img.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/champion/${testArr[i].id}.png`;
             imgQ.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/spell/${
                 info.data[testArr[i].id].spells[0].id
@@ -69,7 +53,7 @@ function Champion() {
         }
     }
 
-    preImgloading(testArr);
+    preImgloading(preloading_data);
 
     const showChampBtn = async () => {
         const champArr = Object.values(champions).sort((a, b) =>
@@ -83,7 +67,7 @@ function Champion() {
         // 이때 각 name의 value값들은 한글이라서 그런지 toLowerCase라는 소문자로 변경하는 메소드를 사용하지 않으면 정렬이 안됨
         // sort메소드는 비교값 중에 앞 인덱스 값이 더 크면 양수를 반환해 순서를 바꾸고, 아니라면 음수를 반환해 인덱스 순서 유지
         // 그래서 a.name과 b.name을 비교해 앞의 것이 더 크다면 1을 반환해 sorting하게 한다
-        console.log(champions);
+
         for (let i = 0; i < champArr.length; i++) {
             // 모든 champArr배열의 속성값에 대해 실행하도록 반복문을 설정
             const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입

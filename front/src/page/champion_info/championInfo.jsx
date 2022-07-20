@@ -9,8 +9,6 @@ function ChampionInfo() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
     const { id } = useParams();
 
-    // const mainDiv = document.getElementsByClassName("main");
-    // const skillIconDiv = document.getElementsByClassName("skillsIcon");
     const champIconDiv = document.getElementsByClassName("championIcon");
     const passiveIconDiv = document.getElementsByClassName("passiveIcon");
     const qIconDiv = document.getElementsByClassName("qIcon");
