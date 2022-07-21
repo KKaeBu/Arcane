@@ -149,7 +149,11 @@ function ChampionInfo() {
             qInfoDiv[0].setAttribute("id", "invisible");
         });
         qIconDiv[0].addEventListener("click", function () {
-            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_Q1.webm`;
+            window.open(
+                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_Q1.webm`,
+                "",
+                "_blank"
+            );
         });
         wIconDiv[0].addEventListener("mouseover", function () {
             wInfoDiv[0].removeAttribute("id", "invisible");
@@ -158,7 +162,11 @@ function ChampionInfo() {
             wInfoDiv[0].setAttribute("id", "invisible");
         });
         wIconDiv[0].addEventListener("click", function () {
-            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_W1.webm`;
+            window.open(
+                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_W1.webm`,
+                "",
+                "_blank"
+            );
         });
         eIconDiv[0].addEventListener("mouseover", function () {
             eInfoDiv[0].removeAttribute("id", "invisible");
@@ -167,7 +175,11 @@ function ChampionInfo() {
             eInfoDiv[0].setAttribute("id", "invisible");
         });
         eIconDiv[0].addEventListener("click", function () {
-            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_E1.webm`;
+            window.open(
+                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_E1.webm`,
+                "",
+                "_blank"
+            );
         });
         rIconDiv[0].addEventListener("mouseover", function () {
             rInfoDiv[0].removeAttribute("id", "invisible");
@@ -176,7 +188,11 @@ function ChampionInfo() {
             rInfoDiv[0].setAttribute("id", "invisible");
         });
         rIconDiv[0].addEventListener("click", function () {
-            window.location = `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_R1.webm`;
+            window.open(
+                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_R1.webm`,
+                "",
+                "_blank"
+            );
         });
 
         passiveInfoDiv[0].appendChild(passive_name);
