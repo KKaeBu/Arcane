@@ -16,7 +16,14 @@
 /* 챔피언 초상화 이미지 */
 
 .infoBar {
-    margin: 2%;
+    background-color: aqua;
+    display: flex;
+    padding: 2%;
+}
+
+.detailInfoBar {
+    width: 200px;
+    margin: 1%;
 }
 
 /* 챔피언 초상화, 스킬아이콘 Div들의 상위 Div */
@@ -24,8 +31,17 @@
 .skillsIcon {
     margin: 1%;
     position: relative;
-    display: inline;
 }
+.championIcon {
+    display: inline-block;
+}
+
+.championName {
+    font-size: xx-large;
+    padding-top: 5%;
+    margin-bottom: 10%;
+}
+
 /* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
 
 .passiveIcon,
@@ -35,7 +51,7 @@
 .rIcon {
     margin: 0.5%;
     position: relative;
-    display: inline;
+    display: inline-block;
 }
 /* 스킬아이콘들이 들어가있는 Div안의 Div */
 

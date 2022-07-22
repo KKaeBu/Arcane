@@ -21,7 +21,9 @@ function ChampionInfo() {
     const eInfoDiv = document.getElementsByClassName("eInfo");
     const rInfoDiv = document.getElementsByClassName("rInfo");
     const passiveInfoDiv = document.getElementsByClassName("passiveInfo");
+    const championNameDiv = document.getElementsByClassName("championName");
 
+    const [champion_name, setName] = useState({});
     const [skill_passive, setPassive] = useState({});
     const [skill_q, setQ] = useState({});
     const [skill_w, setW] = useState({});
@@ -36,6 +38,7 @@ function ChampionInfo() {
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
 
+        setName(info.name);
         setPassive(info.passive);
         setQ(info.spells[0]);
         setW(info.spells[1]);
@@ -48,7 +51,6 @@ function ChampionInfo() {
         } else if (info.key < 1000) {
             setKey("0" + info.key);
         }
-
         // 각 스킬의 정보를 저장
         setImg(riot.getChampionIcon(id)); // img도 display와 마찬가지로 해당key값의 이미지로
     }; // 챔피언 API를 받아옴 비동기 처리함
@@ -58,6 +60,10 @@ function ChampionInfo() {
     }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
     const showChampInfo = async () => {
+        const nameSpan = document.createElement("span");
+        nameSpan.innerHTML = champion_name;
+        championNameDiv[0].appendChild(nameSpan);
+
         // ********** champion, skill의 img 설정 부분
         const img_tag = document.createElement("img");
         img_tag.setAttribute("src", champion_img);
@@ -142,6 +148,13 @@ function ChampionInfo() {
         passiveIconDiv[0].addEventListener("mouseout", function () {
             passiveInfoDiv[0].setAttribute("id", "invisible");
         });
+        passiveIconDiv[0].addEventListener("click", function () {
+            window.open(
+                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_P1.webm`,
+                "",
+                "_blank"
+            );
+        });
         qIconDiv[0].addEventListener("mouseover", function () {
             qInfoDiv[0].removeAttribute("id", "invisible");
         });
@@ -220,21 +233,26 @@ function ChampionInfo() {
             <ChampionTopBar />
             <div className="infoBar">
                 <div className="championIcon"></div>
-                <div className="skillsIcon">
-                    <div className="passiveIcon">
-                        <div className="passiveInfo"></div>
+                <div className="detailInfoBar">
+                    <div className="championName">
+                        <span className="championNameSpan"></span>
                     </div>
-                    <div className="qIcon">
-                        <div className="qInfo"></div>
-                    </div>
-                    <div className="wIcon">
-                        <div className="wInfo"></div>
-                    </div>
-                    <div className="eIcon">
-                        <div className="eInfo"></div>
-                    </div>
-                    <div className="rIcon">
-                        <div className="rInfo"></div>
+                    <div className="skillsIcon">
+                        <div className="passiveIcon">
+                            <div className="passiveInfo"></div>
+                        </div>
+                        <div className="qIcon">
+                            <div className="qInfo"></div>
+                        </div>
+                        <div className="wIcon">
+                            <div className="wInfo"></div>
+                        </div>
+                        <div className="eIcon">
+                            <div className="eInfo"></div>
+                        </div>
+                        <div className="rIcon">
+                            <div className="rInfo"></div>
+                        </div>
                     </div>
                 </div>
             </div>
