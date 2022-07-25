@@ -25,6 +25,7 @@ function Champion() {
     }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
     async function preImgloading(testArr) {
+        console.log("preloading...");
         let n = testArr.length;
         for (let i = 0; i < n; i++) {
             let c_img = new Image();

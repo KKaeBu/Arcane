@@ -37,7 +37,8 @@
 }
 
 .championName {
-    font-size: xx-large;
+    font-weight: bolder;
+    font-size: x-large;
     padding-top: 5%;
     margin-bottom: 10%;
 }
@@ -72,10 +73,21 @@
 
     left: 30%;
     top: 80%;
+
+    animation: fadein 0.3s;
 }
 /* 스킬 상세 정보 창 */
 
 p {
     font-family: LOLFontlight;
     font-size: small;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
