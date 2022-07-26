@@ -22,6 +22,8 @@ function ChampionInfo() {
     const rInfoDiv = document.getElementsByClassName("rInfo");
     const passiveInfoDiv = document.getElementsByClassName("passiveInfo");
     const championNameDiv = document.getElementsByClassName("championName");
+    const recommendItemDiv =
+        document.getElementsByClassName("recommendItemDiv");
 
     const [champion_name, setName] = useState({});
     const [skill_passive, setPassive] = useState({});
@@ -31,6 +33,7 @@ function ChampionInfo() {
     const [skill_r, setR] = useState({});
     const [champion_img, setImg] = useState({});
     const [champion_key, setKey] = useState({});
+    const [recommended_item, setRecommended] = useState({});
 
     const getChamp = async () => {
         const json = await riot.getChampion(id);
@@ -38,6 +41,7 @@ function ChampionInfo() {
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
 
+        setRecommended(info.recommended[0].blocks[0].items[0].id);
         setName(info.name);
         setPassive(info.passive);
         setQ(info.spells[0]);
@@ -134,6 +138,10 @@ function ChampionInfo() {
         r_description.innerHTML = skill_r.description;
         const r_tooltip = document.createElement("p");
         r_tooltip.innerHTML = skill_r.tooltip;
+
+        const recommended_span = document.createElement("span");
+        recommended_span.innerHTML = recommended_item;
+        recommendItemDiv[0].appendChild(recommended_span);
 
         passiveInfoDiv[0].setAttribute("id", "invisible");
         qInfoDiv[0].setAttribute("id", "invisible");
@@ -256,6 +264,7 @@ function ChampionInfo() {
                     </div>
                 </div>
             </div>
+            <div className="recommendItemDiv"></div>
             {/* 밑 버튼은 showChampInfo함수를 자동으로 실행하기위해서 해놓음 수정요망 */}
             <button
                 style={{ display: "none" }}

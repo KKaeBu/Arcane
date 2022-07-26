@@ -1,8 +1,8 @@
 class Riot_API {
     #Riot_API_Key = "RGAPI-7d1291b3-b690-4b73-863c-87ba0408d9be";
     #Language = "ko_KR";
-    #Version = "12.11.1";
-
+    #Version = "11.8.1";
+    // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
     async getSummoner(username) {
@@ -56,6 +56,15 @@ class Riot_API {
         }/img/passive/${passive_id}`;
         return link;
     }
+
+    // getRecommendedItem(champion_id) {
+    //     /* 라이엇에서 제공받는 api가 11.8.1 버전 이후로 추천 아이템 정보를 제공하지않음..  */
+    //     const link = `http://ddragon.leagueoflegends.com/cdn/11.8.1/data/${
+    //         this.#Language
+    //     }/champion/${champion_id}.json`;
+    //     const json = getFetch(link);
+    //     return json.data[champion_id];
+    // }
 }
 
 async function getFetch(link) {
