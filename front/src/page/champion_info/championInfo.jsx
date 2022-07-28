@@ -27,6 +27,7 @@ function ChampionInfo() {
     const startItemDiv = document.getElementsByClassName("startItem");
 
     const [champion_name, setName] = useState({});
+    const [champion_title, setTitle] = useState({});
     const [skill_passive, setPassive] = useState({});
     const [skill_q, setQ] = useState({});
     const [skill_w, setW] = useState({});
@@ -45,6 +46,7 @@ function ChampionInfo() {
         setRecommended(info.recommended[0].blocks[0].items[0].id);
 
         setName(info.name);
+        setTitle(info.title);
         setPassive(info.passive);
         setQ(info.spells[0]);
         setW(info.spells[1]);
@@ -67,8 +69,18 @@ function ChampionInfo() {
 
     const showChampInfo = async () => {
         const nameSpan = document.createElement("span");
+        const nameSpanDiv = document.createElement("div");
+        nameSpanDiv.setAttribute("id", "championNameSpan");
         nameSpan.innerHTML = champion_name;
-        championNameDiv[0].appendChild(nameSpan);
+        nameSpanDiv.appendChild(nameSpan);
+        championNameDiv[0].appendChild(nameSpanDiv);
+
+        const titleSpan = document.createElement("span");
+        const titleSpanDiv = document.createElement("div");
+        titleSpanDiv.setAttribute("id", "titleSpan");
+        titleSpan.innerHTML = champion_title;
+        titleSpanDiv.appendChild(titleSpan);
+        championNameDiv[0].appendChild(titleSpanDiv);
 
         // ********** champion, skill의 img 설정 부분
         const img_tag = document.createElement("img");
@@ -248,9 +260,7 @@ function ChampionInfo() {
             <div className="infoBar">
                 <div className="championIcon"></div>
                 <div className="detailInfoBar">
-                    <div className="championName">
-                        <span className="championNameSpan"></span>
-                    </div>
+                    <div className="championName"></div>
                     <div className="skillsIcon">
                         <div className="passiveIcon">
                             <div className="passiveInfo"></div>

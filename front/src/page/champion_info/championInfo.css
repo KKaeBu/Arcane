@@ -37,12 +37,19 @@
 }
 
 .championName {
-    font-weight: bolder;
-    font-size: x-large;
-    padding-top: 5%;
     margin-bottom: 10%;
 }
 
+#championNameSpan {
+    font-weight: bolder;
+    font-size: x-large;
+}
+
+#titleSpan {
+    font-weight: bold;
+    font-size: small;
+    font-style: italic;
+}
 /* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
 
 .passiveIcon,
