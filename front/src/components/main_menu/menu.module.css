@@ -26,7 +26,7 @@ ul {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,8 +40,41 @@ ul {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.icon {
+    font-size: 42px;
 }
 
 .menuContainer p {
     font-weight: bold;
 }
+
+/* 
+.menuSubChampionBtn {
+    transform: translateY(-150px);
+}
+
+.menuSubItemBtn {
+    transform: translate(130px, -75px);
+}
+
+.menuSubRankingBtn {
+    transform: translate(130px, 75px);
+}
+
+.menuSubBuildBtn {
+    transform: translateY(150px);
+}
+
+.menuStatisticsBtn {
+    transform: translate(-130px, 75px);
+}
+
+.menuComunnityBtn {
+    transform: translate(-130px, -75px);
+} */

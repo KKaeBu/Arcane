@@ -17,7 +17,8 @@ function Menu() {
 
     const onClick = (e) => {
         console.log(e.target);
-
+        const dd = document.querySelectorAll(".style.menuSubButtonItem");
+        console.log(dd);
     }
 
     const btnColor = () => {
@@ -29,39 +30,39 @@ function Menu() {
             <div className={style.menuMainButton}  onClick={onClick}>
                 <p>Menu</p>
             </div>
-            <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn}`}>
+            <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn} test`}>
                 <div className={style.menuSubItemContainer}>
-                    <SmartToy />
+                    <SmartToy className={style.icon} />
                     <p>챔피언 분석</p>
                 </div>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuSubItemBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <Category />
+                    <Category className={style.icon} />
                     <p>아이템 조합</p>
                 </div>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuSubRankingBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <EmojiEvents />
+                    <EmojiEvents className={style.icon} />
                     <p>랭킹</p>
                 </div>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuSubBuildBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <Construction />
+                    <Construction className={style.icon} />
                     <p>빌드</p>
                 </div>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuStatisticsBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <Equalizer />
+                    <Equalizer className={style.icon} />
                     <p>통계</p>
                 </div>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuComunnityBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <Forum />
+                    <Forum className={style.icon} />
                     <p>커뮤니티</p>
                 </div>
             </div>
