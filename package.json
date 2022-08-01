@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ysh038/Arcane#readme",
   "devDependencies": {
-    "nodemon": "^2.0.18"
+    "nodemon": "^2.0.19"
   },
   "dependencies": {
     "axios": "^0.27.2",

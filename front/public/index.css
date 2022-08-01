@@ -1,0 +1,18 @@
+@font-face {
+    font-family: "LOLFontlight";
+    src: url(../assets/fonts/RIXGOM.TTF) format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "LOLFontBold";
+    src: url(../assets/fonts/RIXGOEB.TTF) format("truetype");
+    font-weight: normal;
+}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
