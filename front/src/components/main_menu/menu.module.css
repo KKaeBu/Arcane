@@ -54,7 +54,7 @@ ul {
     font-weight: bold;
 }
 
-/* 
+
 .menuSubChampionBtn {
     transform: translateY(-150px);
 }
@@ -77,4 +77,12 @@ ul {
 
 .menuComunnityBtn {
     transform: translate(-130px, -75px);
-} */
+}
+
+.newBox {
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: absolute;
+    /* transform: translate(); */
+}

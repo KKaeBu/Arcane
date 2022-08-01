@@ -17,8 +17,14 @@ function Menu() {
 
     const onClick = (e) => {
         console.log(e.target);
-        const dd = document.querySelectorAll(".style.menuSubButtonItem");
+        const dd = document.querySelector("." + style["menuContainer"]);
         console.log(dd);
+        console.log(style);
+        console.log(style["menuContainer"]);
+
+        // const n = document.createElement("div");
+        // n.setAttribute("class", style.newBox);
+        // dd.appendChild(n);
     }
 
     const btnColor = () => {
