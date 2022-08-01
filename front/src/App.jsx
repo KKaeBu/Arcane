@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import MainDisplay from "./page/Main";
+import MainDisplay from "./page/main/Main";
 import Champion from "./page/champion/champion.jsx";
 import ChampionInfo from "./page/champion_info/championInfo";
 import ReactDOM from "react-dom/client";

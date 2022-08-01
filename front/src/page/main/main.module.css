@@ -22,5 +22,5 @@
     /* object-fit: cover 로 해주니까 윗부분이 잘림 */
     background-size: contain;
     /* 이미지 어둡게 해주기 */
-    /* filter: brightness(65%);  */
+    filter: brightness(65%); 
 }

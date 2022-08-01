@@ -6,6 +6,7 @@ import {
   Equalizer,
   Forum,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import style from './menu.module.css';
 
 
@@ -36,11 +37,14 @@ function Menu() {
             <div className={style.menuMainButton}  onClick={onClick}>
                 <p>Menu</p>
             </div>
-            <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn} test`}>
-                <div className={style.menuSubItemContainer}>
+            <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn}`}>
+                <Link
+                    to="/champions"
+                    className={style.menuSubItemContainer}
+                >
                     <SmartToy className={style.icon} />
                     <p>챔피언 분석</p>
-                </div>
+                </Link>
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuSubItemBtn}`}>
                 <div className={style.menuSubItemContainer}>

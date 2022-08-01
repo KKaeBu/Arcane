@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Riot from "../network/riotAPI.js";
-import Topbar from "../components/main_topbar/Topbar";
-import Menu from "../components/main_menu/Menu";
+import Riot from "../../network/riotAPI.js";
+import Topbar from "../../components/main_topbar/Topbar";
+import Menu from "../../components/main_menu/Menu";
 import style from "./main.module.css";
 
 function MainDisplay() {

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import "./championInfo.css";
-import ChampionTopBar from "./../../components/champion_topbar/champion_topbar";
+import ChampionTopBar from "../../components/champion_topbar/champion_topbar";
 import Riot from "../../network/riotAPI.js";
 import { useEffect } from "react";
 import { useState } from "react";
