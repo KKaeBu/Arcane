@@ -1,32 +1,34 @@
-import "./champion_topbar.css";
-import Champion from "../champion_content/champion.jsx";
+import Champion from "../champions/champions.jsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import style from "./champion_topbar.module.css";
 
 function ChampionTopBar() {
-    const info_button = document.getElementsByClassName("info_button");
+    const info_button = document.getElementsByClassName(
+        "." + style["info_button"]
+    );
     const [showContent, setContent] = useState(false);
 
     const changeState = () => {
         setContent(!showContent);
-        if (document.getElementById("selected")) {
+        if (document.getElementById("." + style["selected"])) {
             info_button[0].removeAttribute("id");
-            info_button[0].setAttribute("id", "link");
+            info_button[0].setAttribute("id", style.link);
         } else {
-            info_button[0].setAttribute("id", "selected");
+            info_button[0].setAttribute("id", style.selected);
         }
     };
 
     return (
         <>
-            <div className="topbarContainer">
-                <Link to="/" id="link">
+            <div className={style.topbarContainer}>
+                <Link to="/" id={style.link}>
                     홈
                 </Link>
                 <Link
                     to="/champions"
-                    id="link"
-                    className="info_button"
+                    id={style.link}
+                    className={style.info_button}
                     onClick={changeState}
                 >
                     챔피언 정보

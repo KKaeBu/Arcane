@@ -23,9 +23,6 @@ function ChampionInfo() {
     const passiveInfoDiv = document.getElementsByClassName("passiveInfo");
     const championNameDiv = document.getElementsByClassName("championName");
 
-    const recommendItemDiv = document.getElementsByClassName("recommendItem");
-    const startItemDiv = document.getElementsByClassName("startItem");
-
     const [champion_name, setName] = useState({});
     const [champion_title, setTitle] = useState({});
     const [skill_passive, setPassive] = useState({});
@@ -35,15 +32,12 @@ function ChampionInfo() {
     const [skill_r, setR] = useState({});
     const [champion_img, setImg] = useState({});
     const [champion_key, setKey] = useState({});
-    const [recommended_item, setRecommended] = useState({});
 
     const getChamp = async () => {
         const json = await riot.getChampion(id);
         // 해당 페이지 챔피언의 id를 통해 챔피언 객체 저장
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
-
-        setRecommended(info.recommended[0].blocks[0].items[0].id);
 
         setName(info.name);
         setTitle(info.title);
@@ -121,37 +115,51 @@ function ChampionInfo() {
 
         // ********** 부터 skill text 설정
         const passive_name = document.createElement("p");
+        passive_name.setAttribute("class", "skill_name");
         passive_name.innerHTML = skill_passive.name;
         const passive_description = document.createElement("p");
+        passive_description.setAttribute("class", "skill_description");
         passive_description.innerHTML = skill_passive.description;
 
         const q_name = document.createElement("p");
+        q_name.setAttribute("class", "skill_name");
         q_name.innerHTML = skill_q.name;
         const q_description = document.createElement("p");
+        q_description.setAttribute("class", "skill_description");
         q_description.innerHTML = skill_q.description;
         const q_tooltip = document.createElement("p");
         q_tooltip.innerHTML = skill_q.tooltip;
+        q_tooltip.setAttribute("class", "skill_tooltip");
 
         const w_name = document.createElement("p");
+        w_name.setAttribute("class", "skill_name");
         w_name.innerHTML = skill_w.name;
         const w_description = document.createElement("p");
+        w_description.setAttribute("class", "skill_description");
         w_description.innerHTML = skill_w.description;
         const w_tooltip = document.createElement("p");
         w_tooltip.innerHTML = skill_w.tooltip;
+        w_tooltip.setAttribute("class", "skill_tooltip");
 
         const e_name = document.createElement("p");
+        e_name.setAttribute("class", "skill_name");
         e_name.innerHTML = skill_e.name;
         const e_description = document.createElement("p");
+        e_description.setAttribute("class", "skill_description");
         e_description.innerHTML = skill_e.description;
         const e_tooltip = document.createElement("p");
         e_tooltip.innerHTML = skill_e.tooltip;
+        e_tooltip.setAttribute("class", "skill_tooltip");
 
         const r_name = document.createElement("p");
+        r_name.setAttribute("class", "skill_name");
         r_name.innerHTML = skill_r.name;
         const r_description = document.createElement("p");
+        r_description.setAttribute("class", "skill_description");
         r_description.innerHTML = skill_r.description;
         const r_tooltip = document.createElement("p");
         r_tooltip.innerHTML = skill_r.tooltip;
+        r_tooltip.setAttribute("class", "skill_tooltip");
 
         passiveInfoDiv[0].setAttribute("id", "invisible");
         qInfoDiv[0].setAttribute("id", "invisible");
@@ -244,14 +252,6 @@ function ChampionInfo() {
         rInfoDiv[0].appendChild(r_name);
         rInfoDiv[0].appendChild(r_description);
         rInfoDiv[0].appendChild(r_tooltip);
-
-        // 아이템 이미지 부분
-        const startItemImg = document.createElement("img");
-        startItemImg.setAttribute(
-            "src",
-            `https://ddragon.leagueoflegends.com/cdn/11.8.1/img/item/${recommended_item}.png`
-        );
-        startItemDiv[0].appendChild(startItemImg);
     };
 
     return (
@@ -279,9 +279,6 @@ function ChampionInfo() {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="recommendItem">
-                <div className="startItem"></div>
             </div>
             {/* 밑 버튼은 showChampInfo함수를 자동으로 실행하기위해서 해놓음 수정요망 */}
             <button

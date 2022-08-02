@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MainDisplay from "./page/main/Main";
-import Champion from "./page/champion/champion.jsx";
+import Champion from "./page/champion_list/champion_list.jsx";
 import ChampionInfo from "./page/champion_info/championInfo";
 import ReactDOM from "react-dom/client";
 import { Routes, Route, BrowserRouter } from "react-router-dom";

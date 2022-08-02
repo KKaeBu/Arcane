@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Riot from "../../network/riotAPI.js";
 import { useNavigate } from "react-router-dom";
-import "./champion.css";
+import "./champions.css";
 
 function Champion() {
     const Version = "11.8.1";

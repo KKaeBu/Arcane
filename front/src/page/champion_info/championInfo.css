@@ -68,7 +68,6 @@
 .wInfo,
 .eInfo,
 .rInfo {
-    font-family: LOLFontlight;
     color: white;
 
     background-color: black;
@@ -85,7 +84,16 @@
 }
 /* 스킬 상세 정보 창 */
 
-p {
+.skill_name {
+    font-family: LOLFontlight;
+    font-size: medium;
+    line-height: 3;
+}
+.skill_description {
+    font-family: LOLFontlight;
+    font-size: small;
+}
+.skill_tooltip {
     font-family: LOLFontlight;
     font-size: small;
 }
