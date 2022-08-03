@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 import style from "./champion_topbar.module.css";
 
 function ChampionTopBar() {
-    const info_button = document.getElementsByClassName(
-        "." + style["info_button"]
-    );
+    const info_button = document.querySelector("." + style["info_button"]);
     const [showContent, setContent] = useState(false);
 
     const changeState = () => {
         setContent(!showContent);
-        if (document.getElementById("." + style["selected"])) {
+        if (document.querySelector("." + style["selected"])) {
             info_button[0].removeAttribute("id");
             info_button[0].setAttribute("id", style.link);
         } else {

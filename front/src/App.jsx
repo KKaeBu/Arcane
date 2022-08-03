@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MainDisplay from "./page/main/Main";
-import Champion from "./page/champion_list/champion_list.jsx";
-import ChampionInfo from "./page/champion_info/championInfo";
+import ChampionListPage from "./page/champion_list/champion_list.jsx";
+import ChampionInfoPage from "./page/champion_info/champion_info.jsx";
 import ReactDOM from "react-dom/client";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -30,7 +30,7 @@ function App() {
                     path="/champions/:id"
                     element={
                         loading ? (
-                            <ChampionInfo />
+                            <ChampionInfoPage />
                         ) : (
                             <h1>Front axios connecting...</h1>
                         )
@@ -40,7 +40,7 @@ function App() {
                     path="/champions"
                     element={
                         loading ? (
-                            <Champion />
+                            <ChampionListPage />
                         ) : (
                             <h1>Front axios connecting...</h1>
                         )

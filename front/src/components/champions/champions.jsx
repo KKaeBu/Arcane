@@ -18,6 +18,7 @@ function Champion() {
         const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
         await showChampBtn();
+        preImgloading(preloading_data);
     }; // 챔피언 API를 받아옴 비동기 처리함
 
     useEffect(() => {
@@ -53,8 +54,6 @@ function Champion() {
             }`;
         }
     }
-
-    preImgloading(preloading_data);
 
     const showChampBtn = async () => {
         const champArr = Object.values(champions).sort((a, b) =>
