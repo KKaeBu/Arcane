@@ -15,7 +15,11 @@ app.use(morgan("tiny"));
 
 // ===========================라우터 등록================================
 
-app.use("/main", mainRouter); //main
+app.use("/search", (req, res, next) => {
+    // const text = req.body.searchValue;
+    // res.send(text);
+    res.send({ hi: "hello i'm search" });
+});
 app.use("/champion", championRouter);
 
 // 위의 라우터 모두 충족하지 않을경우

@@ -1,7 +1,7 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-f45d8616-a0f5-452f-8bd0-57981ad00b8b";
+    #Riot_API_Key = "RGAPI-785aa7e6-d58f-4b0d-896e-74672892dfa9";
     #Language = "ko_KR";
-    #Version = "11.8.1";
+    #Version = "12.14.1";
     // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
@@ -70,6 +70,10 @@ class Riot_API {
     //     const json = getFetch(link);
     //     return json.data[champion_id];
     // }
+
+    getVersion() {
+        return this.#Version;
+    }
 }
 
 async function getFetch(link) {

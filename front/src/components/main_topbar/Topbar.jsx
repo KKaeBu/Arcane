@@ -1,10 +1,29 @@
 import { useState } from "react";
 import { Search, LightMode, DarkMode, Language } from "@mui/icons-material";
 import style from "./topbar.module.css";
+import axios from "axios";
 
 
 function Topbar() {
     const [toggle, setToggle] = useState(true);
+    const [inputValue, setInputValue] = useState("");
+
+    const onSubmit = (event) => {
+        event.preventDefault(); // 새로고침 방지
+        
+        axios//
+            .post("/search", {
+                searchValue: inputValue,
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(console.log("오류남 ㅋ"));
+    }
+
+    const onChange = (event) => {
+        setInputValue(event.target.value);
+    }
 
     const onclick = () => {
         setToggle(!toggle);
@@ -16,11 +35,11 @@ function Topbar() {
                 <img src="/img/Arcane_Title.png" alt="title logo" className={style.logo}/>
             </div>
             <div className={style.topbarCenter}>
-                <div className={style.searchbar}>
+                <form className={style.searchbar} onSubmit={onSubmit}>
                     {/* select box 커스텀해서 나중에 추가하기 (서버 선택용) */}
-                    <input placeholder="Search for Username" className={style.searchInput} />
+                    <input placeholder="Search for Username" className={style.searchInput} onChange={onChange} />
                     <Search className={style.searchButton}/>
-                </div>
+                </form>
             </div>
             <div className={style.topbarRight}>
                 <div className={style.modeToggle}>

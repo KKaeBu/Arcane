@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./champions.css";
 
 function Champion() {
-    const Version = "11.8.1";
     const navigate = useNavigate();
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
+    const Version = riot.getVersion();
     const btnDiv = document.getElementsByClassName("button_div");
     // btnDiv > 버튼을 집어넣을 div
 

@@ -5,18 +5,13 @@ import ChampionListPage from "./page/champion_list/champion_list.jsx";
 import ChampionInfoPage from "./page/champion_info/champion_info.jsx";
 import ReactDOM from "react-dom/client";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Search from "./page/search/Search.jsx";
 
 function App() {
     const [loading, setLoading] = useState(false);
     const callMain = async () => {
         console.log("엑시오스 작동");
-        axios
-            .get("/champion") // mainDisplay
-            .then((res) => {
-                console.log(JSON.stringify(res.data.hi));
-                setLoading(true);
-            })
-            .catch((error) => console.log(error));
+        setLoading(true);
     };
 
     useEffect(() => {
@@ -45,6 +40,10 @@ function App() {
                             <h1>Front axios connecting...</h1>
                         )
                     }
+                />
+                <Route 
+                  path="/search"
+                  element={<Search/>}
                 />
                 <Route
                     path="/"
