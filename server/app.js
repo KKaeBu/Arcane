@@ -14,8 +14,14 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 // ===========================라우터 등록================================
-
-app.use("/search", (req, res, next) => {
+app.post("/", (req, res, next) => {
+    // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
+    console.log(`클라이언트에서 보낸 데이터 : ${req.body.name}`);
+    console.log("서버 응답 성공");
+    const text = req.body.name;
+    res.send(text);
+});
+app.use("/", (req, res, next) => {
     // const text = req.body.searchValue;
     // res.send(text);
     res.send({ hi: "hello i'm search" });
