@@ -7,17 +7,17 @@ function Topbar() {
     const [toggle, setToggle] = useState(true);
     const [inputValue, setInputValue] = useState("");
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault(); // 새로고침 방지
         // ***** 클라이언트 axios에서 url포트번호를 서버의 포트번호로
         // ***** 클라이언트 axios의 메소드와 서버의 메소드를 같게해야되는듯
         // ***** 아래 axios에서 post했으면 서버에서도 post로 수신함
-        axios
-            .post("http://localhost:5000/", {
+        await axios
+            .post("/search", {
                 name: inputValue,
             })
             .then((res) => {
-                console.log(res.data);
+                console.log("내가 받은 데이터:", res.data);
             })
             .catch((e) => console.log("오류남 ㅋ"));
     };

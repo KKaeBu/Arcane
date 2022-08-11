@@ -34,9 +34,9 @@ function Menu() {
 
     return (
         <div className={style.menuContainer}>
-            <div className={style.menuMainButton}  onClick={onClick}>
-                <p>Menu</p>
-            </div>
+            <Link to="/login" className={style.menuMainButton}  onClick={onClick}>
+                <p>Login</p>
+            </Link>
             <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn}`}>
                 <Link
                     to="/champions"
