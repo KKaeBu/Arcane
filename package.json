@@ -1,30 +1,30 @@
 {
-  "name": "arcane",
-  "version": "1.0.0",
-  "description": "project with Riot APIs",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "cd server && npm start",
-    "front": "cd front && npm start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run front\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ysh038/Arcane.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ysh038/Arcane/issues"
-  },
-  "homepage": "https://github.com/ysh038/Arcane#readme",
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  },
-  "dependencies": {
-    "axios": "^0.27.2",
-    "concurrently": "^7.2.2"
-  }
+    "name": "arcane",
+    "version": "1.0.0",
+    "description": "project with Riot APIs",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "server": "cd server && npm start",
+        "front": "cd front && npm start",
+        "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run front\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ysh038/Arcane.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ysh038/Arcane/issues"
+    },
+    "homepage": "https://github.com/ysh038/Arcane#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.19"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "concurrently": "^7.2.2"
+    }
 }

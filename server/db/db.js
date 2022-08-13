@@ -1,6 +1,5 @@
-import Mongoose from 'mongoose';
-import { config } from '../config.js';
-
+import Mongoose from "mongoose";
+import { config } from "../config.js";
 
 export async function connectDB() {
     // mongoose 사용
