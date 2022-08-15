@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
 
-app.post("/register", (req, res, next) => {
+app.post("/signup", (req, res, next) => {
     const user = new User(req.body);
 
     user.save((err, userInfo) => {
