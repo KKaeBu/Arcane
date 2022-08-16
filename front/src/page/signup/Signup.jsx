@@ -1,6 +1,7 @@
 import style from "./signup.module.css";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Signup() {
     const [inputID, setID] = useState("");
@@ -29,15 +30,24 @@ function Signup() {
         event.preventDefault();
         if (inputPassword !== inputPasswordAgain) {
             alert("비밀번호가 다릅니다!");
+        } else if (
+            inputID === "" ||
+            inputEmail === "" ||
+            inputPassword === "" ||
+            inputPasswordAgain === ""
+        ) {
+            alert("빈칸을 모두 채워주세요!");
         } else {
             await axios
                 .post("/signup", {
                     id: inputID,
                     password: inputPassword,
+                    email: inputEmail,
                 })
                 .then((res) => {
-                    console.log("성공적으로 회원가입 했습니다.");
+                    alert("회원가입에 성공했습니다!");
                     console.log(res.data);
+                    window.location.replace("/login");
                 })
                 .catch((e) => {
                     console.error(e);
@@ -83,7 +93,7 @@ function Signup() {
                         <button className={style.loginButton}>Sign Up</button>
                         {/* <button className={style.loginRegisterButton}>
                             Log into Account
-                        </button> */}
+                        </button>  */}
                     </form>
                 </div>
             </div>
