@@ -5,6 +5,7 @@ import morgan from "morgan";
 import "express-async-errors";
 import mainRouter from "./router/main.js";
 import championRouter from "./router/champion.js";
+import authRouter from "./router/auth.js";
 import { config } from "./config.js";
 import { connectDB } from "./db/db.js";
 import { User } from "./model/schema.js";
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
+
+app.use("/auth", authRouter);
 
 app.post("/signup", (req, res, next) => {
     const user = new User(req.body);
@@ -36,8 +39,6 @@ app.post("/search", (req, res, next) => {
     const text = req.body.name;
     res.send(text);
 });
-
-app.use("/champion", championRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
