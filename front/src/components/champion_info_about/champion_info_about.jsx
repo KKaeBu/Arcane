@@ -21,20 +21,26 @@ function ChampionInfoAbout() {
         getChamp();
     }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
-    if (champion_class[0] === "Fighter") {
-        console.log(champion_class[0]);
-    }
+    const showChampAbout = async () => {
+        const about_div = document.querySelector("." + style["about"]);
+        const class_img = document.createElement("img");
+        class_img.setAttribute("class", style.classImg);
+        class_img.src = `/img/${champion_class[0]}.jpg`;
+        about_div.appendChild(class_img);
+    };
+
+    // Support
+    // Mage
+    // Fighter
+    // Tank
+    // Marksman
+    // Assassin
+    showChampAbout();
 
     return (
         <>
             <div className={style.about}>
-                <span>{}</span>
                 <p>여기에 클래스랑 클래스 이미지 넣기</p>
-                <img
-                    src="/img/supporter.jpg"
-                    alt=""
-                    className={style.classImg}
-                />
             </div>
         </>
     );
