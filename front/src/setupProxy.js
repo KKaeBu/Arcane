@@ -10,15 +10,7 @@ module.exports = (app) => {
         })
     );
     app.use(
-        "/register",
-        createProxyMiddleware({
-            //도메인 api로 호출
-            target: "http://localhost:5000", //통신할 서버의 도메인주소
-            changeOrigin: true,
-        })
-    );
-    app.use(
-        "/signup",
+        "/auth",
         createProxyMiddleware({
             //도메인 api로 호출
             target: "http://localhost:5000", //통신할 서버의 도메인주소

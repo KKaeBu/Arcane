@@ -5,15 +5,15 @@ import { useState } from "react";
 import axios from "axios";
 
 function Signup() {
-    const [inputID, setID] = useState("");
+    const [inputUsername, setUsername] = useState("");
     const [inputEmail, setEmail] = useState("");
     const [inputPassword, setPassword] = useState("");
     const [inputPasswordAgain, setPasswordAgain] = useState("");
 
     // 아래 change함수들은 input값의 변화를 감지하고 변화된 값을 set함수를 통해 저장함
-    const changeID = () => {
-        const ID = document.getElementById("id");
-        setID(ID.value);
+    const changeUsername = () => {
+        const Username = document.getElementById("username");
+        setUsername(Username.value);
     };
     const changeEmail = () => {
         const Email = document.getElementById("email");
@@ -32,7 +32,7 @@ function Signup() {
         if (inputPassword !== inputPasswordAgain) {
             alert("비밀번호가 다릅니다!");
         } else if (
-            inputID === "" ||
+            inputUsername === "" ||
             inputEmail === "" ||
             inputPassword === "" ||
             inputPasswordAgain === ""
@@ -40,15 +40,15 @@ function Signup() {
             alert("빈칸을 모두 채워주세요!");
         } else {
             await axios
-                .post("/signup", {
-                    id: inputID,
+                .post("/auth/signup", {
+                    username: inputUsername,
                     password: inputPassword,
                     email: inputEmail,
                 })
                 .then((res) => {
                     alert("회원가입에 성공했습니다!");
-                    console.log(res.data);
-                    window.location.replace("/login");
+                    console.log(res.data.token);
+                    // window.location.replace("/login");
                 })
                 .catch((e) => {
                     console.error(e);
@@ -70,8 +70,8 @@ function Signup() {
                         <input
                             placeholder="아이디"
                             className={style.logoinInput}
-                            id="id"
-                            onChange={changeID}
+                            id="username"
+                            onChange={changeUsername}
                         />
                         <input
                             placeholder="이메일"

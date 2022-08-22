@@ -9,6 +9,7 @@ import authRouter from "./router/auth.js";
 import { config } from "./config.js";
 import { connectDB } from "./db/db.js";
 import { User } from "./model/schema.js";
+import { initSocket } from "./connection/socket.js";
 
 const app = express();
 
@@ -17,20 +18,9 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
 
+// 회원가입 & 로그인
 app.use("/auth", authRouter);
 
-app.post("/signup", (req, res, next) => {
-    const user = new User(req.body);
-
-    user.save((err, userInfo) => {
-        if (err) {
-            console.error(err);
-            res.json({ message: "생성 실패" });
-            return;
-        }
-        res.json(userInfo);
-    });
-});
 
 app.post("/search", (req, res, next) => {
     // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
@@ -54,7 +44,9 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        app.listen(config.host.port, () => {
-            console.log("Listening on port:5000...");
-        });
+        const server = app.listen(config.host.port);
+        initSocket(server);
+    })
+    .catch((err) => {
+        console.log(err);
     });
