@@ -5,9 +5,10 @@ import morgan from "morgan";
 import "express-async-errors";
 import mainRouter from "./router/main.js";
 import championRouter from "./router/champion.js";
+import authRouter from "./router/auth.js";
 import { config } from "./config.js";
 import { connectDB } from "./db/db.js";
-
+import { User } from "./model/schema.js";
 
 const app = express();
 
@@ -16,12 +17,21 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
 
-// ===========================라우터 등록================================
-// app.use("/", (req, res, next) => {
-//     // const text = req.body.searchValue;
-//     // res.send(text);
-//     res.send({ hi: "hello i'm main" });
-// });
+app.use("/auth", authRouter);
+
+app.post("/signup", (req, res, next) => {
+    const user = new User(req.body);
+
+    user.save((err, userInfo) => {
+        if (err) {
+            console.error(err);
+            res.json({ message: "생성 실패" });
+            return;
+        }
+        res.json(userInfo);
+    });
+});
+
 app.post("/search", (req, res, next) => {
     // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
     console.log(`클라이언트에서 보낸 데이터 : ${req.body.name}`);
@@ -29,7 +39,6 @@ app.post("/search", (req, res, next) => {
     const text = req.body.name;
     res.send(text);
 });
-app.use("/champion", championRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
@@ -42,13 +51,10 @@ app.use((error, req, res, next) => {
     res.sendStatus(500);
 });
 
-connectDB()//
+connectDB() //
     .then(() => {
         console.log("db 연결 완료");
         app.listen(config.host.port, () => {
             console.log("Listening on port:5000...");
         });
     });
-
-
-
