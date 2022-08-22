@@ -71,11 +71,14 @@
 }
 
 .loginRegisterButton {
+    display: block;
+
     width: 60%;
 
     /* flex item중 특정 하나를 중앙정렬하기위해 align-self: center을 사용
     (text-align: center을 해도됨) */
     align-self: center;
+    text-align: center;
 
     height: 50px;
     border-radius: 10px;
@@ -85,4 +88,28 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+
+    text-decoration: none;
+}
+
+.homeIconWrapper {
+    position: absolute;
+    top: 30px;
+    /* left: 120px; */
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 2px solid gray;
+
+    color: gray
+}
+
+.homeIcon {
+    font-size: 32px !important;
 }

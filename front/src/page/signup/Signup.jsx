@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import {Home} from "@mui/icons-material";
 import style from "./signup.module.css";
 
 function Signup() {
@@ -17,11 +19,15 @@ function Signup() {
                         <input placeholder="비밀번호" className={style.logoinInput} />
                         <input placeholder="비밀번호 확인" className={style.logoinInput} />
                         <button className={style.loginButton}>Sign Up</button>
-                        <button className={style.loginRegisterButton}>
+                        <Link to="/login" className={style.loginRegisterButton}>
                             Log into Account
-                        </button>
+                        </Link>
                     </div>
                 </div>
+
+                <Link to="/" className={style.homeIconWrapper}>
+                    <Home className={style.homeIcon} />
+                </Link>
             </div>
         </div>
     );
