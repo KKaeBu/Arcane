@@ -1,8 +1,37 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import style from "./login.module.css";
+import axios from "axios";
 
 function Login() {
-    const onClick = () => {};
+    const [inputUsername, setUsername] = useState("");
+    const [inputPassword, setPassword] = useState("");
+
+    const changeUsername = () => {
+        const username = document.getElementById("username");
+        setUsername(username.value);
+    }
+
+    const changePassword = () => {
+        const password = document.getElementById("password");
+        setPassword(password.value);
+    };
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+
+        if (inputUsername === "" || inputPassword === "") {
+            alert("빈칸을 모두 채워주세요!");
+        } else {
+            await axios
+                .get("/auth/login", {
+                    username: inputUsername,
+                    password: inputPassword,
+                })
+                .then((res) => console.log("전달받은 데이터", res))
+                .catch((err) => console.log(err));
+        }
+    };
 
     return (
         <div className={style.login}>
@@ -15,16 +44,19 @@ function Login() {
                     </span>
                 </div>
                 <div className={style.loginRight}>
-                    <div className={style.loginBox}>
+                    <form className={style.loginBox} onSubmit={onSubmit}>
                         <input
                             placeholder="아이디"
-                            type="Email"
                             className={style.logoinInput}
+                            id="username"
+                            onChange={changeUsername}
                         />
                         <input
                             placeholder="비밀번호"
                             type="Password"
                             className={style.logoinInput}
+                            id="password"
+                            onChange={changePassword}
                         />
                         <button className={style.loginButton}>Log In</button>
                         <span className={style.loginForgot}>
@@ -33,11 +65,10 @@ function Login() {
                         <Link
                             to="/signup"
                             className={style.loginRegisterButton}
-                            onClick={onClick}
                         >
                             Create a New Account
                         </Link>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

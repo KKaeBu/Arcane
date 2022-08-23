@@ -32,6 +32,23 @@ export async function signup(req, res) {
     res.status(201).json({ token, username });
 }
 
+export async function login(req, res) {
+    // req.body의 사용할 데이터를 가져오기
+    const { username, password } = req.body;
+    console.log(req.body);
+    console.log(username, password);
+
+    // 데이터베이스의 사용자 정보들과 조회 하여 일치하는거 찾기
+    const exist = await userRepository.findByUsername(username);
+
+    // 존재하는 유저라면 해당 유저의 비밀번호가 맞는지 체크
+    if (exist) {
+        console.log("유저 존재", exist);
+    } else {
+        console.log("유저 존재 안함 아이디가 존재하지 않습니다.");
+    }
+}
+
 // jwt 토큰 생성
 function createJwtToken(id) {
     return jwt.sign({ id }, config.jwt.secretKey, { expiresIn: config.jwt.expiresInSec });

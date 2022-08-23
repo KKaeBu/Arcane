@@ -3,12 +3,15 @@ import { Home } from "@mui/icons-material";
 import style from "./signup.module.css";
 import { useState } from "react";
 import axios from "axios";
+import TokenStorage from "../../db/token";
 
 function Signup() {
     const [inputUsername, setUsername] = useState("");
     const [inputEmail, setEmail] = useState("");
     const [inputPassword, setPassword] = useState("");
     const [inputPasswordAgain, setPasswordAgain] = useState("");
+
+    const token = new TokenStorage();
 
     // 아래 change함수들은 input값의 변화를 감지하고 변화된 값을 set함수를 통해 저장함
     const changeUsername = () => {
@@ -48,6 +51,7 @@ function Signup() {
                 .then((res) => {
                     alert("회원가입에 성공했습니다!");
                     console.log(res.data.token);
+                    token.saveToken(res.data.token);
                     // window.location.replace("/login");
                 })
                 .catch((e) => {
