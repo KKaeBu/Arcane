@@ -34,19 +34,40 @@ export async function signup(req, res) {
 
 export async function login(req, res) {
     // req.body의 사용할 데이터를 가져오기
-    const { username, password } = req.body;
-    console.log(req.body);
-    console.log(username, password);
+    const { username, password } = req.query;
 
     // 데이터베이스의 사용자 정보들과 조회 하여 일치하는거 찾기
-    const exist = await userRepository.findByUsername(username);
+    const user = await userRepository.findByUsername(username);
+    console.log(user);
 
     // 존재하는 유저라면 해당 유저의 비밀번호가 맞는지 체크
-    if (exist) {
-        console.log("유저 존재", exist);
-    } else {
+    if (!user) {
         console.log("유저 존재 안함 아이디가 존재하지 않습니다.");
+        return res.status(401).json({ message: 'Invalid user or password [id]' });
     }
+
+    // 유저 존재시 비번 체크
+    // bcrypt의 compare을 사용하여 우리 데이터베이스에 저장된 hash버전의 
+    // password와 사용자가 입력한 password가 동일한지를 검사
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) { //비번 틀릴시
+        return res.status(401).json({ message: 'Invalid user or password' });
+    }
+
+    // userRepository에서 받아온 사용자 고유 id로 토큰을 만듬
+    const token = createJwtToken(user.id);
+    res.status(201).json({ token, username });
+}
+
+export async function me(req, res, next) {
+    const { token } = req.headers;
+    const decoded = jwt.verify(token, config.jwt.secretKey)
+    if (!decoded) {
+        return res.status(401).json({ message: 'This account is invalid (unauthorized)' });
+    }
+
+    const user = await userRepository.findById(decoded.id);
+    res.status(201).json({ username: user.username });
 }
 
 // jwt 토큰 생성

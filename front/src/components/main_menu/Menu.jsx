@@ -6,36 +6,58 @@ import {
   Equalizer,
   Forum,
 } from "@mui/icons-material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import TokenStorage from "../../db/token";
 import style from './menu.module.css';
 
 
 function Menu() {
-    // const menuContainer = document.querySelector("menuContainer");
-    // const mainMenuBtn = document.querySelector("menuMainButton");
-
-
+    const [isLogin, setLogin] = useState(false);
+    const [userName, setuserName] = useState("");
 
     const onClick = (e) => {
-        console.log(e.target);
-        const dd = document.querySelector("." + style["menuContainer"]);
-        console.log(dd);
-        console.log(style);
-        console.log(style["menuContainer"]);
+        // console.log(e.target);
+        // const dd = document.querySelector("." + style["menuContainer"]);
+        // console.log(dd);
+        // console.log(style);
+        // console.log(style["menuContainer"]);
+        if (isLogin) {
+            e.preventDefault();
+            const token = new TokenStorage();
+            token.clearToken();
+            setLogin(false);   
+            window.location.reload();
+        }
 
-        // const n = document.createElement("div");
-        // n.setAttribute("class", style.newBox);
-        // dd.appendChild(n);
     }
 
-    const btnColor = () => {
+    const isValidToken = async () => {
+        const tokenStorage = new TokenStorage();
+        const token = tokenStorage.getToken();
         
+        await axios//
+            .get("/auth", {
+                headers: {
+                    token: token,
+                }
+            })
+            .then((res) => {
+                setuserName(res.data.username);
+                setLogin(true);
+            })
+            .catch((err) => console.log(err));
     }
+
+    useEffect(() => {
+        isValidToken();
+    }, []);
 
     return (
         <div className={style.menuContainer}>
             <Link to="/login" className={style.menuMainButton}  onClick={onClick}>
-                <p>Login</p>
+                <p>{isLogin ? userName : "Login"}</p>
             </Link>
             <div className={`${style.menuSubButtonItem} ${style.menuSubChampionBtn}`}>
                 <Link

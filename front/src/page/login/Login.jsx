@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import style from "./login.module.css";
 import axios from "axios";
+import TokenStorage from "../../db/token";
 
 function Login() {
     const [inputUsername, setUsername] = useState("");
     const [inputPassword, setPassword] = useState("");
+
+    const token = new TokenStorage();
 
     const changeUsername = () => {
         const username = document.getElementById("username");
@@ -25,10 +28,14 @@ function Login() {
         } else {
             await axios
                 .get("/auth/login", {
-                    username: inputUsername,
-                    password: inputPassword,
+                    params: {
+                        username: inputUsername,
+                        password: inputPassword,
+                    },
+                })//
+                .then((res) => {
+                    token.saveToken(res.data.token);
                 })
-                .then((res) => console.log("전달받은 데이터", res))
                 .catch((err) => console.log(err));
         }
     };

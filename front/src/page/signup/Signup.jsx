@@ -51,7 +51,7 @@ function Signup() {
                 .then((res) => {
                     alert("회원가입에 성공했습니다!");
                     console.log(res.data.token);
-                    token.saveToken(res.data.token);
+                    // token.saveToken(res.data.token);
                     // window.location.replace("/login");
                 })
                 .catch((e) => {
