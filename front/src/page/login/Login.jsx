@@ -13,7 +13,7 @@ function Login() {
     const changeUsername = () => {
         const username = document.getElementById("username");
         setUsername(username.value);
-    }
+    };
 
     const changePassword = () => {
         const password = document.getElementById("password");
@@ -32,11 +32,18 @@ function Login() {
                         username: inputUsername,
                         password: inputPassword,
                     },
-                })//
+                }) //
                 .then((res) => {
                     token.saveToken(res.data.token);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    console.log(err);
+                    if (err.response.status === 401) {
+                        alert("아이디(비밀번호)가 틀렸습니다");
+                    } else {
+                        alert("로그인에 실패했습니다.");
+                    }
+                });
         }
     };
 
