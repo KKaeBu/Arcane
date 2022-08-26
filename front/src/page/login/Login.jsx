@@ -35,6 +35,7 @@ function Login() {
                 }) //
                 .then((res) => {
                     token.saveToken(res.data.token);
+                    window.location.href = "http://localhost:3000";
                 })
                 .catch((err) => {
                     console.log(err);
