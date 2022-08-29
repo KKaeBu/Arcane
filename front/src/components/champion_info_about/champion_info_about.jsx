@@ -27,6 +27,11 @@ function ChampionInfoAbout() {
         const first_role = document.querySelector("." + style["first_role"]);
         const second_role = document.querySelector("." + style["second_role"]);
 
+        const table = document.createElement("table");
+        const thead = document.createElement("thead");
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+
         const class_img1 = document.createElement("img");
         class_img1.setAttribute("class", style.classImg);
         class_img1.src = `/img/${champion_class[0]}.jpg`;
@@ -34,8 +39,11 @@ function ChampionInfoAbout() {
         class_img2.setAttribute("class", style.classImg);
         class_img2.src = `/img/${champion_class[1]}.jpg`;
 
-        first_role.appendChild(class_img1);
-        second_role.appendChild(class_img2);
+        td.appendChild(class_img1);
+        tr.appendChild(td);
+        thead.appendChild(tr);
+        table.appendChild(thead);
+        about_div.appendChild(table);
     };
 
     // Support
@@ -48,24 +56,7 @@ function ChampionInfoAbout() {
 
     return (
         <>
-            <div className={style.about}>
-                <table className={style.table}>
-                    <thead>
-                        <tr>
-                            <td>주 역할군</td>
-                            <td>부 역할군</td>
-                            <td>소속</td>
-                            <td>가격</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="first_role"></td>
-                            <td className="second_role"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div className={style.about}></div>
         </>
     );
 }
