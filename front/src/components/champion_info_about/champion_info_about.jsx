@@ -23,10 +23,19 @@ function ChampionInfoAbout() {
 
     const showChampAbout = async () => {
         const about_div = document.querySelector("." + style["about"]);
-        const class_img = document.createElement("img");
-        class_img.setAttribute("class", style.classImg);
-        class_img.src = `/img/${champion_class[0]}.jpg`;
-        about_div.appendChild(class_img);
+        const info_table = document.querySelector("." + style["table"]);
+        const first_role = document.querySelector("." + style["first_role"]);
+        const second_role = document.querySelector("." + style["second_role"]);
+
+        const class_img1 = document.createElement("img");
+        class_img1.setAttribute("class", style.classImg);
+        class_img1.src = `/img/${champion_class[0]}.jpg`;
+        const class_img2 = document.createElement("img");
+        class_img2.setAttribute("class", style.classImg);
+        class_img2.src = `/img/${champion_class[1]}.jpg`;
+
+        first_role.appendChild(class_img1);
+        second_role.appendChild(class_img2);
     };
 
     // Support
@@ -40,7 +49,22 @@ function ChampionInfoAbout() {
     return (
         <>
             <div className={style.about}>
-                <p>여기에 클래스랑 클래스 이미지 넣기</p>
+                <table className={style.table}>
+                    <thead>
+                        <tr>
+                            <td>주 역할군</td>
+                            <td>부 역할군</td>
+                            <td>소속</td>
+                            <td>가격</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="first_role"></td>
+                            <td className="second_role"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </>
     );
