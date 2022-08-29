@@ -29,8 +29,16 @@ function ChampionInfoAbout() {
 
         const table = document.createElement("table");
         const thead = document.createElement("thead");
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
+        const tbody = document.createElement("tbody");
+        const thead_tr = document.createElement("tr");
+        const thead_td1 = document.createElement("td");
+        const thead_td2 = document.createElement("td");
+        const tbody_tr = document.createElement("tr");
+        const tbody_td1 = document.createElement("td");
+        const tbody_td2 = document.createElement("td");
+
+        thead_td1.innerText = "주 역할군";
+        thead_td2.innerText = "보조 역할군";
 
         const class_img1 = document.createElement("img");
         class_img1.setAttribute("class", style.classImg);
@@ -39,10 +47,17 @@ function ChampionInfoAbout() {
         class_img2.setAttribute("class", style.classImg);
         class_img2.src = `/img/${champion_class[1]}.jpg`;
 
-        td.appendChild(class_img1);
-        tr.appendChild(td);
-        thead.appendChild(tr);
+        tbody_td1.appendChild(class_img1);
+        tbody_td2.appendChild(class_img2);
+        tbody_tr.appendChild(tbody_td1);
+        tbody_tr.appendChild(tbody_td2);
+        tbody.appendChild(tbody_tr);
+
+        thead_tr.appendChild(thead_td1);
+        thead_tr.appendChild(thead_td2);
+        thead.appendChild(thead_tr);
         table.appendChild(thead);
+        table.appendChild(tbody);
         about_div.appendChild(table);
     };
 
