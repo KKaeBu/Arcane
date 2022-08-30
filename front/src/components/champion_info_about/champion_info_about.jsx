@@ -23,22 +23,24 @@ function ChampionInfoAbout() {
 
     const showChampAbout = async () => {
         const about_div = document.querySelector("." + style["about"]);
-        const info_table = document.querySelector("." + style["table"]);
-        const first_role = document.querySelector("." + style["first_role"]);
-        const second_role = document.querySelector("." + style["second_role"]);
 
         const table = document.createElement("table");
+        table.setAttribute("class", style.table);
         const thead = document.createElement("thead");
         const tbody = document.createElement("tbody");
         const thead_tr = document.createElement("tr");
         const thead_td1 = document.createElement("td");
         const thead_td2 = document.createElement("td");
+        const thead_td3 = document.createElement("td");
+        const thead_td4 = document.createElement("td");
         const tbody_tr = document.createElement("tr");
         const tbody_td1 = document.createElement("td");
         const tbody_td2 = document.createElement("td");
 
         thead_td1.innerText = "주 역할군";
         thead_td2.innerText = "보조 역할군";
+        thead_td3.innerText = "소속";
+        thead_td4.innerText = "가격";
 
         const class_img1 = document.createElement("img");
         class_img1.setAttribute("class", style.classImg);
@@ -55,6 +57,8 @@ function ChampionInfoAbout() {
 
         thead_tr.appendChild(thead_td1);
         thead_tr.appendChild(thead_td2);
+        thead_tr.appendChild(thead_td3);
+        thead_tr.appendChild(thead_td4);
         thead.appendChild(thead_tr);
         table.appendChild(thead);
         table.appendChild(tbody);
