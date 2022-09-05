@@ -21,7 +21,6 @@ app.use(morgan("tiny"));
 // 회원가입 & 로그인
 app.use("/auth", authRouter);
 
-
 app.post("/search", (req, res, next) => {
     // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
     console.log(`클라이언트에서 보낸 데이터 : ${req.body.name}`);
