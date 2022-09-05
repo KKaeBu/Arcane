@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Home } from "@mui/icons-material";
 import { useState } from "react";
 import style from "./login.module.css";
 import axios from "axios";
@@ -35,6 +36,7 @@ function Login() {
                 })//
                 .then((res) => {
                     token.saveToken(res.data.token);
+                    window.location.replace("/");
                 })
                 .catch((err) => console.log(err));
         }
@@ -77,6 +79,11 @@ function Login() {
                         </Link>
                     </form>
                 </div>
+
+                
+                <Link to="/" className={style.homeIconWrapper}>
+                    <Home className={style.homeIcon} />
+                </Link>
             </div>
         </div>
     );
