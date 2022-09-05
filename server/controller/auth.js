@@ -15,7 +15,7 @@ export async function signup(req, res) {
         return res.status(409).json({ message: `${username} already exists` });
     }
 
-    // 새로운 사용자라면 비밀번호르 해슁
+    // 새로운 사용자라면 비밀번호르 해슁 (암호화)
     const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
 
     // 사용자를 만듬

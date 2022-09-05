@@ -1,0 +1,109 @@
+.mainContainer {
+    width:auto;
+    border: 1px solid black;
+    border-radius: 10px 10px;
+    
+    margin: 10px;
+
+    flex: 8;
+    
+    display: flex;
+    flex-direction: column;
+
+    background-color: antiquewhite;
+}
+
+/* main Top */
+.mainTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 5px 5px;
+    margin-top: 10px;
+}
+
+.mainTopLeft,
+.mainTopRight {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.listSortItem,
+.writePost {
+    border: 1px solid black;
+    border-radius: 3px 3px;
+    margin-left: 5px;
+    padding: 2px 2px;
+
+    cursor: pointer;
+}
+
+
+/* main Cneter */
+.mainMiddle {
+    border: 1px solid black;
+
+    margin: 5px 5px;
+    margin-top: 10px;
+
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+
+.titleLink {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.titleLink:hover {
+    border-bottom: 1px solid black;
+}
+
+.nick,
+.date,
+.view {
+    vertical-align:middle;
+    text-align: center;
+}
+
+
+/* main Bottom */
+.mainBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageList {
+    padding-left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listItem {
+    margin: 0 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.listItem:hover {
+    color: red;
+}
+
+.listBtnIcon {
+    font-size: 32px !important;
+}

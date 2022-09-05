@@ -94,8 +94,13 @@ function Menu() {
             </div>
             <div className={`${style.menuSubButtonItem} ${style.menuComunnityBtn}`}>
                 <div className={style.menuSubItemContainer}>
-                    <Forum className={style.icon} />
-                    <p>커뮤니티</p>
+                    <Link
+                        to="/community"
+                        className={style.menuSubItemContainer}
+                    >
+                        <Forum className={style.icon} />
+                        <p>커뮤니티</p>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Search from "./page/search/Search.jsx";
 import Login from "./page/login/Login.jsx";
 import Signup from "./page/signup/Signup.jsx";
+import Community from "./page/community/Community.jsx";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -23,6 +24,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/community" element={<Community />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route
