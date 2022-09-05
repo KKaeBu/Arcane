@@ -23,10 +23,46 @@ function ChampionInfoAbout() {
 
     const showChampAbout = async () => {
         const about_div = document.querySelector("." + style["about"]);
-        const class_img = document.createElement("img");
-        class_img.setAttribute("class", style.classImg);
-        class_img.src = `/img/${champion_class[0]}.jpg`;
-        about_div.appendChild(class_img);
+
+        const table = document.createElement("table");
+        table.setAttribute("class", style.table);
+        const thead = document.createElement("thead");
+        const tbody = document.createElement("tbody");
+        const thead_tr = document.createElement("tr");
+        const thead_td1 = document.createElement("td");
+        const thead_td2 = document.createElement("td");
+        const thead_td3 = document.createElement("td");
+        const thead_td4 = document.createElement("td");
+        const tbody_tr = document.createElement("tr");
+        const tbody_td1 = document.createElement("td");
+        const tbody_td2 = document.createElement("td");
+
+        thead_td1.innerText = "주 역할군";
+        thead_td2.innerText = "보조 역할군";
+        thead_td3.innerText = "소속";
+        thead_td4.innerText = "가격";
+
+        const class_img1 = document.createElement("img");
+        class_img1.setAttribute("class", style.classImg);
+        class_img1.src = `/img/${champion_class[0]}.jpg`;
+        const class_img2 = document.createElement("img");
+        class_img2.setAttribute("class", style.classImg);
+        class_img2.src = `/img/${champion_class[1]}.jpg`;
+
+        tbody_td1.appendChild(class_img1);
+        tbody_td2.appendChild(class_img2);
+        tbody_tr.appendChild(tbody_td1);
+        tbody_tr.appendChild(tbody_td2);
+        tbody.appendChild(tbody_tr);
+
+        thead_tr.appendChild(thead_td1);
+        thead_tr.appendChild(thead_td2);
+        thead_tr.appendChild(thead_td3);
+        thead_tr.appendChild(thead_td4);
+        thead.appendChild(thead_tr);
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        about_div.appendChild(table);
     };
 
     // Support
@@ -39,9 +75,7 @@ function ChampionInfoAbout() {
 
     return (
         <>
-            <div className={style.about}>
-                <p>여기에 클래스랑 클래스 이미지 넣기</p>
-            </div>
+            <div className={style.about}></div>
         </>
     );
 }

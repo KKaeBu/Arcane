@@ -3,6 +3,8 @@ import "./champion_info_home.css";
 import Riot from "../../network/riotAPI.js";
 import { useEffect } from "react";
 import { useState } from "react";
+import TokenStorage from "./../../db/token";
+import axios from "axios";
 
 function ChampionInfo() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
@@ -19,7 +21,8 @@ function ChampionInfo() {
     // const eInfoDiv = document.getElementsByClassName("eInfo");
     // const rInfoDiv = document.getElementsByClassName("rInfo");
     // const passiveInfoDiv = document.getElementsByClassName("passiveInfo");
-
+    const [isLogin, setLogin] = useState(false);
+    const [userName, setuserName] = useState("");
     const [champion_name, setName] = useState({});
     const [champion_title, setTitle] = useState({});
     // const [skill_passive, setPassive] = useState({});
@@ -38,6 +41,8 @@ function ChampionInfo() {
 
         setName(info.name);
         setTitle(info.title);
+        setImg(riot.getChampionIcon(id)); // img도 display와 마찬가지로 해당key값의 이미지로
+
         // setPassive(info.passive);
         // setQ(info.spells[0]);
         // setW(info.spells[1]);
@@ -51,7 +56,6 @@ function ChampionInfo() {
         //     setKey("0" + info.key);
         // }
         // 각 스킬의 정보를 저장
-        setImg(riot.getChampionIcon(id)); // img도 display와 마찬가지로 해당key값의 이미지로
     }; // 챔피언 API를 받아옴 비동기 처리함
 
     useEffect(() => {
@@ -236,6 +240,7 @@ function ChampionInfo() {
         // rInfoDiv[0].appendChild(r_tooltip);
     };
     showChampInfo();
+
     return (
         <div className="home">
             <div className="championName"></div>
