@@ -1,6 +1,6 @@
-import socket from 'socket.io-client';
+import socket from "socket.io-client";
 
-export default class Socket{
+export default class Socket {
     constructor(baseURL, getAccessToken) {
         this.io = socket(baseURL, {
             // 소켓을 전달할때 방법중 하나로
@@ -9,12 +9,12 @@ export default class Socket{
         });
 
         // 소켓 생성시 에러발생 처리
-        this.io.on('connect_error', (err) => {
-            console.log('socket error', err.message);
+        this.io.on("connect_error", (err) => {
+            console.log("socket error", err.message);
         });
     }
 
-    // event: 소케을 사용하는 사람의 목적(주제)
+    // event: 소켓을 사용하는 사람의 목적(주제)
     // callback: event발생시 취할 행동
     onSync(event, callback) {
         // io가 연결되지 않았다면 연결시킨다.
