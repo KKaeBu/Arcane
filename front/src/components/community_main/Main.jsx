@@ -2,13 +2,18 @@ import style from "./main.module.css";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 
 function Main() {
+    const onClick = (e) => {
+        console.log(e.target.id);
+        // const sort = document.getElementById(e.target.id);
+    }
+
     return (
         <div className={style.mainContainer}>
             <div className={style.mainTop}>
                 <div className={style.mainTopLeft}>
-                    <div className={`${style.listSortByNew} ${style.listSortItem}`}>최신순</div>
-                    <div className={`${style.listSortByLike} ${style.listSortItem}`}>추천순</div>
-                    <div className={`${style.listSortByLookup} ${style.listSortItem}`}>조회순</div>
+                    <div id="listSortByNew" className={style.listSortItem} onClick={onClick}>최신순</div>
+                    <div id="listSortByLike" className={style.listSortItem} onClick={onClick}>추천순</div>
+                    <div id="listSortByLookup" className={style.listSortItem} onClick={onClick}>조회순</div>
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost}>글쓰기</div>
