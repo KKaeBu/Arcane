@@ -1,20 +1,115 @@
 import style from "./main.module.css";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
+import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
+import TokenStorage from "./../../db/token";
+import axios from "axios";
 
 function Main() {
+    const [isLogin, setLogin] = useState(false);
+    const [userName, setuserName] = useState("");
+    const [viewNum, setViewNum] = useState(0);
+    const socket = io.connect("http://localhost:5000");
+
+    const newPostDiv = document.getElementsByClassName(style.newPost);
+
+    /*
+     ***** 글쓰기 버튼 클릭 시 실행하는 함수
+     */
+    const writePost = async (event) => {
+        if (isLogin) {
+            socket.emit("posting", userName);
+        }
+    };
+    /*
+     ***** 조회수를 DB에 연결하지 않아서 새로고침하면 조회수가 0이 되어버림
+     */
+    const readPost = async (event) => {
+        setViewNum(viewNum + 1);
+        socket.emit("reading", userName, viewNum);
+    };
+
+    const isValidToken = async () => {
+        const tokenStorage = new TokenStorage();
+        const token = tokenStorage.getToken();
+
+        await axios
+            .get("/auth", {
+                headers: {
+                    token: token,
+                },
+            })
+            .then((res) => {
+                setuserName(res.data.username);
+                setLogin(true);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        isValidToken();
+    }, []);
+
+    /*
+     ***** socket의 on 메소드는 거의 항상 useEffect안에 넣는것이 맞는듯하다
+     ***** 다른 함수에 넣게 되면 그 함수가 실행될 때마다 on메소드가 늘어나서 결국엔 on메소드가 여러개인것처럼 된다
+     ***** 그럼 서버의 emit메소드 한번에 여러번의 on메소드 실행을 하는 격
+     */
+    useEffect(() => {
+        socket.on("newPost", (data) => {
+            if (data !== userName && data !== "" && userName !== "") {
+                console.log(`${data} post`);
+                newPostDiv[0].removeAttribute("id");
+            }
+        });
+        socket.on("viewPlus", (user, views) => {
+            if (user !== userName) {
+                setViewNum(views);
+            }
+        });
+    }, [isLogin]);
+
     return (
         <div className={style.mainContainer}>
             <div className={style.mainTop}>
                 <div className={style.mainTopLeft}>
-                    <div className={`${style.listSortByNew} ${style.listSortItem}`}>최신순</div>
-                    <div className={`${style.listSortByLike} ${style.listSortItem}`}>추천순</div>
-                    <div className={`${style.listSortByLookup} ${style.listSortItem}`}>조회순</div>
+                    <div
+                        className={`${style.listSortByNew} ${style.listSortItem}`}
+                    >
+                        최신순
+                    </div>
+                    <div
+                        className={`${style.listSortByLike} ${style.listSortItem}`}
+                    >
+                        추천순
+                    </div>
+                    <div
+                        className={`${style.listSortByLookup} ${style.listSortItem}`}
+                    >
+                        조회순
+                    </div>
                 </div>
                 <div className={style.mainTopRight}>
-                    <div className={style.writePost}>글쓰기</div>
+                    <div className={style.writePost} onClick={writePost}>
+                        글쓰기
+                    </div>
                 </div>
             </div>
 
+            {/*
+             *****   transparent id를 통해 처음엔 투명한상태
+             ***** > 새로운 글이 올라왔다는 정보를 socket을 통해 받으면 transparent id제거
+             ***** > 글을 올린 사용자 이외 모든 사용자들에게 보이게된다
+             */}
+            <div
+                className={style.newPost}
+                id={style.transparent}
+                onClick={function () {
+                    window.location.reload();
+                }}
+            >
+                새로운 글!
+            </div>
             <table className={style.mainMiddle}>
                 <thead>
                     <tr>
@@ -29,91 +124,151 @@ function Main() {
                     {/* 페이지당 10개씩 보이도록 */}
                     {/* 위의 선택된 정렬순서 대로 보여주기 */}
                     <tr>
-                        <td className={style.title}><a className={style.titleLink} href="#">어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink} onClick={readPost}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
+                        <td className={style.nick}>테스트닉넴</td>
+                        <td className={style.date}>2022.33.33</td>
+                        <td className={style.view}>{viewNum}</td>
+                    </tr>
+                    <tr>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
                     </tr>
                     <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
-                        <td className={style.nick}>테스트닉넴</td>
-                        <td className={style.date}>2022.33.33</td>
-                        <td className={style.view}>203030</td>
-                    </tr>
-                    <tr>
-                        <td className={style.title}><a className={style.titleLink}>어쩌구저쩌구 제목1</a></td>
+                        <td className={style.title}>
+                            <a className={style.titleLink}>
+                                어쩌구저쩌구 제목1
+                            </a>
+                        </td>
                         <td className={style.nick}>테스트닉넴</td>
                         <td className={style.date}>2022.33.33</td>
                         <td className={style.view}>203030</td>
@@ -124,7 +279,9 @@ function Main() {
             <div className={style.mainBottom}>
                 <ul className={style.pageList}>
                     <li className={`${style.listLeftBtn} ${style.listItem}`}>
-                        <ArrowLeft className={`${style.listLeftBtnIcon} ${style.listBtnIcon}`}/>
+                        <ArrowLeft
+                            className={`${style.listLeftBtnIcon} ${style.listBtnIcon}`}
+                        />
                     </li>
                     <li className={style.listItem}>
                         <span>1</span>
@@ -136,7 +293,9 @@ function Main() {
                         <span>3</span>
                     </li>
                     <li className={`${style.listRightBtn} ${style.listItem}`}>
-                        <ArrowRight className={`${style.listRightBtnIcon} ${style.listBtnIcon}`}/>
+                        <ArrowRight
+                            className={`${style.listRightBtnIcon} ${style.listBtnIcon}`}
+                        />
                     </li>
                 </ul>
             </div>
