@@ -18,6 +18,19 @@ function Main() {
      */
     const writePost = async (event) => {
         if (isLogin) {
+            await axios
+                .post("/post", {
+                    postnum: 1,
+                    username: userName,
+                    view: 0,
+                })
+                .then((res) => {
+                    console.log(res.data.post.view);
+                    //setViewNum(res.view);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
             socket.emit("posting", userName);
         }
     };
@@ -25,7 +38,19 @@ function Main() {
      ***** 조회수를 DB에 연결하지 않아서 새로고침하면 조회수가 0이 되어버림
      */
     const readPost = async (event) => {
-        setViewNum(viewNum + 1);
+        await setViewNum(viewNum + 1);
+        await axios
+            .put("/post/read", {
+                postnum: 1, // 이것도 get /post 에서 받아온 데이터로 하면 될듯..?
+                username: userName,
+                view: viewNum,
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         socket.emit("reading", userName, viewNum);
     };
 
@@ -44,6 +69,16 @@ function Main() {
                 setLogin(true);
             })
             .catch((err) => console.log(err));
+
+        await axios
+            .get("/post", {
+                params: {
+                    postnum: 1,
+                },
+            })
+            .then((res) => {
+                setViewNum(res.data.view);
+            });
     };
 
     useEffect(() => {

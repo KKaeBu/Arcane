@@ -10,6 +10,7 @@ import { config } from "./config.js";
 import { connectDB } from "./db/db.js";
 import { User } from "./model/schema.js";
 import { initSocket } from "./connection/socket.js";
+import postRouter from "./router/post.js";
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(morgan("tiny"));
 
 // 회원가입 & 로그인
 app.use("/auth", authRouter);
+
+// 글 작성
+app.use("/post", postRouter);
 
 app.post("/search", (req, res, next) => {
     // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
