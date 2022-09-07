@@ -44,11 +44,7 @@
 }
 
 .postingAttachList {
-    /* height: 30px; */
-    background-color: white;
-    border: 1px solid rgb(133, 133, 133);
     margin-bottom: 5px;
-    /* overflow-y: scroll */
 
     display: flex;
     justify-content: flex-start;
@@ -65,8 +61,10 @@
 }
 
 .listDeleteBtn {
-    color: red;
+    width: 18px;
+    margin-left: 2px;
 }
+
 
 /* posting main */
 .postingMain {
