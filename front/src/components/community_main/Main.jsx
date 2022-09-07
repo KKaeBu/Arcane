@@ -56,10 +56,16 @@ function Main() {
 
             const td_date = document.createElement("td");
             td_date.setAttribute("class", style.date);
-            const published_date = moment(data[i].date).format(
-                "YYYY-MM-DD HH:MM"
-            );
-            td_date.innerText = published_date;
+            const compare_date = moment(data[i].date).format("YYYY-MM-DD");
+            if (compare_date === moment(new Date()).format("YYYY-MM-DD")) {
+                const published_date = moment(data[i].date).format("HH:MM");
+                td_date.innerText = published_date;
+            } else {
+                const published_date = moment(data[i].date).format(
+                    "YYYY-MM-DD"
+                );
+                td_date.innerText = published_date;
+            }
 
             const td_view = document.createElement("td");
             td_view.setAttribute("class", style.view);
@@ -79,7 +85,6 @@ function Main() {
             const listRightBtn = await document.querySelector(
                 "." + style["listRightBtn"]
             );
-            console.dir(listRightBtn);
             const li = document.createElement("li");
             li.setAttribute("class", style.listItem);
             li.innerText = i;
