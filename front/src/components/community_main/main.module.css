@@ -50,10 +50,21 @@
     border-collapse: collapse;
 }
 
+.mainBottom {
+    margin-top: auto;
+    margin-bottom: 3vh;
+}
+
 th,
 td {
     border-bottom: 1px solid black;
     padding: 10px;
+}
+
+.title {
+}
+
+.tbody {
 }
 
 .titleLink {
@@ -80,7 +91,7 @@ td {
     align-items: center;
 }
 
-.pageList {
+#pageList {
     padding-left: 0;
 
     display: flex;

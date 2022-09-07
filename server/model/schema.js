@@ -7,8 +7,10 @@ const userSchema = new Mongoose.Schema({
 });
 
 const postSchema = new Mongoose.Schema({
-    postnum: { type: Number, required: true }, // 글 일련번호(id) 같은거
+    title: { type: String, trim: true, required: true },
+    postnum: { type: Number, required: true }, // 글 일련번호(id) 같은거 순서대로 부여
     username: { type: String, required: true }, // 작성자
+    date: { type: Date, default: Date.now }, // 글 작성 일시
     view: { type: Number, required: true }, // 조회수
 });
 

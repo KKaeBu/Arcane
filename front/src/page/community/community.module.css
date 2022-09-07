@@ -10,6 +10,7 @@
 
 .communityWrapper {
     width: 70%;
+    min-height: 100vh;
     height: 100%;
     display: flex;
     background-color: aquamarine;

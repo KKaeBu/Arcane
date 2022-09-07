@@ -5,15 +5,21 @@ export async function getView(req, res) {
     return res.status(201).json(post);
 }
 
+export async function getAllPost(req, res) {
+    const post = await postRepository.findAllPost();
+    return res.status(201).json(post);
+}
+
 export async function postRead(req, res) {
-    const { postnum, username, view } = req.body;
-    const post = await postRepository.updatePost(postnum, view + 1);
+    const { _id, view } = req.body;
+    const post = await postRepository.updatePost(_id, view + 1);
     return res.status(201).json(post);
 }
 
 export async function Posting(req, res) {
-    const { postnum, username, view } = req.body;
+    const { postnum, username, view, title } = req.body;
     const post = await postRepository.createPost({
+        title,
         postnum,
         username,
         view,

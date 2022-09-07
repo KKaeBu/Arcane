@@ -4,6 +4,10 @@ export async function findByPostNum(postnum) {
     return Post.findOne({ postnum });
 }
 
+export async function findAllPost() {
+    return Post.find();
+}
+
 export async function createPost(post) {
     return new Post(post) //
         .save()
@@ -11,8 +15,8 @@ export async function createPost(post) {
         .catch((err) => console.log(err));
 }
 
-export async function updatePost(post, newview) {
-    const filter = { postnum: post };
+export async function updatePost(id, newview) {
+    const filter = { _id: id };
     const update = { view: newview };
     await Post.findOneAndUpdate(filter, update);
 }

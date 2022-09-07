@@ -8,5 +8,7 @@ router.post("/", postController.Posting);
 
 router.get("/", postController.getView);
 
+router.get("/all", postController.getAllPost);
+
 router.put("/read", postController.postRead);
 export default router;
