@@ -38,3 +38,16 @@
     text-decoration: none;
     color: black;
 }
+
+.userProfile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 20px;
+}
+
+.defaultProfile {
+    font-size: 50px !important;
+    cursor: pointer;
+}

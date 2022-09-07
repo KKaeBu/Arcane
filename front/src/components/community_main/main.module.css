@@ -5,7 +5,7 @@
 
     margin: 10px;
 
-    flex: 8;
+    flex: auto;
 
     display: flex;
     flex-direction: column;
@@ -39,6 +39,10 @@
     padding: 2px 2px;
 
     cursor: pointer;
+}
+
+.listSortItem:first-child {
+    margin-left: 0;
 }
 
 .listSortItem:hover {

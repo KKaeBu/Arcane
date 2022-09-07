@@ -1,8 +1,10 @@
 .footerContainer {
     width: auto;
+    height: 132px;
     border: 1px solid black;
 
-    flex: 2;
+    /* 하단고정 */
+    bottom: 0;
 
     display: flex;
     justify-content: space-between;

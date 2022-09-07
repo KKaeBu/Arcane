@@ -1,0 +1,113 @@
+.postingContainer {
+    width: auto;
+    
+    border: 1px solid black;
+    border-radius: 10px 10px;
+
+    margin: 10px;
+
+    flex:auto;
+    display: flex;
+
+    background-color: antiquewhite;
+}
+
+.postingWrapper {
+    padding: 10px;
+
+    flex: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* posting title */
+.postingTitle {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* posting attach */
+.postingAttach {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.postingAttachLabel {
+    background-color: orange;
+    border-radius: 7px;
+    width: max-content;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.postingAttachList {
+    /* height: 30px; */
+    background-color: white;
+    border: 1px solid rgb(133, 133, 133);
+    margin-bottom: 5px;
+    /* overflow-y: scroll */
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 10px;
+    padding-left: 0;
+}
+
+.postingAttachList li {
+    margin-right: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listDeleteBtn {
+    color: red;
+}
+
+/* posting main */
+.postingMain {
+    width: 100%;
+
+    flex: 1;
+
+    border: 1px solid rgb(133, 133, 133);
+
+    background-color: white;
+}
+
+
+
+/* posting bottom */
+.postingBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancelBtn,
+.completeBtn {
+    color: black;
+    border: none;
+    outline: 0;
+    margin: 10px;
+    margin-bottom: 0;
+
+    padding: 5px 0 5px 10px;
+    border-radius: 7px;
+    font-weight: bold;
+    letter-spacing: 10px;
+
+    cursor: pointer;
+}
+
+.cancelBtn {
+    background-color: tomato;
+}
+
+.completeBtn {
+    background-color: rgb(79, 140, 244);
+}

@@ -1,8 +1,28 @@
 import style from "./topbar.module.css";
 import { Link } from "react-router-dom";
 import { AccountCircle } from '@mui/icons-material';
+import { useState, useEffect } from "react";
+import tokenStorage from "../../db/token";
 
 function Topbar() {
+    const [isLogin, setisLogin] = useState(false);
+    const tks = new tokenStorage();
+
+    const loginCheck = () => {
+        // 로그인된 토큰이 있으면 토근 유무에 따라 로그인 여부를 확인
+        // 로그인 여부에 따라 로그인 버튼과 사용자 프로필을 보여줌
+        const token = tks.getToken();
+        if (token) {
+            setisLogin(true);
+        } else {
+            setisLogin(false);
+        }
+    }
+
+    useEffect(() => {
+        loginCheck();
+    }, []);
+
     return (
         <div className={style.topbarContainer}>
             <div className={style.topbarLeft}>
@@ -16,20 +36,19 @@ function Topbar() {
                 </Link>
             </div>
             <div className={style.topbarRight}>
-                {/* 로그인 클릭시 로그인 화면으로 */}
-                {/* 로그인이 완료 되면 다시 커뮤니티 화면으로 */}
-                <div className={style.auth}>
-                    <Link to="/login" className={style.login}>
-                        <span>Login</span>
-                    </Link>
-                </div>
-                {/* 로그인시에만 보이도록 & 로그인시 유저의 프로필사진이 아무것도 없다면 이것을 사용 */}
-                {/* 로그인 여부는 토큰을 활용하여 확인 */}
-                {/* <div className={style.userProfile}>
-                    <AccountCircle
-                        className={style.defaultProfile}
-                    />
-                </div> */}
+                {isLogin ? 
+                    <div className={style.userProfile}>
+                        <AccountCircle
+                            className={style.defaultProfile}
+                        />
+                    </div>
+                    :
+                    <div className={style.auth}>
+                        <Link to="/login" className={style.login}>
+                            <span>Login</span>
+                        </Link>
+                    </div>
+                }
             </div>
         </div>
     );
