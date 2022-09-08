@@ -26,3 +26,8 @@ export async function Posting(req, res) {
     });
     res.status(201).json({ post });
 }
+
+export async function Deleting(req, res) {
+    await postRepository.deleteAll();
+    res.status(201);
+}

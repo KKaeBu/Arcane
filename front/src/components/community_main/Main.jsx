@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import TokenStorage from "./../../db/token";
 import axios from "axios";
 import moment from "moment/moment";
+import tz from "moment-timezone";
 
 function Main() {
+    moment.tz.setDefault("Asia/Seoul");
+
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
     const [viewNum, setViewNum] = useState(0);
@@ -19,10 +22,30 @@ function Main() {
     //const pageListUl = document.getElementById(style.pageList);
     //const listRightBtn = document.getElementsByClassName(style.listRightBtn);
 
-    const postingList = async () => {
-        for (let i = data.length - 1; i >= 0; i--) {
-            const tr = document.createElement("tr");
+    // i >= 0 (1페이지) i >= 15 (2페이지)  >>>>>   i >= (index-1) * 15
+    // i = 15미만 (1페이지) i = 30미만 (2페이지) >>>>>  ((data.length - 1) % 15) + ((index - 1) * 15)
+    // 위는 게시글 리스트 표현방법을 생각한 점화식임
 
+    const isLastPage = (page) => {
+        if (parseInt((data.length - 1) / 15) === page - 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+    const postingList = async (page) => {
+        //for (let i = data.length - 1; i >= 0; i--) {
+        for (
+            let i =
+                ((data.length - 1) % 15) * isLastPage(page) +
+                (page - isLastPage(page)) * 15 -
+                1 +
+                isLastPage(page);
+            i >= (page - 1) * 15;
+            i--
+        ) {
+            console.log(i);
+            const tr = document.createElement("tr");
             const td_title = document.createElement("td");
             td_title.setAttribute("class", style.title);
             const a_title = document.createElement("a");
@@ -31,6 +54,7 @@ function Main() {
             a_title.onclick = async function () {
                 await axios.get("/post/all", {}).then((res) => {
                     data = res.data;
+                    // *******************  조회수 증가 onClick 함수
                     // *******************  조회수 증가시키기 전에 서버에서 조회수를 다시 받아옴
                     // *******************  => 페이지를 켜놓은 동안에 다른 클라이언트에서 조회했을 조회수도 반영하기 위해서
                 });
@@ -56,15 +80,14 @@ function Main() {
 
             const td_date = document.createElement("td");
             td_date.setAttribute("class", style.date);
-            const compare_date = moment(data[i].date).format("YYYY-MM-DD");
-            if (compare_date === moment(new Date()).format("YYYY-MM-DD")) {
-                const published_date = moment(data[i].date).format("HH:MM");
-                td_date.innerText = published_date;
+
+            if (
+                moment(data[i].date).format("YYYY-MM-DD") ===
+                moment().format("YYYY-MM-DD")
+            ) {
+                td_date.innerText = moment(data[i].date).format("HH:mm");
             } else {
-                const published_date = moment(data[i].date).format(
-                    "YYYY-MM-DD"
-                );
-                td_date.innerText = published_date;
+                td_date.innerText = moment(data[i].date).format("YYYY-MM-DD");
             }
 
             const td_view = document.createElement("td");
@@ -80,17 +103,25 @@ function Main() {
     };
 
     const pageList = async () => {
-        for (let i = 1; i <= (data.length - 1) / 10 + 1; i++) {
+        for (let i = 1; i <= (data.length - 1) / 15 + 1; i++) {
             const pageListUl = await document.getElementById(style.pageList);
-            const listRightBtn = await document.querySelector(
-                "." + style["listRightBtn"]
-            );
+            // const listRightBtn = await document.querySelector(
+            //     "." + style["listRightBtn"]
+            // );
             const li = document.createElement("li");
             li.setAttribute("class", style.listItem);
             li.innerText = i;
-            //pageListUl.appendChild(li);
+            if (i === 1) {
+                li.setAttribute("id", style.selectedItem);
+            }
+            li.onclick = function () {
+                const prev_selected = document.querySelector(
+                    "#" + style["selectedItem"]
+                );
+                prev_selected.removeAttribute("id");
+                li.setAttribute("id", style.selectedItem);
+            };
             pageListUl.lastChild.before(li);
-            // pageListUl.after(li);
         }
     };
 
@@ -101,7 +132,7 @@ function Main() {
         if (isLogin) {
             await axios
                 .post("/post", {
-                    title: "제목",
+                    title: "제목123455",
                     postnum: 1,
                     username: userName,
                     view: 0,
@@ -119,23 +150,15 @@ function Main() {
     /*
      ***** 조회수를 DB에 연결하지 않아서 새로고침하면 조회수가 0이 되어버림 > 해결
      */
-    // const readPost = async (event) => {
-    //     await axios
-    //         .put("/post/read", {
-    //             postnum: 1, // 이것도 get /post 에서 받아온 데이터로 하면 될듯..?
-    //             username: userName,
-    //             view: viewNum,
-    //         })
-    //         .then((res) => {
-    //             console.log(res);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    //     await setViewNum(viewNum + 1);
 
-    //     socket.emit("reading", userName, viewNum);
-    // };
+    const deleteAll = async () => {
+        await axios.delete("/post/delete", {
+            data: {
+                postnum: 1,
+            },
+            withCredentials: true,
+        });
+    };
 
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
@@ -153,21 +176,11 @@ function Main() {
             })
             .catch((err) => console.log(err));
 
-        // await axios
-        //     .get("/post", {
-        //         params: {
-        //             postnum: 1,
-        //         },
-        //     })
-        //     .then((res) => {
-        //         setViewNum(res.data.view);
-        //     });
-
         await axios.get("/post/all", {}).then((res) => {
             data = res.data;
         });
 
-        await postingList();
+        await postingList(2);
         await pageList();
     };
 
@@ -212,6 +225,12 @@ function Main() {
                         className={`${style.listSortByLookup} ${style.listSortItem}`}
                     >
                         조회순
+                    </div>
+                    <div
+                        className={`${style.listSortItem}`}
+                        onClick={deleteAll}
+                    >
+                        데이터 다 삭제(개발하는동안 실험용)
                     </div>
                 </div>
                 <div className={style.mainTopRight}>
@@ -268,15 +287,6 @@ function Main() {
                             className={`${style.listLeftBtnIcon} ${style.listBtnIcon}`}
                         />
                     </li>
-                    {/* <li className={style.listItem}>
-                        <span>1</span>
-                    </li>
-                    <li className={style.listItem}>
-                        <span>2</span>
-                    </li>
-                    <li className={style.listItem}>
-                        <span>3</span>
-                    </li> */}
                     <li className={`${style.listRightBtn} ${style.listItem}`}>
                         <ArrowRight
                             className={`${style.listRightBtnIcon} ${style.listBtnIcon}`}

@@ -114,6 +114,10 @@ td {
     color: red;
 }
 
+#selectedItem {
+    color: red;
+}
+
 .listBtnIcon {
     font-size: 32px !important;
 }

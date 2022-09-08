@@ -28,6 +28,7 @@
         "bcrypt": "^5.0.1",
         "concurrently": "^7.2.2",
         "jsonwebtoken": "^8.5.1",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "moment-timezone": "^0.5.37"
     }
 }

@@ -1,4 +1,5 @@
 import Mongoose from "mongoose";
+import moment from "moment/moment.js";
 
 const userSchema = new Mongoose.Schema({
     username: { type: String, required: true },

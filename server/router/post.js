@@ -11,4 +11,7 @@ router.get("/", postController.getView);
 router.get("/all", postController.getAllPost);
 
 router.put("/read", postController.postRead);
+
+router.delete("/delete", postController.Deleting);
+
 export default router;

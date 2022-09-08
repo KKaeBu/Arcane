@@ -20,3 +20,7 @@ export async function updatePost(id, newview) {
     const update = { view: newview };
     await Post.findOneAndUpdate(filter, update);
 }
+
+export async function deleteAll() {
+    await Post.deleteMany({ postnum: 1 });
+}
