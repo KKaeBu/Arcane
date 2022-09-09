@@ -77,6 +77,7 @@ td {
     border-bottom: 1px solid black;
 }
 
+.title,
 .nick,
 .date,
 .view {
@@ -115,6 +116,7 @@ td {
 }
 
 #selectedItem {
+    font-size: 24px;
     color: red;
 }
 

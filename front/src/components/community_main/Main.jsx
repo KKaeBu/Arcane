@@ -34,16 +34,21 @@ function Main() {
         }
     };
     const postingList = async (page) => {
-        //for (let i = data.length - 1; i >= 0; i--) {
+        tbody[0].replaceChildren(); // 자식 노드 전부 삭제
         for (
-            let i =
-                ((data.length - 1) % 15) * isLastPage(page) +
-                (page - isLastPage(page)) * 15 -
-                1 +
-                isLastPage(page);
-            i >= (page - 1) * 15;
+            let i = data.length - 1 - (page - 1) * 15;
+            i >= (data.length - 1 - (page - 1) * 15 - 14) * !isLastPage(page);
             i--
         ) {
+            // for (
+            //     let i =
+            //         ((data.length - 1) % 15) * isLastPage(page) +
+            //         (page - isLastPage(page)) * 15 -
+            //         1 +
+            //         isLastPage(page);
+            //     i >= (page - 1) * 15;
+            //     i--
+            // ) {
             console.log(i);
             const tr = document.createElement("tr");
             const td_title = document.createElement("td");
@@ -120,6 +125,7 @@ function Main() {
                 );
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
+                postingList(i);
             };
             pageListUl.lastChild.before(li);
         }
@@ -179,10 +185,13 @@ function Main() {
         await axios.get("/post/all", {}).then((res) => {
             data = res.data;
         });
-
-        await postingList(2);
         await pageList();
+        await postingList(1);
     };
+
+    const onLeftClick = () => {};
+
+    const onRightClick = () => {};
 
     useEffect(() => {
         isValidToken();
@@ -282,12 +291,18 @@ function Main() {
 
             <div className={style.mainBottom}>
                 <ul id={style.pageList}>
-                    <li className={`${style.listLeftBtn} ${style.listItem}`}>
+                    <li
+                        className={`${style.listLeftBtn} ${style.listItem}`}
+                        onClick={onLeftClick}
+                    >
                         <ArrowLeft
                             className={`${style.listLeftBtnIcon} ${style.listBtnIcon}`}
                         />
                     </li>
-                    <li className={`${style.listRightBtn} ${style.listItem}`}>
+                    <li
+                        className={`${style.listRightBtn} ${style.listItem}`}
+                        onClick={onRightClick}
+                    >
                         <ArrowRight
                             className={`${style.listRightBtnIcon} ${style.listBtnIcon}`}
                         />

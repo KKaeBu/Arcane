@@ -69,7 +69,7 @@ function ChampionInfo() {
         const nameSpan = document.createElement("span");
         const nameSpanDiv = document.createElement("div");
         nameSpanDiv.setAttribute("class", "championNameSpan");
-        nameSpan.innerHTML = champion_name;
+        nameSpan.innerHTML = "안녕, 나는 " + champion_name + ".";
         nameSpanDiv.appendChild(nameSpan);
         championNameDiv[0].appendChild(nameSpanDiv);
 
