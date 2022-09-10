@@ -1,12 +1,7 @@
-.home {
-    margin: 0;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    margin-left: 10%;
-    margin-right: 10%;
+.skills {
     text-align: center;
     align-content: center;
-    background-color: aquamarine;
+    margin-bottom: 30%;
 }
 
 #invisible {
@@ -43,6 +38,10 @@
     font-style: italic;
 }
 /* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
+
+.skillsIcon,
+#skillIcon {
+}
 
 .passiveIcon,
 .qIcon,

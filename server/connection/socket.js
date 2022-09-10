@@ -50,7 +50,6 @@ class Socket {
             });
             socket.on("reading", (user, views) => {
                 views++;
-                socket.broadcast.emit("viewPlus", user, views);
             });
         });
     }

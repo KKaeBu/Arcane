@@ -12,19 +12,13 @@ function Main() {
 
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
-    const [viewNum, setViewNum] = useState(0);
     let data = []; // 게시물 object 배열
-    let index = 0;
     const socket = io.connect("http://localhost:5000");
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
     //const pageListUl = document.getElementById(style.pageList);
     //const listRightBtn = document.getElementsByClassName(style.listRightBtn);
-
-    // i >= 0 (1페이지) i >= 15 (2페이지)  >>>>>   i >= (index-1) * 15
-    // i = 15미만 (1페이지) i = 30미만 (2페이지) >>>>>  ((data.length - 1) % 15) + ((index - 1) * 15)
-    // 위는 게시글 리스트 표현방법을 생각한 점화식임
 
     const isLastPage = (page) => {
         if (parseInt((data.length - 1) / 15) === page - 1) {
@@ -34,6 +28,9 @@ function Main() {
         }
     };
     const postingList = async (page) => {
+        // await axios.get("/post/all", {}).then((res) => {
+        //     data = res.data;
+        // });
         tbody[0].replaceChildren(); // 자식 노드 전부 삭제
         for (
             let i = data.length - 1 - (page - 1) * 15;
@@ -49,7 +46,6 @@ function Main() {
             //     i >= (page - 1) * 15;
             //     i--
             // ) {
-            console.log(i);
             const tr = document.createElement("tr");
             const td_title = document.createElement("td");
             td_title.setAttribute("class", style.title);
@@ -107,7 +103,27 @@ function Main() {
         }
     };
 
-    const pageList = async () => {
+    const pageList = async (current_page) => {
+        await axios.get("/post/all", {}).then((res) => {
+            data = res.data;
+        });
+
+        // ***** 페이지 버튼 삭제 후 다시 생성 > 중복 생성 방지
+        const pageListUl = await document.getElementById(style.pageList);
+
+        let first_page = pageListUl.firstChild.nextSibling;
+        let pages = [];
+
+        for (let i = 0; first_page !== pageListUl.lastChild; i++) {
+            pages[i] = first_page;
+            first_page = first_page.nextSibling;
+        }
+
+        for (let i = 0; i < pages.length; i++) {
+            pages[i].remove();
+        }
+        // ***** 페이지 버튼 삭제 완료
+
         for (let i = 1; i <= (data.length - 1) / 15 + 1; i++) {
             const pageListUl = await document.getElementById(style.pageList);
             // const listRightBtn = await document.querySelector(
@@ -116,7 +132,7 @@ function Main() {
             const li = document.createElement("li");
             li.setAttribute("class", style.listItem);
             li.innerText = i;
-            if (i === 1) {
+            if (i === current_page) {
                 li.setAttribute("id", style.selectedItem);
             }
             li.onclick = function () {
@@ -182,16 +198,38 @@ function Main() {
             })
             .catch((err) => console.log(err));
 
-        await axios.get("/post/all", {}).then((res) => {
-            data = res.data;
-        });
-        await pageList();
+        // await axios.get("/post/all", {}).then((res) => {
+        //     data = res.data;
+        // });
+        await pageList(1);
         await postingList(1);
     };
 
-    const onLeftClick = () => {};
+    const onLeftClick = async () => {
+        const prev_selected = document.querySelector(
+            "#" + style["selectedItem"]
+        );
+        const current_page = parseInt(prev_selected.innerHTML);
+        if (current_page !== 1) {
+            await pageList(current_page - 1);
+            await postingList(current_page - 1);
+        }
+    };
 
-    const onRightClick = () => {};
+    const onRightClick = async () => {
+        const pageListUl = await document.getElementById(style.pageList);
+        const prev_selected = document.querySelector(
+            "#" + style["selectedItem"]
+        );
+        const current_page = parseInt(
+            pageListUl.lastChild.previousSibling.innerHTML
+        );
+
+        if (current_page !== parseInt(prev_selected.innerHTML)) {
+            await pageList(parseInt(prev_selected.innerHTML) + 1);
+            await postingList(parseInt(prev_selected.innerHTML) + 1);
+        }
+    };
 
     useEffect(() => {
         isValidToken();
@@ -207,11 +245,6 @@ function Main() {
             if (data !== userName && data !== "" && userName !== "") {
                 console.log(`${data} post`);
                 newPostDiv[0].removeAttribute("id");
-            }
-        });
-        socket.on("viewPlus", (user, views) => {
-            if (user !== userName) {
-                setViewNum(views);
             }
         });
     }, [isLogin]);
