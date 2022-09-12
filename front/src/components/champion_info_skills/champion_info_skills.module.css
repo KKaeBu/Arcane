@@ -1,7 +1,12 @@
 .skills {
     text-align: center;
     align-content: center;
-    margin-bottom: 30%;
+    padding-top: 5%;
+    padding-bottom: 50%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 0;
+    background-color: beige;
 }
 
 #invisible {
@@ -10,7 +15,11 @@
 /* 안보이는 설정 */
 
 /* 스킬 아이콘 이미지 */
-
+.skillsTitle {
+    font-size: xx-large;
+    font-family: "LOLFontBold";
+    margin-bottom: 5%;
+}
 .championIcon {
     width: 200px;
     height: 200px;
@@ -60,16 +69,18 @@
 .eInfo,
 .rInfo {
     color: white;
-
+    border-radius: 5%;
     background-color: black;
 
     position: absolute;
     display: inline;
-    z-index: 10px;
-    width: 200px;
+    z-index: 100;
+    min-width: 200px;
+    width: 300px;
 
     left: 30%;
     top: 80%;
+    padding-bottom: 20px;
 
     animation: fadein 0.3s;
 }
@@ -77,16 +88,16 @@
 
 .skill_name {
     font-family: LOLFontlight;
-    font-size: medium;
-    line-height: 3;
+    font-size: 18px;
+    line-height: 2;
 }
 .skill_description {
     font-family: LOLFontlight;
-    font-size: small;
+    font-size: 15px;
 }
 .skill_tooltip {
     font-family: LOLFontlight;
-    font-size: small;
+    font-size: 12px;
 }
 
 @keyframes fadein {

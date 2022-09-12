@@ -41,6 +41,14 @@ function ChampionInfoAbout() {
         lore.innerText = champion_lore;
         about_div.firstChild.after(lore);
 
+        const illustration = document.createElement("img");
+        illustration.setAttribute("class", style.illustration);
+        illustration.setAttribute(
+            "src",
+            await riot.getChampionIllustration(id)
+        );
+        about_title.after(illustration);
+
         const table = document.createElement("table");
         table.setAttribute("class", style.table);
         const thead = document.createElement("thead");
@@ -114,7 +122,7 @@ function ChampionInfoAbout() {
     return (
         <>
             <div className={style.about}>
-                <h1 className={style.aboutTitle}>About Me</h1>
+                <p className={style.aboutTitle}>About Me</p>
             </div>
         </>
     );

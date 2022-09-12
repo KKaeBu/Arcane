@@ -12,7 +12,7 @@ function Footer() {
                     Front와 back의 연동 법 및 데이터베이스 연동법을 익히는것이
                     목표이다.
                 </p>
-                <p>devlope by GGeaBu, SangHun</p>
+                <p>develope by GGeaBu, SangHoon</p>
                 <p>tel: 010-8907-4995, 010-9010-8325</p>
             </div>
             <div className={style.footerCenter}></div>

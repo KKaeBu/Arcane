@@ -6,17 +6,44 @@
     margin-top: 0;
     background-color: gray;
     align-content: center;
+    text-align: center;
+}
+
+.illustration {
+    width: 80%;
+    border-radius: 5%;
+    opacity: 0.9;
 }
 
 .classImg {
+    transition: all 200ms ease;
     width: 80px;
     height: 80px;
 }
 
+.classImg:hover {
+    transform: scale(1.2);
+}
+
 .lore,
 .aboutTitle {
+    margin-left: 10%;
+    margin-right: 10%;
     align-content: center;
     text-align: center;
+    line-height: 30px;
+}
+
+.aboutTitle {
+    font-size: xx-large;
+    font-family: "LOLFontBold";
+    margin-bottom: 5%;
+}
+.lore {
+    font-family: "LOLFontlight";
+    font-weight: lighter;
+    margin-bottom: 5%;
+    margin-top: 5%;
 }
 
 .table {
@@ -30,8 +57,8 @@
 }
 
 tr {
-    font-family: LOLFontlight;
-    font-size: medium;
+    /* font-family: LOLFontlight;
+    font-size: medium; */
 }
 
 td {
