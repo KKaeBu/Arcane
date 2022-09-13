@@ -6,8 +6,10 @@ function Posting() {
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
+    const [text, setText] = useState("");
     const ul = document.querySelector("." + style["postingAttachList"]);
     const postingMain = document.getElementById("postingMain");
+
 
     const onChange = async () => {
         const fileInput = document.getElementById("files");
@@ -151,6 +153,18 @@ function Posting() {
         div.setAttribute("contentEditable", true);
         div.setAttribute("tabindex", -1);
         postingMain.appendChild(div);
+    }    
+
+    const textUpdate = (e) => {
+        setText(e.target.value);
+    }
+
+    const submitPosting = () => {
+        
+    }
+
+    const cancelPosting = () => {
+
     }
 
 
@@ -180,14 +194,22 @@ function Posting() {
                     onDrop={drop}
                 >
                     <div className={style.postingMain} id="postingMain">
-                        <p>{ count }</p>
-                        <p>{restLength}</p>
-                        <div className={style.postingText} contentEditable={true}></div>
+                        {/* <div id="firstText" className={style.postingText} contentEditable={true} onChange={textUpdate}></div> */}
+                        <textarea
+                            name="textarea"
+                            id="postingText"
+                            cols="30"
+                            rows="10"
+                            placeholder="내용을 입력해 주세요."
+                            className={style.postingText}
+                            onChange={textUpdate}
+                        >
+                        </textarea>
                     </div>
                 </div>
                 <div className={style.postingBottom}>   
-                    <button type="submit" className={style.cancelBtn}>취소</button>
-                    <button type="submit" className={style.completeBtn}>완료</button>
+                    <button type="submit" className={style.cancelBtn} onClick={cancelPosting}>취소</button>
+                    <button type="submit" className={style.completeBtn} onClick={submitPosting}>완료</button>
                 </div>
             </div>
         </div>
