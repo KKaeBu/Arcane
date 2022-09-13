@@ -7,7 +7,7 @@ import axios from "axios";
 import moment from "moment/moment";
 import tz from "moment-timezone";
 
-function Main() {
+function Main(props) {
     moment.tz.setDefault("Asia/Seoul");
 
     const [isLogin, setLogin] = useState(false);
@@ -151,24 +151,31 @@ function Main() {
      ***** 글쓰기 버튼 클릭 시 실행하는 함수
      */
     const writePost = async (event) => {
+        // if (isLogin) {
+        //     await axios
+        //         .post("/post", {
+        //             title: "제목123455",
+        //             postnum: 1,
+        //             username: userName,
+        //             view: 0,
+        //         })
+        //         .then((res) => {})
+        //         .catch((error) => {
+        //             console.error(error);
+        //         });
+        //     socket.emit("posting", userName);
+        //     window.location.reload();
+        // } else {
+        //     window.alert("로그인이 필요한 기능입니다.");
+        // }
         if (isLogin) {
-            await axios
-                .post("/post", {
-                    title: "제목123455",
-                    postnum: 1,
-                    username: userName,
-                    view: 0,
-                })
-                .then((res) => {})
-                .catch((error) => {
-                    console.error(error);
-                });
-            socket.emit("posting", userName);
-            window.location.reload();
+            props.propFunction(true);
         } else {
-            window.alert("로그인이 필요한 기능입니다.");
+            alert("로그인이 필요한 기능입니다.");
         }
+
     };
+
     /*
      ***** 조회수를 DB에 연결하지 않아서 새로고침하면 조회수가 0이 되어버림 > 해결
      */

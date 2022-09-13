@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import style from "./posting.module.css";
 
-function Posting() {
+function Posting(props) {
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
@@ -160,11 +160,13 @@ function Posting() {
     }
 
     const submitPosting = () => {
-        
+
     }
 
     const cancelPosting = () => {
-
+        if (window.confirm("변경 사항이 저장되지 않을 수도 있습니다." + "\n" + "진행하시겠습니까?")) {
+            props.propFunction(false);
+        }
     }
 
 
