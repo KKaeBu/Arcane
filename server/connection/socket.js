@@ -42,6 +42,15 @@ class Socket {
                     //socket.emit("alert", username);
                 }
             });
+            socket.on("posting", (data) => {
+                if (data !== "") {
+                    console.log(`${data} is posting`);
+                    socket.broadcast.emit("newPost", data);
+                }
+            });
+            socket.on("reading", (user, views) => {
+                views++;
+            });
         });
     }
 }

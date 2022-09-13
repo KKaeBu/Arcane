@@ -1,5 +1,5 @@
 .mainContainer {
-    width:auto;
+    width: auto;
     border: 1px solid black;
     border-radius: 10px 10px;
 
@@ -50,7 +50,7 @@
 }
 
 .writePost:hover {
-    background-color: mediumspringgreen
+    background-color: mediumspringgreen;
 }
 
 .mainMiddle {
@@ -62,9 +62,21 @@
     border-collapse: collapse;
 }
 
-th, td {
+.mainBottom {
+    margin-top: auto;
+    margin-bottom: 3vh;
+}
+
+th,
+td {
     border-bottom: 1px solid black;
     padding: 10px;
+}
+
+.title {
+}
+
+.tbody {
 }
 
 .titleLink {
@@ -77,13 +89,13 @@ th, td {
     border-bottom: 1px solid black;
 }
 
+.title,
 .nick,
 .date,
 .view {
-    vertical-align:middle;
+    vertical-align: middle;
     text-align: center;
 }
-
 
 /* main Bottom */
 .mainBottom {
@@ -92,7 +104,7 @@ th, td {
     align-items: center;
 }
 
-.pageList {
+#pageList {
     padding-left: 0;
 
     display: flex;
@@ -115,6 +127,22 @@ th, td {
     color: red;
 }
 
+#selectedItem {
+    font-size: 24px;
+    color: red;
+}
+
 .listBtnIcon {
     font-size: 32px !important;
+}
+
+/* 새로운 게시글 */
+.newPost {
+    left: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+
+#transparent {
+    display: none;
 }
