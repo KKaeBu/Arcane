@@ -17,10 +17,10 @@ export async function postRead(req, res) {
 }
 
 export async function Posting(req, res) {
-    const { postnum, username, view, title } = req.body;
+    const { title, content, username, view } = req.body;
     const post = await postRepository.createPost({
         title,
-        postnum,
+        content,
         username,
         view,
     });

@@ -1,15 +1,24 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import style from "./posting.module.css";
+import axios from "axios";
+import TokenStorage from "../../db/token";
 
 function Posting() {
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
+    const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const ul = document.querySelector("." + style["postingAttachList"]);
     const postingMain = document.getElementById("postingMain");
+    const [isLogin, setLogin] = useState(false);
+    const [userName, setuserName] = useState("");
 
+    const onChangeTitle = (e) => {
+        setTitle(e.target.value);
+        console.log(title);
+    };
 
     const onChange = async () => {
         const fileInput = document.getElementById("files");
@@ -40,7 +49,7 @@ function Posting() {
 
         handleFiles(files, postingMain);
         addPostingText();
-    }
+    };
 
     const appendAttachList = async (files, fileListLength, output) => {
         let check = 0; //중복파일 개수 체크
@@ -73,10 +82,9 @@ function Posting() {
     // 중복체크 함수
     const overCheck = (files, name) => {
         const lis = document.querySelectorAll("." + style["imageListItem"]);
-        if (!lis)
-            return false;
-        
-        for (let i = 0; i < lis.length; i++){
+        if (!lis) return false;
+
+        for (let i = 0; i < lis.length; i++) {
             if (lis[i].id === name) {
                 return false;
             }
@@ -85,7 +93,6 @@ function Posting() {
         return true; //중복이 아니라면 true
     };
 
-
     //첨부 이미지 삭제시 발생 이벤트 리스너 (한번에 하나씩밖에 삭제 못함)
     const clickListener = (e) => {
         if (e.target && e.target.className === style.listDeleteBtn) {
@@ -93,7 +100,7 @@ function Posting() {
             const previews = document.querySelectorAll("." + style["preview"]);
 
             // 사진 리스트 목록에서 제거
-            for (let i = 0; i < lis.length; i++){
+            for (let i = 0; i < lis.length; i++) {
                 if (lis[i].id === e.target.parentNode.id) {
                     lis[i].remove();
                     break;
@@ -101,13 +108,16 @@ function Posting() {
             }
 
             // 본문의 이미지 리스트중에서 제거
-            for (let i = 0; i < previews.length; i++){
-                if (previews[i].childNodes[0].file.name === e.target.parentNode.id) {
+            for (let i = 0; i < previews.length; i++) {
+                if (
+                    previews[i].childNodes[0].file.name ===
+                    e.target.parentNode.id
+                ) {
                     previews[i].remove();
                     break;
                 }
             }
-            
+
             setCount(count - 1);
             setRestLength(restLength + 1);
         }
@@ -117,13 +127,13 @@ function Posting() {
     const dragenter = (e) => {
         e.stopPropagation();
         e.preventDefault();
-    }
+    };
 
     // 이미지 dragover시
     const dragover = (e) => {
         e.stopPropagation();
         e.preventDefault();
-    }
+    };
 
     // 이미지 drop시
     const drop = async (e) => {
@@ -134,7 +144,7 @@ function Posting() {
         const files = dt.files; //추가할 파일의 목록
 
         const output = document.querySelector("." + style["postingAttachList"]);
-        const imageList = output.childNodes ;
+        const imageList = output.childNodes;
 
         const fileListLength = files.length; //추가하려는 파일의 개수
 
@@ -145,7 +155,7 @@ function Posting() {
         } else {
             alert("첨부 파일은 최대 4개 까지 가능합니다.3");
         }
-    }
+    };
 
     const addPostingText = () => {
         const div = document.createElement("div");
@@ -153,38 +163,82 @@ function Posting() {
         div.setAttribute("contentEditable", true);
         div.setAttribute("tabindex", -1);
         postingMain.appendChild(div);
-    }    
+    };
 
     const textUpdate = (e) => {
         setText(e.target.value);
-    }
+    };
 
-    const submitPosting = () => {
-        
-    }
+    const submitPosting = async (e) => {
+        e.preventDefault();
+        if (isLogin) {
+            await axios
+                .post("/post", {
+                    title: title,
+                    username: userName,
+                    content: text,
+                    view: 0,
+                })
+                .then((res) => {})
+                .catch((error) => {
+                    console.error(error);
+                });
+            //window.location.reload();
+        } else {
+            window.alert("로그인이 필요한 기능입니다.");
+        }
+        console.dir(text);
+    };
 
-    const cancelPosting = () => {
+    const cancelPosting = () => {};
 
-    }
+    const isValidToken = async () => {
+        const tokenStorage = new TokenStorage();
+        const token = tokenStorage.getToken();
 
+        await axios
+            .get("/auth", {
+                headers: {
+                    token: token,
+                },
+            })
+            .then((res) => {
+                setuserName(res.data.username);
+                setLogin(true);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        isValidToken();
+    }, []);
 
     return (
         <div className={style.postingContainer}>
             <div action="" className={style.postingWrapper}>
-                <input className={style.postingTitle} placeholder="제목"></input>
+                <input
+                    className={style.postingTitle}
+                    placeholder="제목"
+                    onChange={onChangeTitle}
+                ></input>
                 <div className={style.postingAttach}>
                     {/* input과 label을 연결해 input은 숨기고 label을 input으로 활용 */}
-                    <label className={style.postingAttachLabel} htmlFor="files">사진 첨부</label>
+                    <label className={style.postingAttachLabel} htmlFor="files">
+                        사진 첨부
+                    </label>
                     <input
                         id="files"
-                        type="file" name="postingImgFile"
+                        type="file"
+                        name="postingImgFile"
                         multiple
                         accept="image/*"
                         onChange={onChange}
                         style={{ display: "none" }}
                     ></input>
-                    <ul className={style.postingAttachList} onClick={clickListener}>
-                    </ul>
+                    <ul
+                        className={style.postingAttachList}
+                        onClick={clickListener}
+                    ></ul>
                 </div>
                 <div
                     className={`${style.postingMainContainer} ${style.dropbox}`}
@@ -203,13 +257,24 @@ function Posting() {
                             placeholder="내용을 입력해 주세요."
                             className={style.postingText}
                             onChange={textUpdate}
-                        >
-                        </textarea>
+                        ></textarea>
                     </div>
                 </div>
-                <div className={style.postingBottom}>   
-                    <button type="submit" className={style.cancelBtn} onClick={cancelPosting}>취소</button>
-                    <button type="submit" className={style.completeBtn} onClick={submitPosting}>완료</button>
+                <div className={style.postingBottom}>
+                    <button
+                        type="submit"
+                        className={style.cancelBtn}
+                        onClick={cancelPosting}
+                    >
+                        취소
+                    </button>
+                    <button
+                        type="submit"
+                        className={style.completeBtn}
+                        onClick={submitPosting}
+                    >
+                        완료
+                    </button>
                 </div>
             </div>
         </div>
@@ -217,7 +282,7 @@ function Posting() {
 }
 
 function isImgUpload(imageList, fileListLength, maxListNum, restLength) {
-    if (!imageList && fileListLength <= maxListNum) {          
+    if (!imageList && fileListLength <= maxListNum) {
         // 이미지 리스트가 비어있고, 추가하려는 이미지 파일의
         // 개수가 4개 이하일 경우
         return true;
@@ -231,7 +296,7 @@ function isImgUpload(imageList, fileListLength, maxListNum, restLength) {
         // 추가하려는 이미지 파일의 개수가
         // 현재 남은 자리의 개수보다 적은 경우 (첨부 가능시)
         return true;
-    } else if(imageList && fileListLength > restLength) {
+    } else if (imageList && fileListLength > restLength) {
         // 이미지 리스트가 비어있지 않고,
         // 추가하려는 이미지 파일의 개수가
         // 현재 남은 자리의 개수보다 많은 경우 (첨부 불가능시)
@@ -243,7 +308,9 @@ function handleFiles(files, postingMain) {
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
 
-        if (!file.type.startsWith('image/')){ continue }
+        if (!file.type.startsWith("image/")) {
+            continue;
+        }
 
         const img = document.createElement("img");
         img.setAttribute("class", style.attachedImg);
@@ -256,7 +323,11 @@ function handleFiles(files, postingMain) {
         postingMain.appendChild(div); // "postingMain"가 결과를 보여줄 div 출력이라 가정.
 
         const reader = new FileReader();
-        reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+        reader.onload = (function (aImg) {
+            return function (e) {
+                aImg.src = e.target.result;
+            };
+        })(img);
         reader.readAsDataURL(file);
     }
 }
