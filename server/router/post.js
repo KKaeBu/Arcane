@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", postController.Posting);
 
-router.get("/", postController.getView);
+router.get("/", postController.getPost);
 
 router.get("/all", postController.getAllPost);
 

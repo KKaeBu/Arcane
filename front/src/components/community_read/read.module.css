@@ -1,0 +1,83 @@
+.read {
+    margin-top: 5%;
+    margin-bottom: 3%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.titleBar {
+    font-family: "MabinogiClassicR";
+    font-size: 42px;
+    margin-bottom: 2%;
+}
+
+.username {
+    padding-top: 2%;
+    font-family: "MabinogiClassicR";
+    text-align: right;
+    font-size: 20px;
+    border-top: 1px solid black;
+}
+
+.view {
+    font-family: "MabinogiClassicR";
+    text-align: right;
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 5%;
+}
+
+.content {
+    font-family: "MabinogiClassicR";
+    line-height: 2em;
+    font-size: 24px;
+}
+
+.like {
+    font-family: "MabinogiClassicR";
+    opacity: 0.7;
+    font-size: 14px;
+    text-align: right;
+    margin-top: 5%;
+    padding-bottom: 2%;
+    border-bottom: 1px solid black;
+}
+
+.comment {
+    margin-top: 0%;
+    margin-bottom: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-family: "나눔고딕";
+    font-size: 20px;
+}
+
+.commenttitle {
+    font-size: 24px;
+    margin-top: 10%;
+    margin-bottom: 3%;
+}
+
+.comments {
+}
+
+.commentusername {
+    font-family: "MabinogiClassicR";
+    text-align: left;
+    font-size: 20px;
+}
+
+.commentcontent {
+    font-family: "MabinogiClassicR";
+    text-align: right;
+    font-size: 18px;
+    margin-left: 5%;
+}
+
+.listbutton {
+    font-family: "MabinogiClassicR";
+    color: black;
+    font-size: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+}

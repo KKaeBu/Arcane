@@ -17,8 +17,6 @@ function Main(props) {
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
-    //const pageListUl = document.getElementById(style.pageList);
-    //const listRightBtn = document.getElementsByClassName(style.listRightBtn);
 
     const isLastPage = (page) => {
         if (parseInt((data.length - 1) / 15) === page - 1) {
@@ -28,24 +26,12 @@ function Main(props) {
         }
     };
     const postingList = async (page) => {
-        // await axios.get("/post/all", {}).then((res) => {
-        //     data = res.data;
-        // });
         tbody[0].replaceChildren(); // 자식 노드 전부 삭제
         for (
             let i = data.length - 1 - (page - 1) * 15;
             i >= (data.length - 1 - (page - 1) * 15 - 14) * !isLastPage(page);
             i--
         ) {
-            // for (
-            //     let i =
-            //         ((data.length - 1) % 15) * isLastPage(page) +
-            //         (page - isLastPage(page)) * 15 -
-            //         1 +
-            //         isLastPage(page);
-            //     i >= (page - 1) * 15;
-            //     i--
-            // ) {
             const tr = document.createElement("tr");
             const td_title = document.createElement("td");
             td_title.setAttribute("class", style.title);
@@ -65,12 +51,12 @@ function Main(props) {
                         view: data[i].view,
                     })
                     .then((res) => {
-                        console.log(res.data);
+                        console.log(data[i].title);
+                        props.propFunction("read", data[i]._id);
                     })
                     .catch((error) => {
                         console.error(error);
                     });
-                window.location.reload();
             };
             a_title.innerText = data[i].title;
             td_title.appendChild(a_title);
@@ -151,29 +137,11 @@ function Main(props) {
      ***** 글쓰기 버튼 클릭 시 실행하는 함수
      */
     const writePost = async (event) => {
-        // if (isLogin) {
-        //     await axios
-        //         .post("/post", {
-        //             title: "제목123455",
-        //             postnum: 1,
-        //             username: userName,
-        //             view: 0,
-        //         })
-        //         .then((res) => {})
-        //         .catch((error) => {
-        //             console.error(error);
-        //         });
-        //     socket.emit("posting", userName);
-        //     window.location.reload();
-        // } else {
-        //     window.alert("로그인이 필요한 기능입니다.");
-        // }
         if (isLogin) {
-            props.propFunction(true);
+            props.propFunction("write");
         } else {
             alert("로그인이 필요한 기능입니다.");
         }
-
     };
 
     /*

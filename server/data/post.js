@@ -1,7 +1,7 @@
 import { Post } from "../model/schema.js";
 
-export async function findByPostNum(postnum) {
-    return Post.findOne({ postnum });
+export async function findByID(id) {
+    return Post.findOne({ _id: id });
 }
 
 export async function findAllPost() {
