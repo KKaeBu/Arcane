@@ -1,4 +1,4 @@
-import { Post } from "../model/schema.js";
+import { Comment, Post } from "../model/schema.js";
 
 export async function findByID(id) {
     return Post.findOne({ _id: id });
@@ -23,4 +23,15 @@ export async function updatePost(id, newview) {
 
 export async function deleteAll() {
     await Post.deleteMany({ postnum: 1 });
+}
+
+export async function commentPost(comment, comment_id) {
+    const new_comment = await new Comment(comment)
+        .save()
+        .then((data) => data)
+        .catch((e) => console.error(e));
+
+    const post = await Post.findOne({ _id: comment_id });
+    await post.comment.push(new_comment);
+    await post.save();
 }

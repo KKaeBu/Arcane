@@ -1,8 +1,8 @@
 import * as postRepository from "../data/post.js";
 
 export async function getPost(req, res) {
-    console.log(req.headers._id);
     const post = await postRepository.findByID(req.headers._id);
+    console.log(post);
     return res.status(201).json(post);
 }
 
@@ -31,4 +31,9 @@ export async function Posting(req, res) {
 export async function Deleting(req, res) {
     await postRepository.deleteAll();
     res.status(201);
+}
+
+export async function PostingComment(req, res) {
+    const { username, content, _id } = req.body;
+    await postRepository.commentPost({ username, content }, _id);
 }

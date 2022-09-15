@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/", postController.Posting);
 
+router.post("/comment", postController.PostingComment);
+
 router.get("/", postController.getPost);
 
 router.get("/all", postController.getAllPost);

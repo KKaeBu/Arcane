@@ -1,3 +1,7 @@
+.readWrapper {
+    background-color: aqua;
+}
+
 .read {
     margin-top: 5%;
     margin-bottom: 3%;
@@ -72,6 +76,14 @@
     text-align: right;
     font-size: 18px;
     margin-left: 5%;
+}
+
+.newComment {
+}
+.writeComment {
+}
+.submitCommentButton {
+    cursor: pointer;
 }
 
 .listbutton {
