@@ -3,7 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import "express-async-errors";
-import mainRouter from "./router/main.js";
+import summonersRouter from "./router/summoners.js";
 import championRouter from "./router/champion.js";
 import authRouter from "./router/auth.js";
 import { config } from "./config.js";
@@ -25,13 +25,7 @@ app.use("/auth", authRouter);
 // 글 작성
 app.use("/post", postRouter);
 
-app.post("/search", (req, res, next) => {
-    // ***** 클라이언트에서 post요청했으니까 여기서도 post로 수신
-    console.log(`클라이언트에서 보낸 데이터 : ${req.body.name}`);
-    console.log("서버 응답 성공");
-    const text = req.body.name;
-    res.send(text);
-});
+app.use("/summoners", summonersRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {

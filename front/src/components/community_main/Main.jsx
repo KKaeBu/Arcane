@@ -2,6 +2,7 @@ import style from "./main.module.css";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
 import axios from "axios";
 import moment from "moment/moment";
@@ -9,6 +10,7 @@ import tz from "moment-timezone";
 
 function Main(props) {
     moment.tz.setDefault("Asia/Seoul");
+    const navigate = useNavigate();
 
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
@@ -52,7 +54,8 @@ function Main(props) {
                     })
                     .then((res) => {
                         console.log(data[i].title);
-                        props.propFunction("read", data[i]._id);
+                        // props.propFunction(data[i]._id);
+                        navigate(`/community/read/${data[i]._id}`, {state: data[i]._id})
                     })
                     .catch((error) => {
                         console.error(error);
@@ -128,6 +131,7 @@ function Main(props) {
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
                 postingList(i);
+                navigate(`/community/page=${i}`);
             };
             pageListUl.lastChild.before(li);
         }
@@ -138,7 +142,8 @@ function Main(props) {
      */
     const writePost = async (event) => {
         if (isLogin) {
-            props.propFunction("write");
+            // props.propFunction("write");
+            navigate(`/community/write/${1}`);
         } else {
             alert("로그인이 필요한 기능입니다.");
         }
@@ -188,6 +193,7 @@ function Main(props) {
         if (current_page !== 1) {
             await pageList(current_page - 1);
             await postingList(current_page - 1);
+            navigate(`/community/page=${current_page - 1}`);
         }
     };
 
@@ -203,6 +209,7 @@ function Main(props) {
         if (current_page !== parseInt(prev_selected.innerHTML)) {
             await pageList(parseInt(prev_selected.innerHTML) + 1);
             await postingList(parseInt(prev_selected.innerHTML) + 1);
+            navigate(`/community/page=${parseInt(prev_selected.innerHTML) + 1}`);
         }
     };
 

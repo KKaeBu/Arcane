@@ -1,25 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, LightMode, DarkMode, Language } from "@mui/icons-material";
 import style from "./topbar.module.css";
 import axios from "axios";
 
 function Topbar() {
+    const navigate = useNavigate();
     const [toggle, setToggle] = useState(true);
     const [inputValue, setInputValue] = useState("");
 
     const onSubmit = async (event) => {
         event.preventDefault(); // 새로고침 방지
-        // ***** 클라이언트 axios에서 url포트번호를 서버의 포트번호로
-        // ***** 클라이언트 axios의 메소드와 서버의 메소드를 같게해야되는듯
-        // ***** 아래 axios에서 post했으면 서버에서도 post로 수신함
-        await axios
-            .post("/search", {
-                name: inputValue,
-            })
-            .then((res) => {
-                console.log("내가 받은 데이터:", res.data);
-            })
-            .catch((e) => console.log("오류남 ㅋ"));
+        console.log(inputValue);
+        // await axios
+        //     .post("/summoners")
+        //     .then((res) => {
+                
+        //     })
+        //     .catch((e) => console.log("오류남 ㅋ"));
+        if (inputValue !== "")
+            navigate(`/summoners/${inputValue}`);
+        else
+            alert("소환사명을 입력해주세요!");
     };
 
     const onChange = (event) => {
@@ -47,7 +49,7 @@ function Topbar() {
                         className={style.searchInput}
                         onChange={onChange}
                     />
-                    <Search className={style.searchButton} />
+                    <Search className={style.searchButton} onClick={onSubmit}/>
                 </form>
             </div>
             <div className={style.topbarRight}>

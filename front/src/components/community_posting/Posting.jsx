@@ -3,8 +3,10 @@ import { useState } from "react";
 import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
+import { useNavigate } from "react-router-dom";
 
 function Posting(props) {
+    const navigate = useNavigate();
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
@@ -177,7 +179,8 @@ function Posting(props) {
                     "진행하시겠습니까?"
             )
         ) {
-            props.propFunction(false);
+            // props.propFunction(false);
+            navigate("/community");
         }
     };
     const submitPosting = async (e) => {
@@ -194,7 +197,8 @@ function Posting(props) {
                 .catch((error) => {
                     console.error(error);
                 });
-            props.propFunction(false);
+            // props.propFunction(false);
+            navigate("/community");
         } else {
             window.alert("로그인이 필요한 기능입니다.");
         }

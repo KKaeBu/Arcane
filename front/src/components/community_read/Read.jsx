@@ -1,6 +1,7 @@
 import style from "./read.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 
@@ -11,14 +12,15 @@ function Read(props) {
     const [username, setName] = useState("");
     const [user_id, setID] = useState("");
     const [like, setLike] = useState(0);
+    const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
     const findWriter = async () => {
-        console.log(props.id);
-        await setID(props.id);
+        console.log("state:", id.state);
+        await setID(id.state);
         await axios
             .get("/post", {
                 headers: {
-                    _id: props.id,
+                    _id: id.state,
                 },
             })
             .then((res) => {

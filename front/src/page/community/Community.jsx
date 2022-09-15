@@ -6,39 +6,35 @@ import Posting from "../../components/community_posting/Posting.jsx";
 import Read from "../../components/community_read/Read.jsx";
 import { useState } from "react";
 
-function Community() {
-    const [iswrite, setWrite] = useState(false);
-    const [isread, setRead] = useState(false);
+function Community(props) {
     const [user_id, setID] = useState("");
 
-    const isClick = (string, selected_id) => {
-        if (string === "write") {
-            setWrite(true);
-            setRead(false);
-            return;
-        } else if (string === "read") {
-            setID(selected_id);
-            setRead(true);
-            setWrite(false);
-            return;
-        }
-        setRead(false);
-        setWrite(false);
+    const isClick = (selected_id) => {
+        setID(selected_id);
     };
 
     return (
         <div className={style.community}>
             <div className={style.communityWrapper}>
                 <Topbar />
-                {/* <Main /> */}
-                {/* <Posting /> */}
-                {iswrite ? (
+                {/* {iswrite ? (
                     <Posting propFunction={isClick} />
                 ) : isread ? (
                     <Read id={user_id} propFunction={isClick} />
                 ) : (
                     <Main propFunction={isClick} />
-                )}
+                )} */}
+
+                {
+                    props.main ? (
+                        <Main />
+                    ) : props.write ? (
+                        <Posting />
+                    ) : (
+                        <Read />
+                    )
+                }
+
                 <Footer />
             </div>
         </div>
