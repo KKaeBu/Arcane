@@ -1,6 +1,7 @@
 import style from "./read.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useRef } from "react";
@@ -21,13 +22,15 @@ function Read(props) {
     //     "." + style["commenttitle"]
     // );
     const commentWrapper = useRef(null);
+    const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
     const findWriter = async () => {
-        await setID(props.id);
+        console.log("state:", id.state);
+        await setID(id.state);
         await axios
             .get("/post", {
                 headers: {
-                    _id: props.id,
+                    _id: id.state,
                 },
             })
             .then((res) => {
@@ -77,7 +80,7 @@ function Read(props) {
                 .post("/post/comment", {
                     username: login_user,
                     content: new_comment,
-                    _id: props.id,
+                    _id: id.state,
                 })
                 .then((res) => {
                     alert("완료");

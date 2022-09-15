@@ -3,8 +3,8 @@ import "express-async-errors";
 
 const router = express.Router();
 
-router.use("/", (req, res, next) => {
-    res.send({ hi: "hello i'm main router" });
+router.post("/", (req, res, next) => {
+    
 });
 
 export default router;

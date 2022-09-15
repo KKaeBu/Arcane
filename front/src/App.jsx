@@ -9,6 +9,7 @@ import Search from "./page/search/Search.jsx";
 import Login from "./page/login/Login.jsx";
 import Signup from "./page/signup/Signup.jsx";
 import Community from "./page/community/Community.jsx";
+import Summoners from "./page/summoners/Summoners.jsx";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -24,7 +25,10 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/community" element={<Community />} />
+                <Route path="/summoners/:summoner" element={<Summoners />} />
+                <Route path="/community/*" element={<Community main={true} write={false}/>} />
+                <Route path="/community/write/:id" element={<Community main={false} write={true} />} />
+                <Route path="/community/read/:id" element={<Community main={false} write={false}/>} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route
@@ -47,7 +51,7 @@ function App() {
                         )
                     }
                 />
-                <Route path="/search" element={<Search />} />
+                <Route path="/summoners" element={<Search />} />
                 <Route
                     path="/"
                     element={
