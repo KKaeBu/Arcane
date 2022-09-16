@@ -1,0 +1,17 @@
+.rankContainer {
+    width: 100%;
+    height: 300px;
+    background-color: lightsalmon;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.soloRankWrapper,
+.flexRankWrapper {
+    background-color: lightseagreen;
+    border: 1px solid black;
+    width: 47%;
+    height: 270px;
+}

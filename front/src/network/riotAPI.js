@@ -1,7 +1,9 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-785aa7e6-d58f-4b0d-896e-74672892dfa9";
+    // API_Key는 만료될때마다 바꿔 적어줘야함
+    // Version 업데이트마다 변경해줘야함
+    #Riot_API_Key = "RGAPI-f542b4fe-36e8-435e-9438-96ca8deeeca3";
     #Language = "ko_KR";
-    #Version = "12.14.1";
+    #Version = "12.17.1";
     // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
@@ -10,6 +12,16 @@ class Riot_API {
             "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
         const link =
             sunmmoners_api + username + "?api_key=" + this.#Riot_API_Key;
+        const json = getFetch(link);
+        return json;
+    }
+
+    async getSummonerProfileIcon(iconNum) {
+        return `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/profileicon/${iconNum}.png`;
+    }
+
+    async getSummonerLeague(id) {
+        const link = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`;
         const json = getFetch(link);
         return json;
     }
