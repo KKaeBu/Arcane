@@ -53,9 +53,10 @@ function Main(props) {
                         view: data[i].view,
                     })
                     .then((res) => {
-                        console.log(data[i].title);
                         // props.propFunction(data[i]._id);
-                        navigate(`/community/read/${data[i]._id}`, {state: data[i]._id})
+                        navigate(`/community/read/${data[i]._id}`, {
+                            state: data[i]._id,
+                        });
                     })
                     .catch((error) => {
                         console.error(error);
@@ -124,14 +125,15 @@ function Main(props) {
             if (i === current_page) {
                 li.setAttribute("id", style.selectedItem);
             }
-            li.onclick = function () {
+            li.onclick = async function () {
                 const prev_selected = document.querySelector(
                     "#" + style["selectedItem"]
                 );
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
-                postingList(i);
+                await postingList(i);
                 navigate(`/community/page=${i}`);
+                localStorage.setItem("page", i);
             };
             pageListUl.lastChild.before(li);
         }
@@ -165,7 +167,16 @@ function Main(props) {
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
+        let p;
+        if (localStorage.getItem("page") === null) {
+            p = 1;
+        } else {
+            p = parseInt(localStorage.getItem("page"));
+        }
 
+        navigate(`/community/page=${p}`);
+        await pageList(p);
+        await postingList(p);
         await axios
             .get("/auth", {
                 headers: {
@@ -177,12 +188,6 @@ function Main(props) {
                 setLogin(true);
             })
             .catch((err) => console.log(err));
-
-        // await axios.get("/post/all", {}).then((res) => {
-        //     data = res.data;
-        // });
-        await pageList(1);
-        await postingList(1);
     };
 
     const onLeftClick = async () => {
@@ -193,6 +198,7 @@ function Main(props) {
         if (current_page !== 1) {
             await pageList(current_page - 1);
             await postingList(current_page - 1);
+            localStorage.setItem("page", current_page - 1);
             navigate(`/community/page=${current_page - 1}`);
         }
     };
@@ -209,7 +215,10 @@ function Main(props) {
         if (current_page !== parseInt(prev_selected.innerHTML)) {
             await pageList(parseInt(prev_selected.innerHTML) + 1);
             await postingList(parseInt(prev_selected.innerHTML) + 1);
-            navigate(`/community/page=${parseInt(prev_selected.innerHTML) + 1}`);
+            localStorage.setItem("page", parseInt(prev_selected.innerHTML) + 1);
+            navigate(
+                `/community/page=${parseInt(prev_selected.innerHTML) + 1}`
+            );
         }
     };
 

@@ -79,11 +79,29 @@
 }
 
 .newComment {
+    background-color: darkkhaki;
 }
+
 .writeComment {
+    margin: 1%;
+    width: 400px;
+    height: 100px;
+    border: 0;
+    outline: none;
 }
+
+.writeComment:hover {
+    outline: none;
+}
+
 .submitCommentButton {
+    margin-left: 5%;
+    display: inline;
     cursor: pointer;
+}
+
+.submitCommentButton:hover {
+    color: white;
 }
 
 .listbutton {

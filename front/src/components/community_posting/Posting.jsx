@@ -19,7 +19,6 @@ function Posting(props) {
 
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
-        console.log(title);
     };
 
     const onChange = async () => {
@@ -185,7 +184,9 @@ function Posting(props) {
     };
     const submitPosting = async (e) => {
         e.preventDefault();
-        if (isLogin) {
+        if (text === "") {
+            alert("내용을 작성해주세요.");
+        } else if (isLogin) {
             await axios
                 .post("/post", {
                     title: title,

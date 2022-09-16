@@ -25,15 +25,16 @@ export async function Posting(req, res) {
         username,
         view,
     });
-    res.status(201).json({ post });
+    return res.status(201).json({ post });
 }
 
 export async function Deleting(req, res) {
     await postRepository.deleteAll();
-    res.status(201);
+    return res.status(201);
 }
 
 export async function PostingComment(req, res) {
     const { username, content, _id } = req.body;
     await postRepository.commentPost({ username, content }, _id);
+    return res.status(201).json(req.body);
 }

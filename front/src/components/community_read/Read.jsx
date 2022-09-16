@@ -25,7 +25,6 @@ function Read(props) {
     const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
     const findWriter = async () => {
-        console.log("state:", id.state);
         await setID(id.state);
         await axios
             .get("/post", {
@@ -75,6 +74,8 @@ function Read(props) {
         e.preventDefault();
         if (!islogin) {
             alert("로그인이 필요한 기능입니다.");
+        } else if (new_comment === "") {
+            alert("내용을 작성해주세요.");
         } else {
             await axios
                 .post("/post/comment", {
@@ -83,7 +84,7 @@ function Read(props) {
                     _id: id.state,
                 })
                 .then((res) => {
-                    alert("완료");
+                    window.location.reload();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -148,7 +149,11 @@ function Read(props) {
                 </div> */}
                 {/* 댓글 */}
                 <div className={style.newComment}>
-                    <input type="text" onChange={writeComment} />
+                    <input
+                        type="text"
+                        onChange={writeComment}
+                        className={style.writeComment}
+                    />
                     <div
                         className={style.submitCommentButton}
                         onClick={submitComment}
@@ -156,10 +161,6 @@ function Read(props) {
                         댓글 작성
                     </div>
                 </div>
-            </div>
-            <div className={style.listbutton} onClick={listbutton}>
-                새로고침하면 메인화면 가지길래 이거 <br></br> 누르면 목록으로
-                돌아감 (여기 버튼말고 목록을 그냥 보여줄 수도 있을듯)
             </div>
         </div>
     );
