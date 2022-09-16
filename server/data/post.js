@@ -25,6 +25,17 @@ export async function deleteAll() {
     await Post.deleteMany({ postnum: 1 });
 }
 
+export async function deleteByID(id) {
+    await Post.deleteOne({ _id: id });
+}
+
+export async function deleteComment(id, post_id) {
+    await Comment.deleteOne({ _id: id });
+    const post = await Post.findOne({ _id: post_id });
+    post.comment.remove({ _id: id });
+    await post.save();
+}
+
 export async function commentPost(comment, comment_id) {
     const new_comment = await new Comment(comment)
         .save()

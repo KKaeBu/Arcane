@@ -16,4 +16,6 @@ router.put("/read", postController.postRead);
 
 router.delete("/delete", postController.Deleting);
 
+router.delete("/comment/delete", postController.DeletingComment);
+
 export default router;

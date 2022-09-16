@@ -21,6 +21,8 @@ function Read(props) {
     // const commentWrapper = document.querySelector(
     //     "." + style["commenttitle"]
     // );
+    //const deleteDiv = document.querySelector("." + style["delete"]);
+    const deleteDiv = useRef(null);
     const commentWrapper = useRef(null);
     const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
@@ -39,22 +41,58 @@ function Read(props) {
                 setTitle(res.data.title);
                 setLike(res.data.Like);
                 setComments(res.data.comment);
-                for (let i = 0; i < res.data.comment.length; i++) {
-                    const commentDiv = document.createElement("div");
-                    commentDiv.setAttribute("class", style.comments);
-                    const commentUserName = document.createElement("span");
-                    commentUserName.setAttribute(
-                        "class",
-                        style.commentusername
-                    );
-                    commentUserName.innerText = res.data.comment[i].username;
-                    const commentContent = document.createElement("span");
-                    commentContent.setAttribute("class", style.commentcontent);
-                    commentContent.innerText = res.data.comment[i].content;
+                if (username !== "" && login_user !== "") {
+                    for (let i = 0; i < res.data.comment.length; i++) {
+                        const commentDiv = document.createElement("div");
+                        commentDiv.setAttribute("class", style.comments);
+                        const commentUserName = document.createElement("span");
+                        commentUserName.setAttribute(
+                            "class",
+                            style.commentusername
+                        );
+                        commentUserName.innerText =
+                            res.data.comment[i].username;
 
-                    commentDiv.appendChild(commentUserName);
-                    commentDiv.appendChild(commentContent);
-                    commentWrapper.current.appendChild(commentDiv);
+                        const commentContent = document.createElement("span");
+                        commentContent.setAttribute(
+                            "class",
+                            style.commentcontent
+                        );
+                        commentContent.innerText = res.data.comment[i].content;
+
+                        if (login_user === res.data.comment[i].username) {
+                            const commentDelete =
+                                document.createElement("span");
+                            commentDelete.setAttribute(
+                                "class",
+                                style.commentDelete
+                            );
+                            commentDelete.innerText = "댓글 지우기";
+                            commentDelete.onclick = async () => {
+                                await axios
+                                    .delete("/post/comment/delete", {
+                                        data: {
+                                            _id: res.data.comment[i]._id,
+                                            post_id: id.state,
+                                        },
+                                    })
+                                    .then((res) => {
+                                        window.location.reload();
+                                    })
+                                    .catch((e) => {
+                                        console.error(e);
+                                    });
+                            };
+                            commentDiv.appendChild(commentUserName);
+                            commentDiv.appendChild(commentContent);
+                            commentDiv.appendChild(commentDelete);
+                        } else {
+                            commentDiv.appendChild(commentUserName);
+                            commentDiv.appendChild(commentContent);
+                        }
+
+                        commentWrapper.current.appendChild(commentDiv);
+                    }
                 }
             })
             .catch((error) => {
@@ -92,6 +130,21 @@ function Read(props) {
         }
     };
 
+    const deletePost = async () => {
+        await axios
+            .delete("/post/delete", {
+                data: {
+                    _id: id.state,
+                },
+            })
+            .then((res) => {
+                window.location.replace(`http://localhost:3000/community`);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    };
+
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
@@ -105,17 +158,25 @@ function Read(props) {
             .then((res) => {
                 setLoginuserName(res.data.username);
                 setLogin(true);
+                if (login_user !== "" && username !== "") {
+                    console.log(
+                        `글 작성자:${username} 로그인유저:${login_user}`
+                    );
+                    if (username === login_user) {
+                        deleteDiv.current.removeAttribute("id");
+                    }
+                }
             })
             .catch((err) => console.log(err));
     };
 
     useEffect(() => {
         isValidToken();
-    }, []);
+    }, [login_user, username]);
 
     useEffect(() => {
         findWriter();
-    }, []);
+    }, [username, login_user]);
 
     return (
         <div className={style.readWrapper}>
@@ -136,9 +197,19 @@ function Read(props) {
                     {like} people likes(하트모양 이모티콘)
                 </div>
             </div>
+            <div
+                className={style.delete}
+                onClick={deletePost}
+                id={style.invisible}
+                ref={deleteDiv}
+            >
+                글 삭제
+            </div>
             <div className={style.comment}>
-                <div className={style.commenttitle} ref={commentWrapper}>
-                    {comments.length}comments
+                <div className={style.commentmain} ref={commentWrapper}>
+                    <p className={style.commenttitle}>
+                        {comments.length}개의 댓글
+                    </p>
                 </div>
                 {/* 댓글 */}
                 {/* <div className={style.comments}>

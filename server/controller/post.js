@@ -29,12 +29,18 @@ export async function Posting(req, res) {
 }
 
 export async function Deleting(req, res) {
-    await postRepository.deleteAll();
-    return res.status(201);
+    await postRepository.deleteByID(req.body._id);
+    //await postRepository.deleteAll(); 이건다 삭제해버림
+    return res.status(201).json(req.body);
 }
 
 export async function PostingComment(req, res) {
     const { username, content, _id } = req.body;
     await postRepository.commentPost({ username, content }, _id);
+    return res.status(201).json(req.body);
+}
+
+export async function DeletingComment(req, res) {
+    await postRepository.deleteComment(req.body._id, req.body.post_id);
     return res.status(201).json(req.body);
 }
