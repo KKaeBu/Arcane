@@ -1,11 +1,5 @@
 import Mongoose from "mongoose";
 
-const userSchema = new Mongoose.Schema({
-    username: { type: String, required: true },
-    password: { type: String, require: true },
-    email: { type: String, require: true },
-});
-
 const commentSchema = new Mongoose.Schema({
     username: { type: String, required: true },
     content: { type: String, required: true },
@@ -19,6 +13,13 @@ const postSchema = new Mongoose.Schema({
     date: { type: Date, default: Date.now }, // 글 작성 일시
     view: { type: Number, required: true }, // 조회수
     comment: [commentSchema],
+});
+
+const userSchema = new Mongoose.Schema({
+    username: { type: String, required: true },
+    password: { type: String, require: true },
+    email: { type: String, require: true },
+    postlike: [postSchema],
 });
 
 export const User = Mongoose.model("User", userSchema);

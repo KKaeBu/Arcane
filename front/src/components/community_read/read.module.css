@@ -52,6 +52,13 @@
 }
 
 .delete {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.likeButton {
+    margin-left: 20%;
+    display: inline-block;
     cursor: pointer;
 }
 

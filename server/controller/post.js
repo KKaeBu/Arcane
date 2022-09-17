@@ -2,7 +2,6 @@ import * as postRepository from "../data/post.js";
 
 export async function getPost(req, res) {
     const post = await postRepository.findByID(req.headers._id);
-    console.log(post);
     return res.status(201).json(post);
 }
 
@@ -11,10 +10,21 @@ export async function getAllPost(req, res) {
     return res.status(201).json(post);
 }
 
+export async function getPostSortedByView(req, res) {
+    const post = await postRepository.findPostByView();
+    return res.status(201).json(post);
+}
+
 export async function postRead(req, res) {
     const { _id, view } = req.body;
     const post = await postRepository.updatePost(_id, view + 1);
     return res.status(201).json(await postRepository.findByID(_id));
+}
+
+export async function postLike(req, res) {
+    const { _id, like, user } = req.body;
+    await postRepository.updatePostLike(_id, like + 1, user);
+    return res.status(201).json(like + 1);
 }
 
 export async function Posting(req, res) {

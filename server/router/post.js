@@ -12,7 +12,11 @@ router.get("/", postController.getPost);
 
 router.get("/all", postController.getAllPost);
 
+router.get("/all/viewsort", postController.getPostSortedByView);
+
 router.put("/read", postController.postRead);
+
+router.put("/like", postController.postLike);
 
 router.delete("/delete", postController.Deleting);
 

@@ -12,6 +12,10 @@ function Main(props) {
     moment.tz.setDefault("Asia/Seoul");
     const navigate = useNavigate();
 
+    if (window.localStorage.getItem("sort") === null) {
+        window.localStorage.setItem("sort", "default");
+    }
+
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
     let data = []; // 게시물 object 배열
@@ -94,9 +98,17 @@ function Main(props) {
     };
 
     const pageList = async (current_page) => {
-        await axios.get("/post/all", {}).then((res) => {
-            data = res.data;
-        });
+        if (window.localStorage.getItem("sort") === "default") {
+            await axios.get("/post/all", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("최신순 정렬(default)");
+        } else if (window.localStorage.getItem("sort") === "view") {
+            await axios.get("/post/all/viewsort", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("조회수 순으로 정렬");
+        }
 
         // ***** 페이지 버튼 삭제 후 다시 생성 > 중복 생성 방지
         const pageListUl = await document.getElementById(style.pageList);
@@ -246,6 +258,13 @@ function Main(props) {
                 <div className={style.mainTopLeft}>
                     <div
                         className={`${style.listSortByNew} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "default");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+                        }}
                     >
                         최신순
                     </div>
@@ -256,15 +275,22 @@ function Main(props) {
                     </div>
                     <div
                         className={`${style.listSortByLookup} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "view");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+                        }}
                     >
                         조회순
                     </div>
-                    <div
+                    {/* <div
                         className={`${style.listSortItem}`}
                         onClick={deleteAll}
                     >
                         데이터 다 삭제(개발하는동안 실험용)
-                    </div>
+                    </div> */}
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost} onClick={writePost}>

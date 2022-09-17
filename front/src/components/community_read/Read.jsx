@@ -7,6 +7,7 @@ import TokenStorage from "../../db/token";
 import { useRef } from "react";
 
 function Read(props) {
+    const [login_user_likedpost, setLoginLikedPost] = useState([]);
     const [login_user, setLoginuserName] = useState("");
     const [islogin, setLogin] = useState(false);
     const [title, setTitle] = useState("");
@@ -22,6 +23,7 @@ function Read(props) {
     //     "." + style["commenttitle"]
     // );
     //const deleteDiv = document.querySelector("." + style["delete"]);
+    const likeDiv = useRef(null);
     const deleteDiv = useRef(null);
     const commentWrapper = useRef(null);
     const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
@@ -145,6 +147,32 @@ function Read(props) {
             });
     };
 
+    const likePost = async () => {
+        if (islogin) {
+            for (let i = 0; i < login_user_likedpost.length; i++) {
+                if (login_user_likedpost[i]._id === id.state) {
+                    alert("이미 추천한 글입니다.");
+                    return;
+                }
+            }
+            await axios
+                .put("/post/like", {
+                    _id: id.state,
+                    like: like,
+                    user: login_user,
+                })
+                .then((res) => {
+                    setLike(res.data);
+                    isValidToken();
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        } else {
+            console.log("로그인이 필요한 서비스입니다.");
+        }
+    };
+
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
@@ -156,6 +184,7 @@ function Read(props) {
                 },
             })
             .then((res) => {
+                setLoginLikedPost(res.data.postlike);
                 setLoginuserName(res.data.username);
                 setLogin(true);
                 if (login_user !== "" && username !== "") {
@@ -204,6 +233,9 @@ function Read(props) {
                 ref={deleteDiv}
             >
                 글 삭제
+            </div>
+            <div className={style.likeButton} ref={likeDiv} onClick={likePost}>
+                추천
             </div>
             <div className={style.comment}>
                 <div className={style.commentmain} ref={commentWrapper}>

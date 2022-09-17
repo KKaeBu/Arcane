@@ -1,4 +1,4 @@
-import { Comment, Post } from "../model/schema.js";
+import { Comment, Post, User } from "../model/schema.js";
 
 export async function findByID(id) {
     return Post.findOne({ _id: id });
@@ -6,6 +6,10 @@ export async function findByID(id) {
 
 export async function findAllPost() {
     return Post.find();
+}
+
+export async function findPostByView() {
+    return Post.find({}).sort({ view: 1 });
 }
 
 export async function createPost(post) {
@@ -19,6 +23,16 @@ export async function updatePost(id, newview) {
     const filter = { _id: id };
     const update = { view: newview };
     await Post.findOneAndUpdate(filter, update);
+}
+
+export async function updatePostLike(id, new_like, user) {
+    const u = await User.findOne({ username: user });
+    const post = await Post.findOne({ _id: id });
+    u.postlike.push(post);
+    const filter = { _id: id };
+    const update = { Like: new_like };
+    await Post.findOneAndUpdate(filter, update);
+    await u.save();
 }
 
 export async function deleteAll() {
