@@ -15,6 +15,11 @@ export async function getPostSortedByView(req, res) {
     return res.status(201).json(post);
 }
 
+export async function getPostSortedByLike(req, res) {
+    const post = await postRepository.findPostByLike();
+    return res.status(201).json(post);
+}
+
 export async function postRead(req, res) {
     const { _id, view } = req.body;
     const post = await postRepository.updatePost(_id, view + 1);

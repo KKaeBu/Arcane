@@ -12,6 +12,10 @@ export async function findPostByView() {
     return Post.find({}).sort({ view: 1 });
 }
 
+export async function findPostByLike() {
+    return Post.find({}).sort({ Like: 1 });
+}
+
 export async function createPost(post) {
     return new Post(post) //
         .save()

@@ -45,12 +45,20 @@ function Main(props) {
             a_title.setAttribute("class", style.titleLink);
             // eslint-disable-next-line no-loop-func
             a_title.onclick = async function () {
-                await axios.get("/post/all", {}).then((res) => {
-                    data = res.data;
-                    // *******************  조회수 증가 onClick 함수
-                    // *******************  조회수 증가시키기 전에 서버에서 조회수를 다시 받아옴
-                    // *******************  => 페이지를 켜놓은 동안에 다른 클라이언트에서 조회했을 조회수도 반영하기 위해서
-                });
+                if (window.localStorage.getItem("sort") === "default") {
+                    await axios.get("/post/all", {}).then((res) => {
+                        data = res.data;
+                    });
+                } else if (window.localStorage.getItem("sort") === "view") {
+                    await axios.get("/post/all/viewsort", {}).then((res) => {
+                        data = res.data;
+                    });
+                } else if (window.localStorage.getItem("sort") === "like") {
+                    await axios.get("/post/all/likesort", {}).then((res) => {
+                        data = res.data;
+                    });
+                }
+
                 await axios
                     .put("/post/read", {
                         _id: data[i]._id,
@@ -66,7 +74,7 @@ function Main(props) {
                         console.error(error);
                     });
             };
-            a_title.innerText = data[i].title;
+            a_title.innerText = `${data[i].title} (${data[i].Like})`;
             td_title.appendChild(a_title);
 
             const td_username = document.createElement("td");
@@ -108,6 +116,11 @@ function Main(props) {
                 data = res.data;
             });
             console.log("조회수 순으로 정렬");
+        } else if (window.localStorage.getItem("sort") === "like") {
+            await axios.get("/post/all/likesort", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("좋아요 순으로 정렬");
         }
 
         // ***** 페이지 버튼 삭제 후 다시 생성 > 중복 생성 방지
@@ -270,6 +283,13 @@ function Main(props) {
                     </div>
                     <div
                         className={`${style.listSortByLike} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "like");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+                        }}
                     >
                         추천순
                     </div>
@@ -285,12 +305,12 @@ function Main(props) {
                     >
                         조회순
                     </div>
-                    {/* <div
+                    <div
                         className={`${style.listSortItem}`}
                         onClick={deleteAll}
                     >
                         데이터 다 삭제(개발하는동안 실험용)
-                    </div> */}
+                    </div>
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost} onClick={writePost}>
