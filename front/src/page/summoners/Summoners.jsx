@@ -17,7 +17,6 @@ function Summoners()  {
         try{
             const summonerJson = await riot.getSummoner(summoner);
             setSummonerData(summonerJson);
-            console.log(summonerJson);
         }catch(e){
             console.log("not found");
             console.log(e);

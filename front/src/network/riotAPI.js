@@ -1,7 +1,7 @@
 class Riot_API {
-    // API_Key는 만료될때마다 바꿔 적어줘야함
+    // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-f542b4fe-36e8-435e-9438-96ca8deeeca3";
+    #Riot_API_Key = "RGAPI-2e3de9b5-d8a7-4d0c-b51f-91b4757e47f3";
     #Language = "ko_KR";
     #Version = "12.17.1";
     // ========= 임시로 버전 변경함
@@ -21,7 +21,7 @@ class Riot_API {
     }
 
     async getSummonerLeague(id) {
-        const link = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`;
+        const link = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${this.#Riot_API_Key}`;
         const json = getFetch(link);
         return json;
     }
@@ -85,6 +85,10 @@ class Riot_API {
 
     getVersion() {
         return this.#Version;
+    }
+
+    getApiKey() {
+        return this.#Riot_API_Key;
     }
 }
 

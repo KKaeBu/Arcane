@@ -23,6 +23,7 @@
     "mongodb": "^4.8.1",
     "mongoose": "^6.5.2",
     "morgan": "^1.10.0",
+    "request": "^2.88.2",
     "socket.io": "^4.5.1"
   },
   "devDependencies": {

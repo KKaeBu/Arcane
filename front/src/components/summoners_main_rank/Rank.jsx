@@ -1,31 +1,53 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import Riot_API from "../../network/riotAPI";
 import style from "./rank.module.css";
 
 function Rank(props) {
     const riot = new Riot_API();
-    const [leagueData, setLeagueData] = useState();
+    const [apiKey, setApiKey] = useState("");
+    const [summonerId, setSummonerId] = useState("");
+    const sumId = props.encryptedSummonerId;
 
-    const getLeague = async () => {
+    const getLeague = () => {
         try {
-            const leagueJson = await riot.getSummonerLeague(props.encryptedSummonerId);
-            console.log(leagueJson);
+            const key = riot.getApiKey();
+            setApiKey(key);
+            setSummonerId((id) => {
+                id = sumId;
+                leagueReq(id);
+                return id;
+            });
         } catch (error) {
-            console.log("error rank");
+            
         }
+    }
+
+    const leagueReq = async (id) => {
+        await axios
+            .get("/summoners", {
+                headers: {
+                    sid: id,
+                    api_key: apiKey,
+                },
+            })
+            .then((res) => {
+                console.log("잘 도착", res);
+            })
+            .catch((err) => console.log("rank error"));
     }
 
     useEffect(() => {
         getLeague();
-    }, [props]);
+    }, [sumId]);
     return (
         <div className={style.rankContainer}>
             <div className={style.soloRankWrapper}>
                 <div className={style.soloLeft}>
-
+                    <span className={style.soloTierLabel}></span>
                 </div>
                 <div className={style.soloRight}>
-
+                    {summonerId}
                 </div>
             </div>
             <div className={style.flexRankWrapper}>
