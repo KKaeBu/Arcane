@@ -27,9 +27,29 @@ export async function postRead(req, res) {
 }
 
 export async function postLike(req, res) {
-    const { _id, like, user } = req.body;
-    await postRepository.updatePostLike(_id, like + 1, user);
-    return res.status(201).json(like + 1);
+    const { _id, like, user, isliked } = req.body;
+    console.log("backend: " + isliked);
+    if (isliked) {
+        const postlike = await postRepository.updatePostLike(
+            _id,
+            like - 1,
+            user,
+            isliked
+        );
+        return res
+            .status(201)
+            .json({ like: like - 1, isliked: !isliked, postlike: postlike });
+    } else {
+        const postlike = await postRepository.updatePostLike(
+            _id,
+            like + 1,
+            user,
+            isliked
+        );
+        return res
+            .status(201)
+            .json({ like: like + 1, isliked: !isliked, postlike: postlike });
+    }
 }
 
 export async function Posting(req, res) {
@@ -49,9 +69,15 @@ export async function Deleting(req, res) {
     return res.status(201).json(req.body);
 }
 
+export async function DeleteAll(req, res) {
+    //await postRepository.deleteByUsername(req.body.username);
+    await postRepository.deleteAll(); //이건다 삭제해버림
+    return res.status(201).json(req.body);
+}
+
 export async function PostingComment(req, res) {
-    const { username, content, _id } = req.body;
-    await postRepository.commentPost({ username, content }, _id);
+    const { username, content, postid } = req.body;
+    await postRepository.commentPost({ username, content, postid }, postid);
     return res.status(201).json(req.body);
 }
 

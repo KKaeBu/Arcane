@@ -3,6 +3,7 @@ import Mongoose from "mongoose";
 const commentSchema = new Mongoose.Schema({
     username: { type: String, required: true },
     content: { type: String, required: true },
+    postid: { type: String, required: true },
 });
 
 const postSchema = new Mongoose.Schema({

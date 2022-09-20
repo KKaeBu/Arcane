@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import TokenStorage from "../../db/token";
+import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { useRef } from "react";
 
 function Read(props) {
+    const [isliked, setisLiked] = useState(false);
     const [login_user_likedpost, setLoginLikedPost] = useState([]);
     const [login_user, setLoginuserName] = useState("");
     const [islogin, setLogin] = useState(false);
@@ -121,7 +123,7 @@ function Read(props) {
                 .post("/post/comment", {
                     username: login_user,
                     content: new_comment,
-                    _id: id.state,
+                    postid: id.state,
                 })
                 .then((res) => {
                     window.location.reload();
@@ -151,7 +153,22 @@ function Read(props) {
         if (islogin) {
             for (let i = 0; i < login_user_likedpost.length; i++) {
                 if (login_user_likedpost[i]._id === id.state) {
-                    alert("이미 추천한 글입니다.");
+                    await axios
+                        .put("/post/like", {
+                            _id: id.state,
+                            like: like,
+                            user: login_user,
+                            isliked: isliked,
+                        })
+                        .then((res) => {
+                            setLike(res.data.like);
+                            console.log(res.data);
+                            setisLiked(res.data.isliked);
+                            setLoginLikedPost(res.data.postlike);
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                        });
                     return;
                 }
             }
@@ -160,10 +177,13 @@ function Read(props) {
                     _id: id.state,
                     like: like,
                     user: login_user,
+                    isliked: isliked,
                 })
                 .then((res) => {
-                    setLike(res.data);
-                    isValidToken();
+                    setLike(res.data.like);
+                    console.log(res.data);
+                    setisLiked(res.data.isliked);
+                    setLoginLikedPost(res.data.postlike);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -188,15 +208,21 @@ function Read(props) {
                 setLoginuserName(res.data.username);
                 setLogin(true);
                 if (login_user !== "" && username !== "") {
-                    console.log(
-                        `글 작성자:${username} 로그인유저:${login_user}`
-                    );
                     if (username === login_user) {
                         deleteDiv.current.removeAttribute("id");
                     }
                 }
             })
             .catch((err) => console.log(err));
+        // console.log(login_user_likedpost);
+
+        for (let i = 0; i < login_user_likedpost.length; i++) {
+            if (login_user_likedpost[i]._id === id.state) {
+                setisLiked(true);
+            } else {
+                setisLiked(false);
+            }
+        }
     };
 
     useEffect(() => {
@@ -205,7 +231,7 @@ function Read(props) {
 
     useEffect(() => {
         findWriter();
-    }, [username, login_user]);
+    }, [username, login_user, isliked]);
 
     return (
         <div className={style.readWrapper}>
@@ -222,8 +248,22 @@ function Read(props) {
                         </>
                     ))}
                 </div>
+
                 <div className={style.like}>
-                    {like} people likes(하트모양 이모티콘)
+                    <div className={style.iconBox}>
+                        {isliked === true ? (
+                            <Favorite
+                                className={style.heart}
+                                onClick={likePost}
+                            />
+                        ) : (
+                            <FavoriteBorder
+                                className={style.heart}
+                                onClick={likePost}
+                            />
+                        )}
+                    </div>
+                    {like}
                 </div>
             </div>
             <div

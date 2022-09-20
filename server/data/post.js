@@ -29,21 +29,32 @@ export async function updatePost(id, newview) {
     await Post.findOneAndUpdate(filter, update);
 }
 
-export async function updatePostLike(id, new_like, user) {
+export async function updatePostLike(id, new_like, user, isliked) {
     const u = await User.findOne({ username: user });
     const post = await Post.findOne({ _id: id });
-    u.postlike.push(post);
-    const filter = { _id: id };
-    const update = { Like: new_like };
-    await Post.findOneAndUpdate(filter, update);
-    await u.save();
+    if (isliked) {
+        u.postlike.remove({ _id: id });
+        const filter = { _id: id };
+        const update = { Like: new_like };
+        await Post.findOneAndUpdate(filter, update);
+        await u.save();
+        return u.postlike;
+    } else {
+        u.postlike.push(post);
+        const filter = { _id: id };
+        const update = { Like: new_like };
+        await Post.findOneAndUpdate(filter, update);
+        await u.save();
+        return u.postlike;
+    }
 }
 
 export async function deleteAll() {
-    await Post.deleteMany({ postnum: 1 });
+    await Comment.deleteMany({ username: "oooo" });
 }
 
 export async function deleteByID(id) {
+    await Comment.deleteOne({ post_id: id });
     await Post.deleteOne({ _id: id });
 }
 
@@ -54,13 +65,13 @@ export async function deleteComment(id, post_id) {
     await post.save();
 }
 
-export async function commentPost(comment, comment_id) {
+export async function commentPost(comment, post_id) {
     const new_comment = await new Comment(comment)
         .save()
         .then((data) => data)
         .catch((e) => console.error(e));
 
-    const post = await Post.findOne({ _id: comment_id });
+    const post = await Post.findOne({ _id: post_id });
     await post.comment.push(new_comment);
     await post.save();
 }

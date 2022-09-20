@@ -22,6 +22,8 @@ router.put("/like", postController.postLike);
 
 router.delete("/delete", postController.Deleting);
 
+router.delete("/delete/all", postController.DeleteAll);
+
 router.delete("/comment/delete", postController.DeletingComment);
 
 export default router;

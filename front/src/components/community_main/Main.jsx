@@ -74,7 +74,7 @@ function Main(props) {
                         console.error(error);
                     });
             };
-            a_title.innerText = `${data[i].title} (${data[i].Like})`;
+            a_title.innerText = `${data[i].title} (${data[i].comment.length})`;
             td_title.appendChild(a_title);
 
             const td_username = document.createElement("td");
@@ -181,9 +181,9 @@ function Main(props) {
      */
 
     const deleteAll = async () => {
-        await axios.delete("/post/delete", {
+        await axios.delete("/post/delete/all", {
             data: {
-                postnum: 1,
+                username: "oooo",
             },
             withCredentials: true,
         });
