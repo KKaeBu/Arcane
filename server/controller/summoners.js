@@ -21,5 +21,5 @@ function a(options) {
         console.log('STATUS: ' + res.statusCode);
         console.log('HEADERS: ' + JSON.stringify(res.headers));
         console.log('body: ' + body);
-    });
+    }).json(body);
 }
