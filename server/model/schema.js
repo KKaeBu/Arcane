@@ -14,6 +14,7 @@ const postSchema = new Mongoose.Schema({
     date: { type: Date, default: Date.now }, // 글 작성 일시
     view: { type: Number, required: true }, // 조회수
     comment: [commentSchema],
+    // likeuser: [{ username: { type: String } }],
 });
 
 const userSchema = new Mongoose.Schema({

@@ -28,7 +28,6 @@ export async function postRead(req, res) {
 
 export async function postLike(req, res) {
     const { _id, like, user, isliked } = req.body;
-    console.log("backend: " + isliked);
     if (isliked) {
         const postlike = await postRepository.updatePostLike(
             _id,

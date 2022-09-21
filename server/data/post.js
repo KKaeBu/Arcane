@@ -34,17 +34,21 @@ export async function updatePostLike(id, new_like, user, isliked) {
     const post = await Post.findOne({ _id: id });
     if (isliked) {
         u.postlike.remove({ _id: id });
+        // post.likeuser.remove({ username: user });
         const filter = { _id: id };
         const update = { Like: new_like };
         await Post.findOneAndUpdate(filter, update);
         await u.save();
+        await post.save();
         return u.postlike;
     } else {
         u.postlike.push(post);
+        // post.likeuser.push({ username: user });
         const filter = { _id: id };
         const update = { Like: new_like };
         await Post.findOneAndUpdate(filter, update);
         await u.save();
+        await post.save();
         return u.postlike;
     }
 }
@@ -54,7 +58,20 @@ export async function deleteAll() {
 }
 
 export async function deleteByID(id) {
-    await Comment.deleteOne({ post_id: id });
+    /* 수동으로 데이터베이스 간 참조무결성을 지켜줌 > mongoose엔 foreign key 등의 기능이 없음 */
+    const user = await User.find({});
+    console.log(user);
+    for (let i = 0; i < user.length; i++) {
+        for (let j = 0; j < user[i].postlike.length; j++) {
+            if (
+                JSON.stringify(user[i].postlike[j]._id) === JSON.stringify(id)
+            ) {
+                user[i].postlike.remove({ _id: id });
+                user[i].save();
+            }
+        }
+    }
+    await Comment.deleteMany({ postid: id });
     await Post.deleteOne({ _id: id });
 }
 
