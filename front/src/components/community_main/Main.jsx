@@ -346,16 +346,6 @@ function Main(props) {
                     {/* 개시글이 작성될때마다 동적으로 변동 */}
                     {/* 페이지당 10개씩 보이도록 */}
                     {/* 위의 선택된 정렬순서 대로 보여주기 */}
-                    {/* <tr>
-                        <td className={style.title}>
-                            <a className={style.titleLink}>
-                                어쩌구저쩌구 제목1
-                            </a>
-                        </td>
-                        <td className={style.nick}>테스트닉넴</td>
-                        <td className={style.date}>2022.33.33</td>
-                        <td className={style.view}>{viewNum}</td>
-                    </tr> */}
                 </tbody>
             </table>
 

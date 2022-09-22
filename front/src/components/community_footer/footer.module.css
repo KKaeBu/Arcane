@@ -3,6 +3,8 @@
     height: 132px;
     border: 1px solid black;
 
+    margin-right: 3%;
+    margin-left: 3%;
     /* 하단고정 */
     bottom: 0;
 
@@ -36,8 +38,7 @@
     margin-bottom: 0;
 }
 
-
-.footerCenter{
+.footerCenter {
     flex: 3;
 }
 

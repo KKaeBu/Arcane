@@ -6,6 +6,7 @@ import axios from "axios";
 import TokenStorage from "../../db/token";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { useRef } from "react";
+import moment from "moment/moment";
 
 function Read(props) {
     const [isliked, setisLiked] = useState(false);
@@ -15,6 +16,7 @@ function Read(props) {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [view, setView] = useState(0);
+    const [date, setDate] = useState("");
     const [username, setName] = useState("");
     const [user_id, setID] = useState("");
     const [like, setLike] = useState(0);
@@ -42,6 +44,7 @@ function Read(props) {
                 setName(res.data.username);
                 setView(res.data.view);
                 setText(res.data.content);
+                setDate(res.data.date);
                 setTitle(res.data.title);
                 setLike(res.data.Like);
                 setComments(res.data.comment);
@@ -162,7 +165,6 @@ function Read(props) {
                         })
                         .then((res) => {
                             setLike(res.data.like);
-                            console.log(res.data);
                             setisLiked(res.data.isliked);
                             setLoginLikedPost(res.data.postlike);
                         })
@@ -181,7 +183,6 @@ function Read(props) {
                 })
                 .then((res) => {
                     setLike(res.data.like);
-                    console.log(res.data);
                     setisLiked(res.data.isliked);
                     setLoginLikedPost(res.data.postlike);
                 })
@@ -189,7 +190,7 @@ function Read(props) {
                     console.error(e);
                 });
         } else {
-            console.log("로그인이 필요한 서비스입니다.");
+            alert("로그인이 필요한 서비스입니다.");
         }
     };
 
@@ -213,8 +214,7 @@ function Read(props) {
                     }
                 }
             })
-            .catch((err) => console.log(err));
-        // console.log(login_user_likedpost);
+            .catch((err) => console.error(err));
 
         for (let i = 0; i < login_user_likedpost.length; i++) {
             if (login_user_likedpost[i]._id === id.state) {
@@ -231,14 +231,23 @@ function Read(props) {
 
     useEffect(() => {
         findWriter();
-    }, [username, login_user, isliked]);
+    }, [username, login_user]);
 
     return (
         <div className={style.readWrapper}>
             <div className={style.read}>
                 <div className={style.titleBar}>{title}</div>
-                <div className={style.username}>{username}</div>
-                <div className={style.view}>{view} views</div>
+                <div className={style.info}>
+                    <div className={style.username}>{username}</div>
+                    <div className={style.date}>
+                        {moment(date).format("YYYY-MM-DD HH:mm")}
+                    </div>
+                    <div className={style.view}>조회 {view}</div>
+                    <div className={style.commentInfo}>
+                        댓글 {comments.length}
+                    </div>
+                </div>
+
                 <div className={style.content}>
                     {/* \n이나 <br/>태그 등 줄바꿈을 작동하도록 함 */}
                     {text.split("\n").map((txt) => (
@@ -274,13 +283,11 @@ function Read(props) {
             >
                 글 삭제
             </div>
-            <div className={style.likeButton} ref={likeDiv} onClick={likePost}>
-                추천
-            </div>
+
             <div className={style.comment}>
                 <div className={style.commentmain} ref={commentWrapper}>
                     <p className={style.commenttitle}>
-                        {comments.length}개의 댓글
+                        댓글 {comments.length}개
                     </p>
                 </div>
                 {/* 댓글 */}

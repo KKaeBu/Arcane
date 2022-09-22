@@ -1,51 +1,87 @@
+@font-face {
+    font-family: "Main";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2207-01@1.0/MabinogiClassicR.woff2")
+        format("woff2");
+}
+
 .readWrapper {
-    background-color: aqua;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
 }
 
 .read {
-    font-family: "MabinogiClassicR";
-
-    margin-top: 5%;
-    margin-bottom: 3%;
-    padding-left: 5%;
-    padding-right: 5%;
+    font-family: "Main";
 }
 
 .titleBar {
-    font-family: "MabinogiClassicR";
-    font-size: 42px;
+    margin-left: 1%;
+    font-size: 24px;
+    font-weight: bolder;
+    margin-bottom: 1%;
+}
+
+.info {
     margin-bottom: 2%;
 }
 
 .username {
-    padding-top: 2%;
-    font-family: "MabinogiClassicR";
-    text-align: right;
+    display: inline-block;
     font-size: 20px;
-    border-top: 1px solid black;
+
+    margin: 1% 2% 1% 1%;
+    /* margin-top: 1%;
+    margin-right: 2%;
+    margin-bottom: 1%;
+    margin-left: 1%; */
+    padding-right: 2%;
+
+    border-right: 1px solid black;
+}
+
+.date {
+    display: inline-block;
+    font-size: 16px;
 }
 
 .view {
-    font-family: "MabinogiClassicR";
-    text-align: right;
-    font-size: 14px;
-    opacity: 0.7;
-    margin-bottom: 5%;
+    margin-right: 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding-right: 2%;
+
+    display: inline-block;
+    font-size: 20px;
+    float: right;
+}
+
+.commentInfo {
+    display: inline-block;
+    font-size: 20px;
+
+    margin-top: 1%;
+    margin-right: 1%;
+
+    float: right;
 }
 
 .content {
-    font-family: "MabinogiClassicR";
+    padding-top: 3%;
+    padding-bottom: 2%;
+
+    border-top: 3px solid skyblue;
+
     line-height: 2em;
     font-size: 24px;
 }
 
 .like {
-    font-family: "MabinogiClassicR";
     font-size: 14px;
     text-align: center;
     margin-top: 5%;
     padding-bottom: 2%;
-    border-bottom: 1px solid black;
+    border-bottom: 3px solid skyblue;
 }
 
 .iconBox {
@@ -72,11 +108,7 @@
 }
 
 .comment {
-    margin-top: 0%;
-    margin-bottom: 5%;
-    padding-left: 5%;
-    padding-right: 5%;
-    font-family: "MabinogiClassicR";
+    font-family: "Main";
     font-size: 20px;
 }
 
@@ -95,13 +127,11 @@
 }
 
 .commentusername {
-    font-family: "MabinogiClassicR";
     text-align: left;
     font-size: 20px;
 }
 
 .commentcontent {
-    font-family: "MabinogiClassicR";
     text-align: right;
     font-size: 18px;
     margin-left: 5%;
@@ -114,7 +144,6 @@
 }
 
 .newComment {
-    background-color: darkkhaki;
 }
 
 .writeComment {
@@ -140,7 +169,6 @@
 }
 
 .listbutton {
-    font-family: "MabinogiClassicR";
     color: black;
     font-size: 20px;
     box-sizing: border-box;
