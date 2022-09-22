@@ -33,7 +33,7 @@ function Summoners()  {
             <div className={style.summonersWrapper}>
                 <Topbar />
                 <User summonerData={summonerData} />
-                <Rank encryptedSummonerId={summonerData.id}/>
+                <Rank summonerData={summonerData}/>
                 <Most />
                 <History />
             </div>

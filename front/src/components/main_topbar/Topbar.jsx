@@ -18,8 +18,9 @@ function Topbar() {
                 
         //     })
         //     .catch((e) => console.log("오류남 ㅋ"));
-        if (inputValue !== "")
-            navigate(`/summoners/${inputValue}`);
+        if (inputValue !== "") {
+            navigate(`/summoners/${inputValue}`);   
+        }
         else
             alert("소환사명을 입력해주세요!");
     };
