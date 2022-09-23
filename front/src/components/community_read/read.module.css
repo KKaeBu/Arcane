@@ -89,6 +89,7 @@
     width: max-content;
 }
 .heart {
+    font-size: 36px !important;
     color: red;
 }
 

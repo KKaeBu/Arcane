@@ -94,7 +94,8 @@ td {
 .title,
 .nick,
 .date,
-.view {
+.view,
+.like {
     vertical-align: middle;
     text-align: center;
 }

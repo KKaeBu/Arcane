@@ -97,10 +97,15 @@ function Main(props) {
             td_view.setAttribute("class", style.view);
             td_view.innerText = data[i].view;
 
+            const td_like = document.createElement("td");
+            td_like.setAttribute("class", style.like);
+            td_like.innerText = data[i].Like;
+
             tr.appendChild(td_title);
             tr.appendChild(td_username);
             tr.appendChild(td_date);
             tr.appendChild(td_view);
+            tr.appendChild(td_like);
             tbody[0].appendChild(tr);
         }
     };
@@ -340,6 +345,7 @@ function Main(props) {
                         <th>닉네임</th>
                         <th>날짜</th>
                         <th>조회수</th>
+                        <th>추천수</th>
                     </tr>
                 </thead>
                 <tbody className={style.tbody}>

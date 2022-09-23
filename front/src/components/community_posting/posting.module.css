@@ -1,12 +1,14 @@
 .postingContainer {
     width: auto;
-    
+
     border: 1px solid black;
     border-radius: 10px 10px;
 
     margin: 10px;
+    margin-left: 3%;
+    margin-right: 3%;
 
-    flex:auto;
+    flex: auto;
     display: flex;
 
     background-color: antiquewhite;
@@ -65,7 +67,6 @@
     margin-left: 2px;
 }
 
-
 /* posting main */
 .postingMainContainer {
     width: 100%;
@@ -114,7 +115,7 @@
 
     border: none;
     outline: none;
-    resize:none;
+    resize: none;
 }
 
 /* posting bottom */
