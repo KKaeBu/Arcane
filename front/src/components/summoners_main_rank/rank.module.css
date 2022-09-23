@@ -1,24 +1,32 @@
 .rankContainer {
     width: 100%;
-    height: 300px;
-    background-color: lightsalmon;
+    height: 240px;
+    background-color: #282626;
 
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 
 .soloRankWrapper,
 .flexRankWrapper {
-    background-color: lightseagreen;
-    border: 1px solid black;
+    background-color: #302E2E;
+    border: 1px solid gold;
     width: 47%;
-    height: 250px;
+    height: 205px;
     padding: 10px 0;
 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.soloRankWrapper {
+    margin-right: 10px;
+}
+
+.flexRankWrapper {
+    margin-left: 10px;
 }
 
 /* solo & flex */
@@ -33,7 +41,7 @@
 }
 
 .TierImg {
-    width: 150px;
+    width: 130px;
 }
 
 .TierLabel {

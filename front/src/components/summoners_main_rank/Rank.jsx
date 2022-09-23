@@ -5,18 +5,16 @@ import style from "./rank.module.css";
 
 function Rank(props) {
     const riot = new Riot_API();
-    const [apiKey, setApiKey] = useState("");
     const [summoner, setSummoner] = useState({});
     const [soloRank, setSoloRank] = useState({});
     const [flexRank, setFlexRank] = useState({});
+    const requestHeaders = riot.getRequestHeaders();
 
 
     const summData = props.summonerData;
 
     const getLeague = () => {
         try {
-            const key = riot.getApiKey();
-            setApiKey(key);
             setSoloRank({});
             setFlexRank({});
             setSummoner((summ) => {
@@ -33,20 +31,28 @@ function Rank(props) {
 
     /**라이엇 api로 부터 특정 유저의 랭크 정보를 불러와주고 이를 랭크별로 저장함 (axios 사용) */
     const leagueReq = async (summ) => {
-        await axios
-            .get(`https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${summ.id}?api_key=${apiKey}`)
-            .then((res) => {
-                console.log("잘 도착", res.data);
-                const rankData = res.data;
-                rankData.forEach(r => {
-                    if (r.queueType == "RANKED_SOLO_5x5") {
-                        setSoloRank(r);
-                    }
-                    setFlexRank(r);                        
-                });
+        const link = await riot.getSummonerLeague(summ.id);
+        // await axios
+        //     .get(link)
+        //     .then((res) => {
+        //         const rankData = res.data;
+        //         rankData.forEach(r => {
+        //             if (r.queueType === "RANKED_SOLO_5x5") {
+        //                 setSoloRank(r);
+        //             }
+        //             setFlexRank(r);                        
+        //         });
 
+        //     })
+        //     .catch((err) => console.log("rank error"));
+        await axios
+            .get("/summoners", {
+                headers: {apiLink: link},
             })
-            .catch((err) => console.log("rank error"));
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch(err => console.log("rank error: " + err));
     }
 
     useEffect(() => {
@@ -146,9 +152,9 @@ function calcWinRate(wins, losses) {
 /**해당 유저의 큐 타입명을 한글로 변환해줌 */
 function queueTypeConverter(queue) {
     let convertedQueue;
-    if (queue == "RANKED_SOLO_5x5")
+    if (queue === "RANKED_SOLO_5x5")
         convertedQueue = "솔로랭크";
-    else if (queue == "RANKED_FLEX_SR")
+    else if (queue === "RANKED_FLEX_SR")
         convertedQueue = "자유랭크";
     else
         convertedQueue = "Unranked";
