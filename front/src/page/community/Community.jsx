@@ -4,6 +4,8 @@ import Main from "../../components/community_main/Main.jsx";
 import Footer from "../../components/community_footer/Footer.jsx";
 import Posting from "../../components/community_posting/Posting.jsx";
 import Read from "../../components/community_read/Read.jsx";
+import Correcting from "../../components/community_correct/Correct.jsx";
+
 import { useState } from "react";
 
 function Community(props) {
@@ -25,15 +27,15 @@ function Community(props) {
                     <Main propFunction={isClick} />
                 )} */}
 
-                {
-                    props.main ? (
-                        <Main />
-                    ) : props.write ? (
-                        <Posting />
-                    ) : (
-                        <Read />
-                    )
-                }
+                {props.main ? (
+                    <Main />
+                ) : props.write ? (
+                    <Posting />
+                ) : props.correct ? (
+                    <Correcting />
+                ) : (
+                    <Read />
+                )}
 
                 <Footer />
             </div>

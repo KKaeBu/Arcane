@@ -62,6 +62,12 @@ export async function Posting(req, res) {
     return res.status(201).json({ post });
 }
 
+export async function CorrectingPost(req, res) {
+    const { title, content, _id } = req.body;
+    const post = await postRepository.updatePostContent(title, content, _id);
+    return res.status(201).json({ post });
+}
+
 export async function Deleting(req, res) {
     await postRepository.deleteByID(req.body._id);
     //await postRepository.deleteAll(); 이건다 삭제해버림

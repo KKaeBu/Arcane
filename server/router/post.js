@@ -20,6 +20,8 @@ router.put("/read", postController.postRead);
 
 router.put("/like", postController.postLike);
 
+router.put("/correct", postController.CorrectingPost);
+
 router.delete("/delete", postController.Deleting);
 
 router.delete("/delete/all", postController.DeleteAll);

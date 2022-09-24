@@ -1,14 +1,17 @@
 import style from "./read.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { useRef } from "react";
 import moment from "moment/moment";
+import { useNavigate } from "react-router-dom";
 
 function Read(props) {
+    const navigate = useNavigate();
+
     const [isliked, setisLiked] = useState(false);
     const [login_user_likedpost, setLoginLikedPost] = useState([]);
     const [login_user, setLoginuserName] = useState("");
@@ -30,6 +33,7 @@ function Read(props) {
     const likeDiv = useRef(null);
     const deleteDiv = useRef(null);
     const commentWrapper = useRef(null);
+    const correctDiv = useRef(null);
     const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
     const findWriter = async () => {
@@ -194,6 +198,12 @@ function Read(props) {
         }
     };
 
+    const correctPost = async () => {
+        navigate(`/community/correct/${id.state}`, {
+            state: id.state,
+        });
+    };
+
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
@@ -211,6 +221,7 @@ function Read(props) {
                 if (login_user !== "" && username !== "") {
                     if (username === login_user) {
                         deleteDiv.current.removeAttribute("id");
+                        correctDiv.current.removeAttribute("id");
                     }
                 }
             })
@@ -282,6 +293,14 @@ function Read(props) {
                 ref={deleteDiv}
             >
                 글 삭제
+            </div>
+            <div
+                className={style.correct}
+                onClick={correctPost}
+                id={style.invisible}
+                ref={correctDiv}
+            >
+                수정
             </div>
 
             <div className={style.comment}>
