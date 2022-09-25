@@ -88,9 +88,20 @@
     margin: 0 auto;
     width: max-content;
 }
+
 .heart {
     font-size: 36px !important;
+
+    display: inline-block;
+
+    transform: scale(1);
+    transition: all ease 0.5s;
     color: red;
+}
+
+.heart:hover {
+    transform: scale(1.2);
+    transition: all ease 0.5s;
 }
 
 #invisible {
@@ -99,12 +110,46 @@
 
 .delete {
     display: inline-block;
+    margin-top: 3%;
+    padding: 0.5%;
+    border-radius: 20%;
+
+    transform: scale(1);
+    transition: all ease 0.3s;
+
+    font-family: "Main";
+    font-size: 15px;
+
     cursor: pointer;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.delete:hover {
+    transform: scale(1.2);
 }
 
 .correct {
     display: inline-block;
+    margin-top: 3%;
+    margin-left: 3%;
+    padding: 0.5%;
+    border-radius: 20%;
+
+    transform: scale(1);
+    transition: all ease 0.3s;
+
+    font-family: "Main";
+    font-size: 15px;
+
     cursor: pointer;
+    background-color: lightblue;
+
+    cursor: pointer;
+}
+
+.correct:hover {
+    transform: scale(1.2);
 }
 
 .likeButton {
@@ -144,20 +189,40 @@
 }
 
 .commentDelete {
-    margin-left: 5%;
+    display: inline-block;
+
+    margin-left: 3%;
+    padding: 0.5%;
+    border-radius: 20%;
+
+    transform: scale(1);
+    transition: all ease 0.3s;
+
     font-size: 15px;
+
     cursor: pointer;
+    background-color: lightblue;
+}
+
+.commentDelete:hover {
+    transform: scale(1.2);
 }
 
 .newComment {
 }
 
 .writeComment {
+    padding: 1%;
     margin: 1%;
     width: 400px;
-    height: 100px;
+    height: 50px;
+
+    font-family: "Main";
+    font-size: 18px;
+
     border: 0;
     outline: none;
+    background-color: beige;
 }
 
 .writeComment:hover {
@@ -165,13 +230,13 @@
 }
 
 .submitCommentButton {
-    margin-left: 5%;
+    margin-left: 1%;
     display: inline;
     cursor: pointer;
 }
 
 .submitCommentButton:hover {
-    color: white;
+    color: darkorange;
 }
 
 .listbutton {

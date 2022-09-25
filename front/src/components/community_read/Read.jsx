@@ -61,6 +61,7 @@ function Read(props) {
                             "class",
                             style.commentusername
                         );
+
                         commentUserName.innerText =
                             res.data.comment[i].username;
 
@@ -78,7 +79,7 @@ function Read(props) {
                                 "class",
                                 style.commentDelete
                             );
-                            commentDelete.innerText = "댓글 지우기";
+                            commentDelete.innerText = "댓글 삭제";
                             commentDelete.onclick = async () => {
                                 await axios
                                     .delete("/post/comment/delete", {
@@ -322,6 +323,8 @@ function Read(props) {
                         type="text"
                         onChange={writeComment}
                         className={style.writeComment}
+                        placeholder="내용을 입력해 주세요. (최대 50자)"
+                        maxLength={50}
                     />
                     <div
                         className={style.submitCommentButton}
