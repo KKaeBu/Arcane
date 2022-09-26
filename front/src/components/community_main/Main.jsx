@@ -74,12 +74,22 @@ function Main(props) {
                         console.error(error);
                     });
             };
-            a_title.innerText = `${data[i].title} (${data[i].comment.length})`;
+            if (data[i].title.length > 20) {
+                a_title.innerText = `${data[i].title.substr(0, 20)}... (${
+                    data[i].comment.length
+                })`;
+            } else {
+                a_title.innerText = `${data[i].title} (${data[i].comment.length})`;
+            }
             td_title.appendChild(a_title);
 
             const td_username = document.createElement("td");
             td_username.setAttribute("class", style.nick);
-            td_username.innerText = data[i].username;
+            if (data[i].username.length > 8) {
+                td_username.innerText = `${data[i].username.substr(0, 7)}...`;
+            } else {
+                td_username.innerText = data[i].username;
+            }
 
             const td_date = document.createElement("td");
             td_date.setAttribute("class", style.date);

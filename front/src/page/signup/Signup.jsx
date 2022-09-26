@@ -72,10 +72,11 @@ function Signup() {
                 <div className={style.loginRight}>
                     <form className={style.loginBox} onSubmit={onSubmit}>
                         <input
-                            placeholder="아이디"
+                            placeholder="아이디 (최대 10자)"
                             className={style.logoinInput}
                             id="username"
                             onChange={changeUsername}
+                            maxLength={10}
                         />
                         <input
                             placeholder="이메일"
