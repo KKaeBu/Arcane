@@ -17,29 +17,59 @@ function Most(props) {
         setSummoner(async (summ) => {
             summ = summData;
             if (summ) {
-                await getMatchIdList(summ.puuid);
-                printchamp(summ);
+                await getMatchIdList(summ);
             }
             return summ;
         })
     }
 
-    const getMatchIdList = async (puuid) => {
+    const getMatchIdList = async (summ) => {
+        const puuid = summ.puuid;
+        if (!puuid)
+            return;
+        
         const link = await riot.getMatchIdList(puuid, 0, 20);
+        // await axios
+        //     .get(link)
+        //     .then((res) => {
+        //         console.log(res.data);
+        //         setMatchIdList(res.data);
+        //     })
+        //     .catch(err => console.log("Most error: " + err));
         await axios
-            .get(link)
+            .get("/summoners", {
+                headers: { link: link },
+            })
             .then((res) => {
                 console.log(res.data);
-                setMatchIdList(res.data);
+                setMatchIdList(list => {
+                    list = res.data;
+                    printchamp(list, summ);
+                });
             })
-            .catch(err => console.log("Most error: " + err));
+            .catch(err => console.log("most error: " + err));
     }
 
-    const printchamp = (summ) => {
-        matchIdList.forEach(async (m) => {
-            const link = riot.getMatchInfo(m);
+    const printchamp = (list, summ) => {
+        console.log("matchIdList: " + list);
+        list.forEach(async (m) => {
+            const link = await riot.getMatchInfo(m);
+            console.log("most link: " + link);
+            // await axios
+            //     .get(link)
+            //     .then((res) => {
+            //         const participants = res.data.info.participants;
+            //         participants.forEach(p => {
+            //             if (p.summonerName === summ.name) {
+            //                 console.log(p.championName);
+            //                 return;
+            //             }
+            //         });
+            //     }).catch(err => console.log("Most print error: " + err));
             await axios
-                .get(link)
+                .get("/summoners", {
+                    headers: { link: link },
+                })
                 .then((res) => {
                     const participants = res.data.info.participants;
                     participants.forEach(p => {
@@ -47,8 +77,9 @@ function Most(props) {
                             console.log(p.championName);
                             return;
                         }
-                    });
-                }).catch(err => console.log("Most print error: " + err));
+                    })
+                })
+                .catch(err => console.log("most print err: " + err));
         });
     }
 

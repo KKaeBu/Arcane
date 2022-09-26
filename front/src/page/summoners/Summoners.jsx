@@ -34,7 +34,7 @@ function Summoners()  {
                 <Topbar />
                 <User summonerData={summonerData} />
                 <Rank summonerData={summonerData}/>
-                {/* <Most summonerData={summonerData}/> */}
+                <Most summonerData={summonerData}/>
                 <History />
             </div>
         </div>

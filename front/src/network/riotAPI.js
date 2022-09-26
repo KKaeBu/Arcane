@@ -1,7 +1,7 @@
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-596a7bea-04be-4495-b273-a983e9b9a846";
+    #Riot_API_Key = "RGAPI-da2f931d-d1aa-4fb0-b708-45356ed7e1a2";
     #Language = "ko_KR";
     #Version = "12.17.1";
     #headers = {
@@ -9,10 +9,12 @@ class Riot_API {
         "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
         "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
         "Access-Control-Request-Headers": "content-type",
-        'Access-Control-Allow-Origin': "*",
+        'Access-Control-Allow-Origin': true,
         "Origin": "http://localhost:5000/",
         "X-Riot-Token": this.#Riot_API_Key
     }
+
+
     // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
@@ -36,7 +38,7 @@ class Riot_API {
 
     /**puuid값을 가진 소환사의 start(가장 최근에서 몇번째 게임, default = 0)부터 count(알고싶은 게임 전적의 수, 최대 100, default = 20)개까지의 전적 id 리스트 */
     async getMatchIdList(puuid, start, count) {
-        const link = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}?api_key=${this.#Riot_API_Key}`;
+        const link = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${this.#Riot_API_Key}`;
         return link;
     }
 
