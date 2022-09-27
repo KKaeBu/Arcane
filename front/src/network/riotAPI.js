@@ -1,7 +1,7 @@
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-da2f931d-d1aa-4fb0-b708-45356ed7e1a2";
+    #Riot_API_Key = "RGAPI-e7bea1f3-07c5-4a2b-81b7-49caf3a0af8c";
     #Language = "ko_KR";
     #Version = "12.17.1";
     #headers = {

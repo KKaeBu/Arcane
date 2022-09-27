@@ -5,47 +5,25 @@ import style from "./rank.module.css";
 
 function Rank(props) {
     const riot = new Riot_API();
-    const [summoner, setSummoner] = useState({});
     const [soloRank, setSoloRank] = useState({});
     const [flexRank, setFlexRank] = useState({});
-    const requestHeaders = riot.getRequestHeaders();
-
 
     const summData = props.summonerData;
 
-    const getLeague = () => {
+    const getLeague = async () => {
         try {
             setSoloRank({});
             setFlexRank({});
-            setSummoner((summ) => {
-                summ = summData;
-                if (summ) {
-                    leagueReq(summ);
-                }
-                return summ;
-            });
+            if(summData)
+                await leagueReq();
         } catch (error) {
             
         }
     }
 
     /**라이엇 api로 부터 특정 유저의 랭크 정보를 불러와주고 이를 랭크별로 저장함 (axios 사용) */
-    const leagueReq = async (summ) => {
-        const link = await riot.getSummonerLeague(summ.id);
-        // 직접적으로 riot 서버로 데이터 요정하기 (cors 오류)
-        // await axios
-        //     .get(link)
-        //     .then((res) => {
-        //         const rankData = res.data;
-        //         rankData.forEach(r => {
-        //             if (r.queueType === "RANKED_SOLO_5x5") {
-        //                 setSoloRank(r);
-        //             }
-        //             setFlexRank(r);                        
-        //         });
-
-        //     })
-        //     .catch((err) => console.log("rank error"));
+    const leagueReq = async () => {
+        const link = await riot.getSummonerLeague(summData.id);
         
         // 서버를 통해서 riot 서버로 데이터 요청하기
         await axios
