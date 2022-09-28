@@ -67,7 +67,6 @@ export async function deleteAll() {
 export async function deleteByID(id) {
     /* 수동으로 데이터베이스 간 참조무결성을 지켜줌 > mongoose엔 foreign key 등의 기능이 없음 */
     const user = await User.find({});
-    console.log(user);
     for (let i = 0; i < user.length; i++) {
         for (let j = 0; j < user[i].postlike.length; j++) {
             if (
@@ -78,6 +77,7 @@ export async function deleteByID(id) {
             }
         }
     }
+
     await Comment.deleteMany({ postid: id });
     await Post.deleteOne({ _id: id });
 }

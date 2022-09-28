@@ -1,5 +1,10 @@
 import style from "./main.module.css";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +28,7 @@ function Main(props) {
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
+    const listSortItem = document.getElementsByClassName(style.listSortItem);
 
     const isLastPage = (page) => {
         if (parseInt((data.length - 1) / 15) === page - 1) {
@@ -39,6 +45,7 @@ function Main(props) {
             i--
         ) {
             const tr = document.createElement("tr");
+            tr.setAttribute("class", style.list);
             const td_title = document.createElement("td");
             td_title.setAttribute("class", style.title);
             const a_title = document.createElement("a");
@@ -126,16 +133,19 @@ function Main(props) {
                 data = res.data;
             });
             console.log("최신순 정렬(default)");
+            listSortItem[0].setAttribute("id", style.selectedSort);
         } else if (window.localStorage.getItem("sort") === "view") {
             await axios.get("/post/all/viewsort", {}).then((res) => {
                 data = res.data;
             });
             console.log("조회수 순으로 정렬");
+            listSortItem[2].setAttribute("id", style.selectedSort);
         } else if (window.localStorage.getItem("sort") === "like") {
             await axios.get("/post/all/likesort", {}).then((res) => {
                 data = res.data;
             });
-            console.log("좋아요 순으로 정렬");
+            console.log("추천 순으로 정렬");
+            listSortItem[1].setAttribute("id", style.selectedSort);
         }
 
         // ***** 페이지 버튼 삭제 후 다시 생성 > 중복 생성 방지
@@ -292,9 +302,17 @@ function Main(props) {
                             await postingList(1);
                             localStorage.setItem("page", 1);
                             navigate(`/community/page=${1}`);
+
+                            listSortItem[0].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[1].removeAttribute("id");
+                            listSortItem[2].removeAttribute("id");
                         }}
                     >
-                        최신순
+                        <AccessTimeIcon className={style.clockIcon} />{" "}
+                        &nbsp;최신순
                     </div>
                     <div
                         className={`${style.listSortByLike} ${style.listSortItem}`}
@@ -304,9 +322,17 @@ function Main(props) {
                             await postingList(1);
                             localStorage.setItem("page", 1);
                             navigate(`/community/page=${1}`);
+
+                            listSortItem[1].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[0].removeAttribute("id");
+                            listSortItem[2].removeAttribute("id");
                         }}
                     >
-                        추천순
+                        <LocalFireDepartmentIcon className={style.fireIcon} />
+                        &nbsp;추천순
                     </div>
                     <div
                         className={`${style.listSortByLookup} ${style.listSortItem}`}
@@ -316,20 +342,29 @@ function Main(props) {
                             await postingList(1);
                             localStorage.setItem("page", 1);
                             navigate(`/community/page=${1}`);
+
+                            listSortItem[2].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[1].removeAttribute("id");
+                            listSortItem[0].removeAttribute("id");
                         }}
                     >
-                        조회순
+                        <VisibilityIcon className={style.eyeIcon} />
+                        &nbsp;조회순
                     </div>
-                    <div
+                    {/* <div
                         className={`${style.listSortItem}`}
                         onClick={deleteAll}
                     >
                         데이터 다 삭제(개발하는동안 실험용)
-                    </div>
+                    </div> */}
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost} onClick={writePost}>
-                        글쓰기
+                        <EditIcon className={style.pencilIcon} />
+                        &nbsp;글쓰기
                     </div>
                 </div>
             </div>

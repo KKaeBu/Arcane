@@ -5,10 +5,19 @@
 }
 
 .readWrapper {
-    margin-top: 5%;
+    background-color: white;
+    box-shadow: 0 0 3px black;
+
+    margin: 5% 3% 3% 3%;
+    /* margin-top: 5%;
     margin-bottom: 3%;
-    padding-left: 3%;
+    margin-left: 3%;
+    margin-right: 3%; */
+
+    padding: 3% 3% 0 3%;
+    /* padding-left: 3%;
     padding-right: 3%;
+    padding-top: 3%; */
 }
 
 .read {
@@ -73,7 +82,7 @@
     border-top: 3px solid skyblue;
 
     line-height: 2em;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .like {
@@ -90,18 +99,16 @@
 }
 
 .heart {
-    font-size: 36px !important;
-
     display: inline-block;
 
-    transform: scale(1);
-    transition: all ease 0.5s;
+    font-size: 36px !important;
+    transition: all ease 0.3s !important;
+
     color: red;
 }
 
 .heart:hover {
-    transform: scale(1.2);
-    transition: all ease 0.5s;
+    transform: scale(1.3);
 }
 
 #invisible {
@@ -120,7 +127,6 @@
     font-family: "Main";
     font-size: 15px;
 
-    cursor: pointer;
     background-color: lightblue;
     cursor: pointer;
 }

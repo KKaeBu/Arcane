@@ -1,7 +1,7 @@
 .mainContainer {
     width: auto;
-    border: 1px solid black;
-    border-radius: 10px 10px;
+    /* border: 1px solid black;
+    border-radius: 10px 10px; */
 
     margin: 10px;
     margin-right: 3%;
@@ -12,14 +12,15 @@
     display: flex;
     flex-direction: column;
 
-    background-color: antiquewhite;
+    background-color: white;
+    box-shadow: 0 0 3px black;
 }
 
 /* main Top */
 .mainTop {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
 
     margin: 5px 5px;
     margin-top: 10px;
@@ -28,19 +29,25 @@
 .mainTopLeft,
 .mainTopRight {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
+
+    color: rgb(180, 180, 180);
+}
+
+.mainTopLeft {
+    width: 300px;
 }
 
 /* main Cneter */
-.listSortItem,
-.writePost {
-    border: 1px solid black;
-    border-radius: 3px 3px;
-    margin-left: 5px;
-    padding: 2px 2px;
+.listSortItem {
+    font-size: 14px !important;
+    display: flex;
+    text-align: center;
 
-    cursor: pointer;
+    /* width: 100px; */
+    font-weight: bolder;
+    border: 0;
 }
 
 .listSortItem:first-child {
@@ -48,17 +55,37 @@
 }
 
 .listSortItem:hover {
-    background-color: red;
+    cursor: pointer;
+    color: red;
+}
+
+#selectedSort {
+    color: red;
+}
+
+.eyeIcon,
+.clockIcon,
+.fireIcon,
+.pencilIcon {
+    font-size: 18px !important;
+}
+
+.writePost {
+    margin-left: 5px;
+    padding: 2px 2px;
+    align-items: center;
+
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .writePost:hover {
-    background-color: mediumspringgreen;
+    color: black;
 }
 
 .mainMiddle {
-    border: 1px solid black;
+    border-top: 1px solid rgb(235, 235, 235);
 
-    margin: 5px 5px;
     margin-top: 10px;
 
     border-collapse: collapse;
@@ -71,8 +98,16 @@
 
 th,
 td {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(235, 235, 235);
     padding: 10px;
+}
+
+.list {
+    font-size: 14px;
+}
+
+.list:hover {
+    background-color: rgb(250, 250, 250);
 }
 
 .title {
@@ -88,7 +123,7 @@ td {
 }
 
 .titleLink:hover {
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
 }
 
 .title,
