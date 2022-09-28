@@ -23,24 +23,14 @@ function Rank(props) {
 
     /**라이엇 api로 부터 특정 유저의 랭크 정보를 불러와주고 이를 랭크별로 저장함 (axios 사용) */
     const leagueReq = async () => {
-        const link = await riot.getSummonerLeague(summData.id);
-        
-        // 서버를 통해서 riot 서버로 데이터 요청하기
-        await axios
-            .get("/summoners", {
-                headers: {link: link},
-            })
-            .then((res) => {
-                const rankData = res.data;
-                rankData.forEach(r => {
-                    if (r.queueType === "RANKED_SOLO_5x5") {
-                        setSoloRank(r);
-                    } else {
-                        setFlexRank(r);
-                    }
-                });
-            })
-            .catch(err => console.log("rank error: " + err));
+        const rankData = await riot.getSummonerLeague(summData.id);
+        rankData.forEach(r => {
+            if (r.queueType === "RANKED_SOLO_5x5") {
+                setSoloRank(r);
+            } else {
+                setFlexRank(r);
+            }
+        });
     }
 
     useEffect(() => {

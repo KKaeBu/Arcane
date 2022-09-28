@@ -1,7 +1,10 @@
+import axios from "axios";
+
+
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-e7bea1f3-07c5-4a2b-81b7-49caf3a0af8c";
+    #Riot_API_Key = "RGAPI-929ba89e-5a03-488d-8640-df4dac6f4f3c";
     #Language = "ko_KR";
     #Version = "12.17.1";
     #headers = {
@@ -15,37 +18,55 @@ class Riot_API {
     }
 
 
-    // ========= 임시로 버전 변경함
+    // 롤 api를 사용하는 함수들
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
-    // 소환사명 필요
+    /**소환사명을 통해서 라이엇으로부터 해당 소환사 정보 불러오기 (id, puuid, account id, username, ....) */
     async getSummoner(username) {
-        const sunmmoners_api =
-            "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
-        const link =
-            sunmmoners_api + username + "?api_key=" + this.#Riot_API_Key;
-        const json = getFetch(link);
+        const link = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}?api_key=${this.#Riot_API_Key}`;
+        const json = await getAPI(link);
         return json;
     }
 
-    async getSummonerProfileIcon(iconNum) {
-        return `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/profileicon/${iconNum}.png`;
-    }
-
+    /**소환사 고유 id값을 통해 해당 소환사가 속한 리그의 정보를 불러오기 (솔로랭크, 자유랭크) */
     async getSummonerLeague(id) {
         const link = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${this.#Riot_API_Key}`;
-        return link;
+        const data = await getAPIwithServer(link);
+        return data;
     }
 
     /**puuid값을 가진 소환사의 start(가장 최근에서 몇번째 게임, default = 0)부터 count(알고싶은 게임 전적의 수, 최대 100, default = 20)개까지의 전적 id 리스트 */
     async getMatchIdList(puuid, start, count) {
         const link = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${this.#Riot_API_Key}`;
-        return link;
+        const data = await getAPIwithServer(link);
+        return data;
     }
 
     /**해당 matchId를 가진 경기의 결과 정보들을 불러와줌 */
     async getMatchInfo(matchId) {
         const link = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${this.#Riot_API_Key}`;
-        return link;
+        const data = await getAPIwithServer(link);
+        return data;
+    }
+
+    /**모든 매치에서 참가한 유저들의 리스트를 배열로 하여 반환해줌 */
+    async getMatchInfoParticipantsList(matchIdLsit) {
+        let participatnsArr = new Array();
+        matchIdLsit.forEach(m => {
+            
+        });
+    }
+
+
+
+    // ===================================================================================================================================================================
+
+
+
+    // Ddragon을 사용하여 데이터를 가져오는 함수들
+
+
+    async getSummonerProfileIcon(iconNum) {
+        return `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/profileicon/${iconNum}.png`;
     }
 
     // 모든 챔피언 정보 불러오기
@@ -53,8 +74,8 @@ class Riot_API {
         const link = `http://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/data/${this.#Language}/champion.json`;
-        const json = getFetch(link);
-        return json;
+        const data = getFetch(link);
+        return data;
     }
 
     // 특정 챔피언 일러스트 불러오기
@@ -120,6 +141,29 @@ class Riot_API {
 
 async function getFetch(link) {
     return (await fetch(link)).json();
+}
+
+/**axios를 사용하여 해당 link의 api를 불러옴 */
+async function getAPI(link) {
+    let data;
+    await axios
+        .get(link)
+        .then(res => data=res.data)
+        .catch(err => console.log("getAPI error: " + err));
+
+    return data;
+}
+
+async function getAPIwithServer(link){
+    let data;
+    await axios
+        .get("/summoners", {
+            headers: {link: link},
+        })
+        .then((res) => data=res.data)
+        .catch(err => console.log("getAPIwithServer error: " + err));
+
+    return data;
 }
 
 export default Riot_API;
