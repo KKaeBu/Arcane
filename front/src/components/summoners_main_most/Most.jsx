@@ -38,7 +38,10 @@ function Most(props) {
     //     }
     // }
 
-    const printchamp = async () => {
+    const printchamp = async (matchIdListData) => {
+        const participantsList = await riot.getMatchInfoParticipantsList(matchIdListData);
+        console.log(participantsList);
+
 
     }
 

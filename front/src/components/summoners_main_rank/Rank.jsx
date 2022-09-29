@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Riot_API from "../../network/riotAPI";
 import style from "./rank.module.css";

@@ -4,7 +4,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-929ba89e-5a03-488d-8640-df4dac6f4f3c";
+    #Riot_API_Key = "RGAPI-fe08e834-1009-41f9-a8b5-7c5cff337624";
     #Language = "ko_KR";
     #Version = "12.17.1";
     #headers = {
@@ -51,9 +51,12 @@ class Riot_API {
     /**모든 매치에서 참가한 유저들의 리스트를 배열로 하여 반환해줌 */
     async getMatchInfoParticipantsList(matchIdLsit) {
         let participatnsArr = new Array();
-        matchIdLsit.forEach(m => {
-            
+        await matchIdLsit.forEach(async (m) => {
+            const link = `https://asia.api.riotgames.com/lol/match/v5/matches/${m}?api_key=${this.#Riot_API_Key}`;
+            const data = await getAPIwithServer(link);
+            participatnsArr.push(data.info.participants);
         });
+
     }
 
 
@@ -126,6 +129,16 @@ class Riot_API {
     //     return json.data[champion_id];
     // }
 
+    async getQueueType() {
+        const link = "https://static.developer.riotgames.com/docs/lol/queues.json";
+        const json = await getFetch(link);
+        return json;
+    }
+
+
+// =================================================================================================================
+    
+
     getVersion() {
         return this.#Version;
     }
@@ -137,6 +150,7 @@ class Riot_API {
     getRequestHeaders() {
         return this.#headers;
     }
+
 }
 
 async function getFetch(link) {
@@ -155,15 +169,19 @@ async function getAPI(link) {
 }
 
 async function getAPIwithServer(link){
-    let data;
-    await axios
-        .get("/summoners", {
-            headers: {link: link},
-        })
-        .then((res) => data=res.data)
-        .catch(err => console.log("getAPIwithServer error: " + err));
+    // let data;
+    // await axios
+    //     .get("/summoners", {
+    //         headers: {link: link},
+    //     })
+    //     .then((res) => data=res.data)
+    //     .catch(err => console.log("getAPIwithServer error: " + err));
+    
+    let data = await axios.get("/summoners", { headers: { link: link } });
+    if (!data)
+        throw new Error("getAPIwithServer error");
 
-    return data;
+    return await data.data;
 }
 
 export default Riot_API;

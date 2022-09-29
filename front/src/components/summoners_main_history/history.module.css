@@ -1,0 +1,204 @@
+.historyContainer {
+    background-color: darksalmon;
+}
+
+/* Topbar */
+.historyTopbar {
+    background-color: bisque;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid black;
+    padding: 3px 0;
+}
+
+.sortBtn {
+    border: 1px solid black;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 17px;
+    margin-left: 10px;
+    padding: 2px;
+
+    cursor: pointer;
+}
+
+.sortBtn:first-child {
+    margin-left: 3px;
+}
+
+.sortBtn:hover {
+    background-color: aqua;
+}
+
+/* MatchBox */
+.matchHistory {
+    background-color: rgb(188, 216, 149);
+    padding: 0;
+}
+
+.matchInfoBox {
+    background-color: peru;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    margin: 8px 4px;
+}
+
+/* matchBox Left */
+.infoLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* matchBox Left To Middle */
+.infoLeftToMiddle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.championIcon {
+    width: 70px;
+    height: 70px;
+    background-color: red;
+    border: 1px solid black;
+    border-radius: 4px;
+
+    position: relative;
+}
+
+.championLevel {
+    width: max-content;
+    height: max-content;
+    background-color: gray;
+    padding: 0 5px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: white;
+
+    border: 1px solid black;
+
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spellBox,
+.runeBox {
+    margin-left: 2px;
+}
+
+.spellD,
+.spellF {
+    width: 34px;
+    height: 34px;
+    background-color: brown;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.spellD {
+    margin-bottom: 1px;
+}
+
+.spellF {
+    margin-top: 1px;
+}
+
+.mainRune,
+.subRune {
+    width: 34px;
+    height: 34px;
+    background-color: green;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.mainRune {
+    margin-bottom: 1px;
+}
+
+.subRune {
+    margin-top: 1px;
+}
+
+/* matchBox Middle */
+.infoMiddle1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.itemBuild {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+
+    width: 110px;
+}
+
+.item {
+    width: 34px;
+    height: 34px;
+    background-color: yellow;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.wardItem {
+    background-color: cornflowerblue;
+}
+
+.infoMiddle2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* matchBox Middle To Right */
+.infoMiddleToRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* matchBox Right */
+.infoRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+}
+
+.blueTeams,
+.redTeams {
+    padding-left: 30px;
+}
+
+.blueTeams {
+    padding: 0;
+}
+
+
+.summoner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playedChampionImg {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: blue;
+}   
