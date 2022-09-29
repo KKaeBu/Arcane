@@ -4,9 +4,11 @@ import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useNavigate } from "react-router-dom";
+import { history } from "./../../history";
 
 function Posting(props) {
     const navigate = useNavigate();
+
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
@@ -16,6 +18,8 @@ function Posting(props) {
     const postingMain = document.getElementById("postingMain");
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
+
+    const [isblocking, setBlocking] = useState(false);
 
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
@@ -172,11 +176,7 @@ function Posting(props) {
 
     const cancelPosting = () => {
         if (
-            window.confirm(
-                "변경 사항이 저장되지 않을 수도 있습니다." +
-                    "\n" +
-                    "진행하시겠습니까?"
-            )
+            window.confirm("변경 사항이 저장되지 않습니다.\n진행하시겠습니까?")
         ) {
             // props.propFunction(false);
             navigate("/community");
@@ -226,13 +226,32 @@ function Posting(props) {
         isValidToken();
     }, []);
 
+    useEffect(() => {
+        const preventGoBack = () => {
+            window.history.pushState(null, "", window.location.href);
+
+            if (
+                window.confirm(
+                    "변경 사항이 저장되지 않습니다.\n진행하시겠습니까?"
+                )
+            ) {
+                navigate("/community");
+            }
+        };
+        window.history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", preventGoBack);
+
+        return () => window.removeEventListener("popstate", preventGoBack);
+    }, []);
+
     return (
         <div className={style.postingContainer}>
             <div action="" className={style.postingWrapper}>
                 <input
                     className={style.postingTitle}
-                    placeholder="제목"
+                    placeholder="제목을 입력해주세요. (최대 30자)"
                     onChange={onChangeTitle}
+                    maxLength={30}
                 ></input>
                 <div className={style.postingAttach}>
                     {/* input과 label을 연결해 input은 숨기고 label을 input으로 활용 */}
@@ -267,9 +286,10 @@ function Posting(props) {
                             id="postingText"
                             cols="30"
                             rows="10"
-                            placeholder="내용을 입력해 주세요."
+                            placeholder="내용을 입력해 주세요. (최대 500자)"
                             className={style.postingText}
                             onChange={textUpdate}
+                            maxLength={500}
                         ></textarea>
                     </div>
                 </div>
