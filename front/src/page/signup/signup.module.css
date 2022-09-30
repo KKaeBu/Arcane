@@ -42,16 +42,54 @@
     justify-content: space-between;
 }
 
-.logoinInput {
+.loginInput {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     height: 50px;
     border-radius: 10px;
     border: 1px solid gray;
     font-size: 18px;
     padding-left: 20px;
+    padding-right: 20px;
 }
 
-.logoinInput:focus {
+.loginInput:focus {
     outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
+
+.loginInputDiv {
+    width: 80%;
+    height: 50px;
+    border: 0;
+    font-size: 18px;
+
+    background-color: transparent;
+}
+
+.loginInputDiv:focus {
+    outline: none;
+}
+
+.viewIcon {
+    align-items: center;
+}
+/* 
+.viewIcon:hover {
+    opacity: 0.5;
+} */
+
+#halfTransparent {
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .loginButton {
@@ -107,7 +145,7 @@
     border-radius: 50%;
     border: 2px solid gray;
 
-    color: gray
+    color: gray;
 }
 
 .homeIcon {

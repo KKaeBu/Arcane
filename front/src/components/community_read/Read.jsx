@@ -143,18 +143,20 @@ function Read(props) {
     };
 
     const deletePost = async () => {
-        await axios
-            .delete("/post/delete", {
-                data: {
-                    _id: id.state,
-                },
-            })
-            .then((res) => {
-                window.location.replace(`http://localhost:3000/community`);
-            })
-            .catch((e) => {
-                console.error(e);
-            });
+        if (window.confirm("삭제 후 복구는 불가능합니다. 삭제하시겠습니까?")) {
+            await axios
+                .delete("/post/delete", {
+                    data: {
+                        _id: id.state,
+                    },
+                })
+                .then((res) => {
+                    window.location.replace(`http://localhost:3000/community`);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
     };
 
     const likePost = async () => {

@@ -3,6 +3,12 @@
     /* font-family: "Roboto", sans-serif; */
     box-sizing: border-box;
 }
+/* 
+body {
+    cursor: url(https://raw.communitydragon.org/latest/game/assets/ux/cursors/hand1.png)
+            20 30,
+        grab;
+} */
 
 @font-face {
     font-family: "MabinogiClassicR";

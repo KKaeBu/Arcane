@@ -1,9 +1,5 @@
 .postingContainer {
     width: auto;
-
-    border: 1px solid black;
-    border-radius: 10px 10px;
-
     margin: 10px;
     margin-left: 3%;
     margin-right: 3%;
@@ -11,7 +7,8 @@
     flex: auto;
     display: flex;
 
-    background-color: antiquewhite;
+    background-color: white;
+    box-shadow: 0 0 3px black;
 }
 
 .postingWrapper {
@@ -25,12 +22,22 @@
 
 /* posting title */
 .postingTitle {
-    font-size: 18px;
+    font-size: 14px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 1.5%;
     margin-bottom: 5px;
+
+    border-radius: 10px 10px;
+
+    border: 0;
+    background-color: rgb(235, 235, 235);
 }
 
 /* posting attach */
 .postingAttach {
+    margin: 1% 0% 1% 0%;
+
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -73,9 +80,9 @@
 
     flex: 1;
 
-    border: 1px solid rgb(133, 133, 133);
-
-    background-color: white;
+    border-radius: 10px 10px;
+    border: 0;
+    background-color: rgb(235, 235, 235);
 
     display: flex;
     justify-content: center;
@@ -116,6 +123,8 @@
     border: none;
     outline: none;
     resize: none;
+
+    background-color: rgb(235, 235, 235);
 }
 
 /* posting bottom */
@@ -139,12 +148,22 @@
     letter-spacing: 10px;
 
     cursor: pointer;
+
+    transition: all ease 0.2s;
 }
 
 .cancelBtn {
     background-color: tomato;
 }
 
+.cancelBtn:hover {
+    transform: scale(1.1);
+}
+
 .completeBtn {
     background-color: rgb(79, 140, 244);
+}
+
+.completeBtn:hover {
+    transform: scale(1.1);
 }

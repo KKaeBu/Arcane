@@ -50,6 +50,7 @@
 
 .skillsIcon,
 #skillIcon {
+    display: none;
 }
 
 .passiveIcon,
@@ -98,6 +99,18 @@
 .skill_tooltip {
     font-family: LOLFontlight;
     font-size: 12px;
+}
+
+.skillswrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.passiveSkill {
+    width: 80%;
+    margin: auto;
+
+    background-color: white;
 }
 
 @keyframes fadein {

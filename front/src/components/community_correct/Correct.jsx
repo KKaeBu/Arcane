@@ -5,6 +5,7 @@ import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment/moment";
+import { useRef } from "react";
 
 function Correcting(props) {
     moment.tz.setDefault("Asia/Seoul");
@@ -20,11 +21,9 @@ function Correcting(props) {
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
 
-    const id = useLocation();
+    const posting_title = useRef(null);
 
-    const onChangeTitle = (e) => {
-        setTitle(e.target.value);
-    };
+    const id = useLocation();
 
     const onChange = async () => {
         const fileInput = document.getElementById("files");
@@ -215,7 +214,9 @@ function Correcting(props) {
             window.alert("로그인이 필요한 기능입니다.");
         }
     };
-
+    const titleClick = () => {
+        window.alert("제목은 수정할 수 없습니다.");
+    };
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
@@ -254,9 +255,9 @@ function Correcting(props) {
                 <input
                     className={style.postingTitle}
                     placeholder="제목"
-                    onChange={onChangeTitle}
                     defaultValue={title}
-                    disabled
+                    onClick={titleClick}
+                    readOnly
                 ></input>
                 <div className={style.postingAttach}>
                     {/* input과 label을 연결해 input은 숨기고 label을 input으로 활용 */}

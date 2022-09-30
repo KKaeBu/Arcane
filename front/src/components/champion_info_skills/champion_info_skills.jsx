@@ -1,7 +1,7 @@
 import style from "./champion_info_skills.module.css";
 import { useParams } from "react-router-dom";
 import Riot from "../../network/riotAPI.js";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 
 function ChampionSkills() {
@@ -27,6 +27,7 @@ function ChampionSkills() {
     const [skill_r, setR] = useState({});
 
     const [champion_key, setKey] = useState({});
+    const passiveskilldiv = useRef(null);
 
     const getChamp = async () => {
         const json = await riot.getChampion(id);
@@ -204,6 +205,20 @@ function ChampionSkills() {
         rInfoDiv.appendChild(r_name);
         rInfoDiv.appendChild(r_description);
         rInfoDiv.appendChild(r_tooltip);
+
+        const q_video = document.createElement("video");
+        q_video.setAttribute("controls", "");
+        q_video.setAttribute("width", "300");
+        const q_source = document.createElement("source");
+        q_source.setAttribute(
+            "src",
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_P1.webm`
+        );
+        q_source.setAttribute("type", "video/webm");
+
+        q_video.appendChild(q_source);
+
+        passiveskilldiv.current.appendChild(q_video);
     };
 
     useEffect(() => {
@@ -218,6 +233,13 @@ function ChampionSkills() {
         <>
             <div className={style.skills}>
                 <p className={style.skillsTitle}>Skills</p>
+                <div className={style.skillswrapper}>
+                    <div className={style.passiveSkill} ref={passiveskilldiv}>
+                        <p>패시브 - {skill_passive.name}</p>
+                        <div></div>
+                    </div>
+                </div>
+                {/* ============================================================================ */}
                 <div className={style.skillsIcon}>
                     <div className={style.passiveIcon}>
                         <div className={style.passiveInfo}></div>
@@ -234,7 +256,8 @@ function ChampionSkills() {
                     <div className={style.rIcon}>
                         <div className={style.rInfo}></div>
                     </div>
-                </div>
+                </div>{" "}
+                {/* ============================================================================ */}
             </div>
         </>
     );
