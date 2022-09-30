@@ -4,9 +4,9 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-fe08e834-1009-41f9-a8b5-7c5cff337624";
+    #Riot_API_Key = "RGAPI-b5a61df3-3ed8-4964-bccd-769f3c939aa1";
     #Language = "ko_KR";
-    #Version = "12.17.1";
+    #Version = "12.18.1";
     #headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
         "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -86,6 +86,11 @@ class Riot_API {
     async getChampionIllustration(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_0.jpg`;
     }
+
+    async getChampionSquareAssetsLink(champion) {
+        return `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/champion/${champion}.png`
+    }
+
     // 특정 챔피언 정보 불러오기
     async getChampion(champion_id) {
         const link = `http://ddragon.leagueoflegends.com/cdn/${
@@ -135,6 +140,59 @@ class Riot_API {
         return json;
     }
 
+    async getAllSpell() {
+        const link = `https://ddragon.leagueoflegends.com/cdn/${this.#Version}/data/${this.#Language}/summoner.json`;
+        const json = await getFetch(link);
+        return json;
+    }
+
+    async getSpellImgLink(img) {
+        const link = `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/spell/${img}`;
+        return link;
+    }
+
+    async getAllRunes() {
+        const link = `https://ddragon.leagueoflegends.com/cdn/${this.#Version}/data/${this.#Language}/runesReforged.json`;
+        const json = await getFetch(link);
+        return json;
+    }
+
+    /**룬 이름을 통해 메인 룬 이미지를 가져옴 (파라미터 순서는 큰 틀의 룬명, 세부적인 룬명) */
+    async getMainRuneImgLink(rune, detailRune) {
+        const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRune}.png`
+        return link;
+    }
+
+    /**룬 이름을 통해 서브 룬 이미지를 가져옴 (룬 마다의 번호 값이 다르기에 룬 이름에 따라 번호값을 설정해둠) */
+    async getSubRuneImgLink(rune) {
+        let number;
+        switch (rune) {
+            case "Domination":
+                number = "7200";
+                break;
+            case "Precision":
+                number = "7201";
+                break;
+            case "Sorcery":
+                number = "7202";
+                break;
+            case "Whimsy":
+                number = "7203";
+                break;
+            case "Resolve":
+                number = "7204";
+                break;
+            default:
+                number = 0;
+                break;
+        }
+
+        if (number === 0)
+            return `https://ddragon.canisback.com/img/perk-images/Styles/RunesIcon.png`;
+        
+        const link = `https://ddragon.canisback.com/img/perk-images/Styles/${number}_${rune}.png`;
+        return link;
+    }
 
 // =================================================================================================================
     
@@ -152,6 +210,10 @@ class Riot_API {
     }
 
 }
+
+
+// ===========================================================================================
+
 
 async function getFetch(link) {
     return (await fetch(link)).json();
