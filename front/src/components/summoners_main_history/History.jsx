@@ -35,12 +35,20 @@ function History(props) {
         const participants = data.info.participants; // 게임에 참여한 10명의 해당 게임내의 정보 배열
         const queueId = data.info.queueId; // 해당게임의 큐 타입 아이디값
         const queueDate = Unix_timestamp(data.info.gameCreation); // 해당 게임이 진행된 날짜
+        const time = calcPlayedTime(data.info.gameStartTimestamp, data.info.gameEndTimestamp); // 해당 게임의 플레이 시간
+
         let myTeam; // 해당 게임에서 내가 속한 팀의 번호 (100: blue, 200: red)
         let win = "패배"; // 해당 게임에서 승리 여부
         let champion; // 해당 게임에서 내가 플레이한 챔피언
         let champLevel; //해당 게임에서 내가 플레이한 챔피언의 최종 레벨
         let spells; //해당 게임에서 내가 사용한 소환사 스펠 정보 (2개: D, F), Array
         let runes; // 해당 게임에서 내가 사용한 룬 정보 (3개: 메인룬, 메인룬의 세부룬, 서브의메인룬), Array
+        let items; // 해당 게임에서 내가 최종적으로 사용한 아이템6개 + 토템(와드, 렌즈, 망원형), Array
+        let kills; // 해당 게임에서 내가 한 kill 스코어
+        let deaths; // 해당 게임에서 내가 한 death 스코어
+        let assists; // 해당 게임에서 내가 한 assist 스코어
+        let kda; // 해당 게임에서 내가 기록한 kda
+        let cs; // 해당 게임에서 내가 기록 한 cs 개수 (neutralMinionsKilled: 몬스터 + totalMinionsKilled: 미니언)
 
         let queueType; //해당 게임의 큐타입
 
@@ -55,6 +63,9 @@ function History(props) {
         // 내가 속한 팀의 번호 확인
         // 내가 플레이한 챔프 확인
         // 내가 플레이한 챔프 레벨 확인
+        // 내가 사용한 스펠 정보 확인
+        // 내가 사용한 룬 정보 확인
+        // 내가 기록한 K/D/A확인
         // 승리 여부 확인
         for (const p in participants) {
             if (participants[p].summonerId === summData.id) {
@@ -67,17 +78,41 @@ function History(props) {
                     participants[p].perks.styles[0].selections[0].perk,
                     participants[p].perks.styles[1].style
                 );
+                items = [
+                    participants[p].item0,
+                    participants[p].item1,
+                    participants[p].item2,
+                    participants[p].item3,
+                    participants[p].item4,
+                    participants[p].item5,
+                    participants[p].item6
+                ];
+                kills = participants[p].kills;
+                deaths = participants[p].deaths
+                assists = participants[p].assists;
+                kda = participants[p].challenges.kda;
+                cs = participants[p].neutralMinionsKilled + participants[p].totalMinionsKilled;
                 if (participants[p].win)
                     win = "승리";
                 break;
             }
         }
 
+        console.log(items);
+
         li.setAttribute("class", style.matchInfoBox);
-        createBoxLeft(li, queueType, win, queueDate);
-        createBoxLeftToMiddle(li, champion, champLevel, spells, runes);
+        const boxLeft = await createBoxLeft(li, queueType, win, queueDate);
+        const boxLeftToMiddle = await createBoxLeftToMiddle(li, champion, champLevel, spells, runes);
+        const boxMiddle1 = await createBoxMiddle1(li, items);
+        const boxMiddle2 = await createBoxMiddle2(li, kills, deaths, assists, kda, cs);
+        const boxMiddleToRight = await createBoxMiddleToRight(time);
 
         console.log(queueType);
+        li.appendChild(boxLeft);
+        li.appendChild(boxLeftToMiddle);
+        li.appendChild(boxMiddle1);
+        li.appendChild(boxMiddle2);
+        li.appendChild(boxMiddleToRight);
 
         matchHistory.appendChild(li);
     }
@@ -122,21 +157,79 @@ function History(props) {
         return runes;
     }
 
-    const createBoxLeft = (li, qType, win, qDate) => {
+    /**gStartTime: ms, gCreateTime: ms, gDurationTime: s */
+    const calcPlayedTime = (gStartTime, gEndTime) => {
+        const gst = new Date(gStartTime);
+        const get = new Date(gEndTime);
+
+        // 플레이시간 중 초 구하기
+        const pSeconds = get.getSeconds() - gst.getSeconds();
+        // 플레이 시간중 분 구하기
+        const pMinutes = get.getMinutes() - gst.getMinutes();
+        // 플레이 시간중 시 구하기
+        const pHours = get.getHours() - gst.getHours();
+        // 게임 시작 날짜 중 일
+        const gsDays = gst.getDay();
+        // 게임 종료 날짜 중 일
+        const geDays = get.getDay();
+
+        let resultSeconds;
+        let resultMinutes;
+        let resultHours;
+
+        resultHours = pHours;
+        if (pHours < 0)
+            resultHours = pHours + 12;
+        resultMinutes = pMinutes;
+        resultSeconds = pSeconds;
+
+        if (pMinutes < 0) {
+            resultHours -= 1;
+            resultMinutes += 60;
+        }
+
+        if (pSeconds < 0) {
+            resultMinutes -= 1;
+            if (resultMinutes < 0) {
+                resultHours -= 1;
+                resultMinutes += 60;
+            }
+            resultSeconds += 60;
+        }
+        
+        let resultTime = "";
+        if (resultHours !== 0) {
+            resultTime = resultHours.toString();
+            if (resultHours < 10)
+                resultTime = "0" + resultHours.toString() + "시간 ";
+        }
+
+        resultTime += resultMinutes.toString() + "분 " + resultSeconds.toString() + "초";
+
+        return resultTime;
+    }
+
+    const createBoxLeft = async (li, qType, win, qDate) => {
+        // 요소 생성
         const div = document.createElement("div");
         const spanQueue = document.createElement("span");
         const spanWin = document.createElement("span");
         const spanDate = document.createElement("span");
 
+        // 속성 부여
         div.setAttribute("class", style.infoLeft);
+
+        // 값 설정
         spanQueue.innerText = qType;
         spanWin.innerText = win;
         spanDate.innerText = qDate;
+
+        // 부모 자식 설정
         div.appendChild(spanQueue);
         div.appendChild(spanWin);
         div.appendChild(spanDate);
 
-        li.appendChild(div);
+        return div;
     }
 
     const createBoxLeftToMiddle = async (li, champion, champLevel, spells, runes) => {
@@ -201,7 +294,80 @@ function History(props) {
         infoLeftToMiddle.appendChild(spellBox);
         infoLeftToMiddle.appendChild(runeBox);
 
-        li.appendChild(infoLeftToMiddle);
+        return infoLeftToMiddle;
+    }
+
+    const createBoxMiddle1 = async (li, items) => {
+        // 요소 생성
+        const infoMiddle1 = document.createElement("div");
+        const itemBuild = document.createElement("ul");
+        const wardItem = document.createElement("img");
+
+        // 속성 부여
+        infoMiddle1.setAttribute("class", style.infoMiddle1);
+        itemBuild.setAttribute("class", style.itemBuild);
+        wardItem.setAttribute("class", `${style.item} ${style.wardItem}`);
+
+        for (const i in items) {
+            const item = document.createElement("li");
+            const itemImg = document.createElement("img");
+            const link = await riot.getItemImgLink(items[i]);
+            if (parseInt(i) === items.length - 1) {
+                wardItem.setAttribute("src", link);
+                break;
+            }
+
+            item.setAttribute("class", style.item);
+            itemImg.setAttribute("class", style.itemImg);
+            itemImg.setAttribute("alt", "item Img");
+            itemImg.setAttribute("src", link);
+
+            item.appendChild(itemImg);
+            itemBuild.appendChild(item);
+        }
+
+        infoMiddle1.appendChild(itemBuild);
+        infoMiddle1.appendChild(wardItem);
+
+        return infoMiddle1;
+    }
+
+    const createBoxMiddle2 = async (li, kills, deaths, assists, kda, cs) => {
+        // 요소 생성
+        const infoMiddle2 = document.createElement("div");
+        const kdaLabel = document.createElement("span");
+        const kdaScoreLabel = document.createElement("span");
+        const csLabel = document.createElement("span");
+
+        // 값 조정
+        const calcKDA = Math.round((kda + Number.EPSILON) * 100) / 100;
+
+        // 속성 부여
+        infoMiddle2.setAttribute("class", style.infoMiddle2);
+        kdaLabel.innerText = `${kills} / ${deaths} / ${assists}`;
+        kdaScoreLabel.innerText = `평점: ${calcKDA}`;
+        csLabel.innerText = `CS: ${cs}`;
+
+        infoMiddle2.appendChild(kdaLabel);
+        infoMiddle2.appendChild(kdaScoreLabel);
+        infoMiddle2.appendChild(csLabel);
+
+        return infoMiddle2;
+    }
+
+    const createBoxMiddleToRight = async (time) => {
+        // 요소 생성
+        const infoMiddleToRight = document.createElement("div");
+        const span = document.createElement("span");
+
+        // 속성 부여
+        infoMiddleToRight.setAttribute("class", style.infoMiddleToRight);
+        span.innerText = time;
+
+        // 부모 자식 설정
+        infoMiddleToRight.appendChild(span);
+
+        return infoMiddleToRight;
     }
 
     useEffect(() => {
@@ -228,7 +394,7 @@ function History(props) {
                         <div className={style.championIcon}>
                             {/* <img src={profileLink} alt="userProfile" className={style.profileIcon} /> */}
                             <div className={style.championImg}></div>
-                            <div>
+                            <div className={style.levelWrapper}>
                                 <span className={style.championLevel}>18</span>
                             </div>
                         </div>

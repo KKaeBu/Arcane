@@ -4,7 +4,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-b5a61df3-3ed8-4964-bccd-769f3c939aa1";
+    #Riot_API_Key = "RGAPI-6fc8d712-d789-4bf2-a2ed-f7004ced2844";
     #Language = "ko_KR";
     #Version = "12.18.1";
     #headers = {
@@ -159,7 +159,13 @@ class Riot_API {
 
     /**룬 이름을 통해 메인 룬 이미지를 가져옴 (파라미터 순서는 큰 틀의 룬명, 세부적인 룬명) */
     async getMainRuneImgLink(rune, detailRune) {
-        const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRune}.png`
+        // 치명적인 속도룬의 이미지 파일명은 이렇게 되어있음;;
+        let detailRunePng = detailRune;
+        if (detailRune === "LethalTempo") {
+            detailRunePng = "LethalTempoTemp";
+        }
+        console.log("rune: " + rune + ", " + "detailRune: " + detailRune);
+        const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`
         return link;
     }
 
@@ -191,6 +197,19 @@ class Riot_API {
             return `https://ddragon.canisback.com/img/perk-images/Styles/RunesIcon.png`;
         
         const link = `https://ddragon.canisback.com/img/perk-images/Styles/${number}_${rune}.png`;
+        return link;
+    }
+
+    // ddragon에서 모든 아이템 정보에 관한 json 파일을 반환
+    async getAllItem() {
+        const link = `https://ddragon.leagueoflegends.com/cdn/${this.#Version}/data/${this.#Language}/item.json`;
+        const json = getFetch(link);
+        return json;
+    }
+
+    // ddragon에서 해당 아이템에 대한 img 링크 반환
+    async getItemImgLink(item) {
+        const link = `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/item/${item}.png`;
         return link;
     }
 
