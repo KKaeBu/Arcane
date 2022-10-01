@@ -201,9 +201,7 @@ function Correcting(props) {
                         )}에 수정됨`,
                     _id: id.state,
                 })
-                .then((res) => {
-                    console.log(`수정됨: ${res.data}`);
-                })
+                .then((res) => {})
                 .catch((error) => {
                     console.error(error);
                 });

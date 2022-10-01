@@ -9,96 +9,11 @@
     background-color: beige;
 }
 
-#invisible {
-    display: none;
-}
-/* 안보이는 설정 */
-
 /* 스킬 아이콘 이미지 */
 .skillsTitle {
     font-size: xx-large;
     font-family: "LOLFontBold";
     margin-bottom: 5%;
-}
-.championIcon {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 5px solid white;
-    margin: 1%;
-    position: relative;
-}
-/* 챔피언 초상화 이미지 */
-
-/* 챔피언 초상화, 스킬아이콘 Div들의 상위 Div */
-
-.championName {
-}
-
-.championNameSpan {
-    margin-bottom: 1%;
-    font-size: 38px;
-    font-weight: bolder;
-}
-
-.titleSpan {
-    font-weight: bold;
-    font-size: 24px;
-    font-style: italic;
-}
-/* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
-
-.skillsIcon,
-#skillIcon {
-    display: none;
-}
-
-.passiveIcon,
-.qIcon,
-.wIcon,
-.eIcon,
-.rIcon {
-    margin: 0.5%;
-    position: relative;
-    display: inline-block;
-}
-/* 스킬아이콘들이 들어가있는 Div안의 Div */
-
-.passiveInfo,
-.qInfo,
-.wInfo,
-.eInfo,
-.rInfo {
-    color: white;
-    border-radius: 5%;
-    background-color: black;
-
-    position: absolute;
-    display: inline;
-    z-index: 100;
-    min-width: 200px;
-    width: 300px;
-
-    left: 30%;
-    top: 80%;
-    padding-bottom: 20px;
-
-    animation: fadein 0.3s;
-}
-/* 스킬 상세 정보 창 */
-
-.skill_name {
-    font-family: LOLFontlight;
-    font-size: 18px;
-    line-height: 2;
-}
-.skill_description {
-    font-family: LOLFontlight;
-    font-size: 15px;
-}
-.skill_tooltip {
-    font-family: LOLFontlight;
-    font-size: 12px;
 }
 
 .skillswrapper {
@@ -113,6 +28,50 @@
     background-color: white;
 }
 
+.QSkill {
+    width: 80%;
+    margin: auto;
+
+    background-color: white;
+}
+
+.WSkill {
+    width: 80%;
+    margin: auto;
+
+    background-color: white;
+}
+
+.ESkill {
+    width: 80%;
+    margin: auto;
+
+    background-color: white;
+}
+
+.RSkill {
+    width: 80%;
+    margin: auto;
+
+    background-color: white;
+}
+
+.skillName {
+}
+
+.skillDescriptionDiv {
+    display: flex;
+}
+
+.skillImg {
+}
+
+.skillDescription {
+}
+
+.skillVideo {
+}
+
 @keyframes fadein {
     from {
         opacity: 0;
@@ -121,3 +80,8 @@
         opacity: 1;
     }
 }
+
+#invisible {
+    display: none;
+}
+/* 안보이는 설정 */

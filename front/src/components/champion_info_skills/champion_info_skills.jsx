@@ -8,256 +8,220 @@ function ChampionSkills() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
     const { id } = useParams();
 
-    const passiveIconDiv = document.querySelector("." + style["passiveIcon"]);
-    const qIconDiv = document.querySelector("." + style["qIcon"]);
-    const wIconDiv = document.querySelector("." + style["wIcon"]);
-    const eIconDiv = document.querySelector("." + style["eIcon"]);
-    const rIconDiv = document.querySelector("." + style["rIcon"]);
+    const passiveDiv = useRef(null);
+    const passiveName = useRef(null);
+    const passiveDescription = useRef(null);
 
-    const qInfoDiv = document.querySelector("." + style["qInfo"]);
-    const wInfoDiv = document.querySelector("." + style["wInfo"]);
-    const eInfoDiv = document.querySelector("." + style["eInfo"]);
-    const rInfoDiv = document.querySelector("." + style["rInfo"]);
-    const passiveInfoDiv = document.querySelector("." + style["passiveInfo"]);
+    const QDiv = useRef(null);
+    const QName = useRef(null);
+    const QDescription = useRef(null);
 
-    const [skill_passive, setPassive] = useState({});
-    const [skill_q, setQ] = useState({});
-    const [skill_w, setW] = useState({});
-    const [skill_e, setE] = useState({});
-    const [skill_r, setR] = useState({});
+    const WDiv = useRef(null);
+    const WName = useRef(null);
+    const WDescription = useRef(null);
 
-    const [champion_key, setKey] = useState({});
-    const passiveskilldiv = useRef(null);
+    const EDiv = useRef(null);
+    const EName = useRef(null);
+    const EDescription = useRef(null);
 
-    const getChamp = async () => {
+    const RDiv = useRef(null);
+    const RName = useRef(null);
+    const RDescription = useRef(null);
+
+    const showSkills = async () => {
         const json = await riot.getChampion(id);
         // 해당 페이지 챔피언의 id를 통해 챔피언 객체 저장
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
-        setPassive(info.passive);
-        setQ(info.spells[0]);
-        setW(info.spells[1]);
-        setE(info.spells[2]);
-        setR(info.spells[3]);
-        if (info.key < 10) {
-            setKey("000" + info.key);
-        } else if (info.key < 100) {
-            setKey("00" + info.key);
-        } else if (info.key < 1000) {
-            setKey("0" + info.key);
-        }
-        // 각 스킬의 정보를 저장
-    };
 
-    const showSkills = async () => {
+        var champion_key;
+        if (info.key < 10) {
+            champion_key = "000" + info.key;
+        } else if (info.key < 100) {
+            champion_key = "00" + info.key;
+        } else if (info.key < 1000) {
+            champion_key = "0" + info.key;
+        }
+        console.log(info);
+
+        /* 패시브 */
+        passiveName.current.innerText = `패시브 - ${info.passive.name}`;
         const passive_img = document.createElement("img");
         passive_img.setAttribute(
             "src",
-            riot.getPassiveIcon(skill_passive["image"]["full"])
+            riot.getPassiveIcon(info.passive.image.full)
         );
-        passive_img.setAttribute("id", style.skillIcon);
-
-        const q_img = document.createElement("img");
-        q_img.setAttribute("src", riot.getSkillIcon(skill_q.id));
-        q_img.setAttribute("id", style.skillIcon);
-        const w_img = document.createElement("img");
-        w_img.setAttribute("src", riot.getSkillIcon(skill_w.id));
-        w_img.setAttribute("id", style.skillIcon);
-        const e_img = document.createElement("img");
-        e_img.setAttribute("src", riot.getSkillIcon(skill_e.id));
-        e_img.setAttribute("id", style.skillIcon);
-        const r_img = document.createElement("img");
-        r_img.setAttribute("src", riot.getSkillIcon(skill_r.id));
-        r_img.setAttribute("id", style.skillIcon);
-        // 각 Div에 skill 이미지 append => 이미지들 개별적인 Div에 들어감
-        passiveIconDiv.appendChild(passive_img);
-        qIconDiv.appendChild(q_img);
-        wIconDiv.appendChild(w_img);
-        eIconDiv.appendChild(e_img);
-        rIconDiv.appendChild(r_img);
-        // ********** 까지 img 설정
-        // ********** 부터 skill text 설정
-        const passive_name = document.createElement("p");
-        passive_name.setAttribute("class", style.skill_name);
-        passive_name.innerHTML = skill_passive.name;
+        passive_img.setAttribute("class", style.skillImg);
         const passive_description = document.createElement("p");
-        passive_description.setAttribute("class", style.skill_description);
-        passive_description.innerHTML = skill_passive.description;
-        const q_name = document.createElement("p");
-        q_name.setAttribute("class", style.skill_name);
-        q_name.innerHTML = skill_q.name;
-        const q_description = document.createElement("p");
-        q_description.setAttribute("class", style.skill_description);
-        q_description.innerHTML = skill_q.description;
-        const q_tooltip = document.createElement("p");
-        q_tooltip.innerHTML = skill_q.tooltip;
-        q_tooltip.setAttribute("class", style.skill_tooltip);
-        const w_name = document.createElement("p");
-        w_name.setAttribute("class", style.skill_name);
-        w_name.innerHTML = skill_w.name;
-        const w_description = document.createElement("p");
-        w_description.setAttribute("class", style.skill_description);
-        w_description.innerHTML = skill_w.description;
-        const w_tooltip = document.createElement("p");
-        w_tooltip.innerHTML = skill_w.tooltip;
-        w_tooltip.setAttribute("class", style.skill_tooltip);
-        const e_name = document.createElement("p");
-        e_name.setAttribute("class", style.skill_name);
-        e_name.innerHTML = skill_e.name;
-        const e_description = document.createElement("p");
-        e_description.setAttribute("class", style.skill_description);
-        e_description.innerHTML = skill_e.description;
-        const e_tooltip = document.createElement("p");
-        e_tooltip.innerHTML = skill_e.tooltip;
-        e_tooltip.setAttribute("class", style.skill_tooltip);
-        const r_name = document.createElement("p");
-        r_name.setAttribute("class", style.skill_name);
-        r_name.innerHTML = skill_r.name;
-        const r_description = document.createElement("p");
-        r_description.setAttribute("class", style.skill_description);
-        r_description.innerHTML = skill_r.description;
-        const r_tooltip = document.createElement("p");
-        r_tooltip.innerHTML = skill_r.tooltip;
-        r_tooltip.setAttribute("class", style.skill_tooltip);
-        passiveInfoDiv.setAttribute("id", style.invisible);
-        qInfoDiv.setAttribute("id", style.invisible);
-        wInfoDiv.setAttribute("id", style.invisible);
-        eInfoDiv.setAttribute("id", style.invisible);
-        rInfoDiv.setAttribute("id", style.invisible);
-        // 마우스 hover 효과를 이벤트리스너를 통해 구현
-        passiveIconDiv.addEventListener("mouseover", function () {
-            passiveInfoDiv.removeAttribute("id", style.invisible);
-        });
-        passiveIconDiv.addEventListener("mouseout", function () {
-            passiveInfoDiv.setAttribute("id", style.invisible);
-        });
-        passiveIconDiv.addEventListener("click", function () {
-            window.open(
-                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_P1.webm`,
-                "",
-                "_blank"
-            );
-        });
-        qIconDiv.addEventListener("mouseover", function () {
-            qInfoDiv.removeAttribute("id", style.invisible);
-        });
-        qIconDiv.addEventListener("mouseout", function () {
-            qInfoDiv.setAttribute("id", style.invisible);
-        });
-        qIconDiv.addEventListener("click", function () {
-            window.open(
-                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_Q1.webm`,
-                "",
-                "_blank"
-            );
-        });
-        wIconDiv.addEventListener("mouseover", function () {
-            wInfoDiv.removeAttribute("id", style.invisible);
-        });
-        wIconDiv.addEventListener("mouseout", function () {
-            wInfoDiv.setAttribute("id", style.invisible);
-        });
-        wIconDiv.addEventListener("click", function () {
-            window.open(
-                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_W1.webm`,
-                "",
-                "_blank"
-            );
-        });
-        eIconDiv.addEventListener("mouseover", function () {
-            eInfoDiv.removeAttribute("id", style.invisible);
-        });
-        eIconDiv.addEventListener("mouseout", function () {
-            eInfoDiv.setAttribute("id", style.invisible);
-        });
-        eIconDiv.addEventListener("click", function () {
-            window.open(
-                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_E1.webm`,
-                "",
-                "_blank"
-            );
-        });
-        rIconDiv.addEventListener("mouseover", function () {
-            rInfoDiv.removeAttribute("id", style.invisible);
-        });
-        rIconDiv.addEventListener("mouseout", function () {
-            rInfoDiv.setAttribute("id", style.invisible);
-        });
-        rIconDiv.addEventListener("click", function () {
-            window.open(
-                `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_R1.webm`,
-                "",
-                "_blank"
-            );
-        });
+        passive_description.setAttribute("class", style.passiveDescription);
+        passive_description.innerText = info.passive.description;
 
-        passiveInfoDiv.appendChild(passive_name);
-        passiveInfoDiv.appendChild(passive_description);
-        qInfoDiv.appendChild(q_name);
-        qInfoDiv.appendChild(q_description);
-        qInfoDiv.appendChild(q_tooltip);
-        wInfoDiv.appendChild(w_name);
-        wInfoDiv.appendChild(w_description);
-        wInfoDiv.appendChild(w_tooltip);
-        eInfoDiv.appendChild(e_name);
-        eInfoDiv.appendChild(e_description);
-        eInfoDiv.appendChild(e_tooltip);
-        rInfoDiv.appendChild(r_name);
-        rInfoDiv.appendChild(r_description);
-        rInfoDiv.appendChild(r_tooltip);
+        passiveDescription.current.appendChild(passive_img);
+        passiveDescription.current.appendChild(passive_description);
+
+        const p_video = document.createElement("video");
+        p_video.setAttribute("class", style.skillVideo);
+        p_video.setAttribute("controls", "");
+        p_video.setAttribute("width", "300");
+        const p_source = document.createElement("source");
+        p_source.setAttribute(
+            "src",
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_P1.webm`
+        );
+        p_source.setAttribute("type", "video/webm");
+        p_video.appendChild(p_source);
+        passiveDiv.current.appendChild(p_video);
+
+        /* Q */
+        QName.current.innerText = `Q - ${info.spells[0].name}`;
+        const q_img = document.createElement("img");
+        q_img.setAttribute("src", riot.getSkillIcon(info.spells[0].id));
+        q_img.setAttribute("class", style.skillImg);
+        const q_description = document.createElement("p");
+        q_description.setAttribute("class", style.skillDescription);
+        q_description.innerText = info.spells[0].description;
+
+        QDescription.current.appendChild(q_img);
+        QDescription.current.appendChild(q_description);
 
         const q_video = document.createElement("video");
+        q_video.setAttribute("class", style.skillVideo);
         q_video.setAttribute("controls", "");
         q_video.setAttribute("width", "300");
         const q_source = document.createElement("source");
         q_source.setAttribute(
             "src",
-            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_P1.webm`
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_Q1.webm`
         );
         q_source.setAttribute("type", "video/webm");
-
         q_video.appendChild(q_source);
+        QDiv.current.appendChild(q_video);
 
-        passiveskilldiv.current.appendChild(q_video);
+        /* W */
+        WName.current.innerText = `W - ${info.spells[1].name}`;
+        const w_img = document.createElement("img");
+        w_img.setAttribute("src", riot.getSkillIcon(info.spells[1].id));
+        w_img.setAttribute("class", style.skillImg);
+        const w_description = document.createElement("p");
+        w_description.setAttribute("class", style.skillDescription);
+        w_description.innerText = info.spells[1].description;
+
+        WDescription.current.appendChild(w_img);
+        WDescription.current.appendChild(w_description);
+
+        const w_video = document.createElement("video");
+        w_video.setAttribute("class", style.skillVideo);
+        w_video.setAttribute("controls", "");
+        w_video.setAttribute("width", "300");
+        const w_source = document.createElement("source");
+        w_source.setAttribute(
+            "src",
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_W1.webm`
+        );
+        w_source.setAttribute("type", "video/webm");
+        w_video.appendChild(w_source);
+        WDiv.current.appendChild(w_video);
+
+        /* E */
+        EName.current.innerText = `E - ${info.spells[2].name}`;
+        const e_img = document.createElement("img");
+        e_img.setAttribute("src", riot.getSkillIcon(info.spells[2].id));
+        e_img.setAttribute("class", style.skillImg);
+        const e_description = document.createElement("p");
+        e_description.setAttribute("class", style.skillDescription);
+        e_description.innerText = info.spells[2].description;
+
+        EDescription.current.appendChild(e_img);
+        EDescription.current.appendChild(e_description);
+
+        const e_video = document.createElement("video");
+        e_video.setAttribute("class", style.skillVideo);
+        e_video.setAttribute("controls", "");
+        e_video.setAttribute("width", "300");
+        const e_source = document.createElement("source");
+        e_source.setAttribute(
+            "src",
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_E1.webm`
+        );
+        e_source.setAttribute("type", "video/webm");
+        e_video.appendChild(e_source);
+        EDiv.current.appendChild(e_video);
+
+        /* R */
+        RName.current.innerText = `R - ${info.spells[3].name}`;
+        const r_img = document.createElement("img");
+        r_img.setAttribute("src", riot.getSkillIcon(info.spells[3].id));
+        r_img.setAttribute("class", style.skillImg);
+        const r_description = document.createElement("p");
+        r_description.setAttribute("class", style.skillDescription);
+        r_description.innerText = info.spells[3].description;
+
+        RDescription.current.appendChild(r_img);
+        RDescription.current.appendChild(r_description);
+
+        const r_video = document.createElement("video");
+        r_video.setAttribute("class", style.skillVideo);
+        r_video.setAttribute("controls", "");
+        r_video.setAttribute("width", "300");
+        const r_source = document.createElement("source");
+        r_source.setAttribute(
+            "src",
+            `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${champion_key}/ability_${champion_key}_R1.webm`
+        );
+        r_source.setAttribute("type", "video/webm");
+        r_video.appendChild(r_source);
+        RDiv.current.appendChild(r_video);
     };
 
     useEffect(() => {
-        getChamp();
-    }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
-
-    useEffect(() => {
         showSkills();
-    });
+    }, []);
 
     return (
         <>
             <div className={style.skills}>
                 <p className={style.skillsTitle}>Skills</p>
                 <div className={style.skillswrapper}>
-                    <div className={style.passiveSkill} ref={passiveskilldiv}>
-                        <p>패시브 - {skill_passive.name}</p>
-                        <div></div>
+                    <div className={style.passiveSkill} ref={passiveDiv}>
+                        <p className={style.skillName} ref={passiveName}></p>
+                        <div
+                            className={style.skillDescriptionDiv}
+                            ref={passiveDescription}
+                        ></div>
+                    </div>
+
+                    <div className={style.QSkill} ref={QDiv}>
+                        <p className={style.skillName} ref={QName}></p>
+                        <div
+                            className={style.skillDescriptionDiv}
+                            ref={QDescription}
+                        ></div>
+                    </div>
+
+                    <div className={style.WSkill} ref={WDiv}>
+                        <p className={style.skillName} ref={WName}></p>
+                        <div
+                            className={style.skillDescriptionDiv}
+                            ref={WDescription}
+                        ></div>
+                    </div>
+
+                    <div className={style.ESkill} ref={EDiv}>
+                        <p className={style.skillName} ref={EName}></p>
+                        <div
+                            className={style.skillDescriptionDiv}
+                            ref={EDescription}
+                        ></div>
+                    </div>
+
+                    <div className={style.RSkill} ref={RDiv}>
+                        <p className={style.skillName} ref={RName}></p>
+                        <div
+                            className={style.skillDescriptionDiv}
+                            ref={RDescription}
+                        ></div>
                     </div>
                 </div>
-                {/* ============================================================================ */}
-                <div className={style.skillsIcon}>
-                    <div className={style.passiveIcon}>
-                        <div className={style.passiveInfo}></div>
-                    </div>
-                    <div className={style.qIcon}>
-                        <div className={style.qInfo}></div>
-                    </div>
-                    <div className={style.wIcon}>
-                        <div className={style.wInfo}></div>
-                    </div>
-                    <div className={style.eIcon}>
-                        <div className={style.eInfo}></div>
-                    </div>
-                    <div className={style.rIcon}>
-                        <div className={style.rInfo}></div>
-                    </div>
-                </div>{" "}
-                {/* ============================================================================ */}
             </div>
         </>
     );
