@@ -1,12 +1,27 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 .home {
     margin: 0;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 10%;
+    padding-bottom: 10%;
     margin-left: 10%;
     margin-right: 10%;
     text-align: center;
     align-content: center;
-    background-color: rgb(18, 4, 56);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #invisible {
@@ -23,6 +38,12 @@
     border: 5px solid white;
     margin: 1%;
     position: relative;
+
+    transition: all ease 0.5s;
+}
+
+.championIcon:hover {
+    transform: scale(1.1);
 }
 /* 챔피언 초상화 이미지 */
 
@@ -32,17 +53,21 @@
 }
 
 .championNameSpan {
-    font-family: "LOLFontlight";
+    font-family: "Community";
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 0 2px black;
+
     color: white;
     margin-bottom: 1%;
-    font-size: 32px;
 }
 
 .titleSpan {
     color: white;
-    font-family: "LOLFontlight";
+    font-family: "Community";
     font-size: 20px;
     font-style: italic;
+    text-shadow: 0 0 2px black;
 }
 /* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
 

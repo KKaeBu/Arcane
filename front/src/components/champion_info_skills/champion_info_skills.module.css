@@ -1,18 +1,32 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 .skills {
     text-align: center;
     align-content: center;
-    padding-top: 5%;
-    padding-bottom: 50%;
+    padding-top: 3%;
+    padding-bottom: 5%;
+
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 0;
-    background-color: beige;
+    background-color: darkslategrey;
 }
 
 /* 스킬 아이콘 이미지 */
 .skillsTitle {
-    font-size: xx-large;
-    font-family: "LOLFontBold";
+    font-size: 38px;
+    font-family: "나눔고딕";
+    font-weight: bolder;
+
     margin-bottom: 5%;
 }
 
@@ -24,49 +38,86 @@
 .passiveSkill {
     width: 80%;
     margin: auto;
+    margin-bottom: 3%;
 
     background-color: white;
+    border-radius: 10px;
 }
 
 .QSkill {
     width: 80%;
     margin: auto;
+    margin-bottom: 3%;
 
     background-color: white;
+    border-radius: 10px;
 }
 
 .WSkill {
     width: 80%;
     margin: auto;
+    margin-bottom: 3%;
 
     background-color: white;
+    border-radius: 10px;
 }
 
 .ESkill {
     width: 80%;
     margin: auto;
+    margin-bottom: 3%;
 
     background-color: white;
+    border-radius: 10px;
 }
 
 .RSkill {
     width: 80%;
     margin: auto;
+    margin-bottom: 3%;
 
     background-color: white;
+    border-radius: 10px;
 }
 
 .skillName {
+    margin: 0;
+    padding: 3% 0% 3% 0%;
+
+    font-family: "나눔고딕";
+    font-size: 32px;
+    font-weight: bolder;
 }
 
 .skillDescriptionDiv {
     display: flex;
+    background-color: darkturquoise;
 }
 
 .skillImg {
+    object-fit: scale-down;
+    padding: 1% 1% 1% 1%;
+
+    border-right: 1px solid black;
 }
 
 .skillDescription {
+    display: flex;
+    font-family: "Community";
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 1%;
+    margin-right: 1%;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.videoDiv {
+    background-color: black;
+    padding: 2% 0% 2% 0%;
+    margin-bottom: 1%;
 }
 
 .skillVideo {

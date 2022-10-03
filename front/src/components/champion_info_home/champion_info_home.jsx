@@ -16,6 +16,10 @@ function ChampionInfo() {
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
 
+        home.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionIllustration(
+            id
+        )})`;
+
         const nameSpan = document.createElement("span");
         const nameSpanDiv = document.createElement("div");
 

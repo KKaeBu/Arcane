@@ -1,3 +1,15 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 .about {
     padding-top: 5%;
     padding-bottom: 5%;
@@ -35,13 +47,15 @@
 }
 
 .aboutTitle {
-    font-size: xx-large;
-    font-family: "LOLFontBold";
+    font-size: 38px;
+    font-family: "나눔고딕";
+    font-weight: bolder;
+
     margin-bottom: 5%;
 }
 .lore {
-    font-family: "LOLFontlight";
-    font-weight: lighter;
+    font-family: "Community";
+    font-weight: bold;
     margin-bottom: 5%;
     margin-top: 5%;
 }
@@ -54,14 +68,15 @@
     text-align: center;
     display: table;
     table-layout: fixed;
+
+    border-radius: 10px;
+
+    font-family: "Community";
+    font-weight: bold;
 }
 
 tr {
-    /* font-family: LOLFontlight;
-    font-size: medium; */
 }
 
 td {
-    /* border: 2px solid black;
-    padding: 10px; */
 }

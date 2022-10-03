@@ -42,7 +42,6 @@ function ChampionSkills() {
         } else if (info.key < 1000) {
             champion_key = "0" + info.key;
         }
-        console.log(info);
 
         /* 패시브 */
         passiveName.current.innerText = `패시브 - ${info.passive.name}`;
@@ -53,11 +52,14 @@ function ChampionSkills() {
         );
         passive_img.setAttribute("class", style.skillImg);
         const passive_description = document.createElement("p");
-        passive_description.setAttribute("class", style.passiveDescription);
-        passive_description.innerText = info.passive.description;
+        passive_description.setAttribute("class", style.skillDescription);
+        passive_description.innerHTML = info.passive.description;
 
         passiveDescription.current.appendChild(passive_img);
         passiveDescription.current.appendChild(passive_description);
+
+        const p_video_div = document.createElement("div");
+        p_video_div.setAttribute("class", style.videoDiv);
 
         const p_video = document.createElement("video");
         p_video.setAttribute("class", style.skillVideo);
@@ -70,7 +72,8 @@ function ChampionSkills() {
         );
         p_source.setAttribute("type", "video/webm");
         p_video.appendChild(p_source);
-        passiveDiv.current.appendChild(p_video);
+        p_video_div.appendChild(p_video);
+        passiveDiv.current.appendChild(p_video_div);
 
         /* Q */
         QName.current.innerText = `Q - ${info.spells[0].name}`;
@@ -79,10 +82,13 @@ function ChampionSkills() {
         q_img.setAttribute("class", style.skillImg);
         const q_description = document.createElement("p");
         q_description.setAttribute("class", style.skillDescription);
-        q_description.innerText = info.spells[0].description;
+        q_description.innerHTML = info.spells[0].description;
 
         QDescription.current.appendChild(q_img);
         QDescription.current.appendChild(q_description);
+
+        const q_video_div = document.createElement("div");
+        q_video_div.setAttribute("class", style.videoDiv);
 
         const q_video = document.createElement("video");
         q_video.setAttribute("class", style.skillVideo);
@@ -95,7 +101,8 @@ function ChampionSkills() {
         );
         q_source.setAttribute("type", "video/webm");
         q_video.appendChild(q_source);
-        QDiv.current.appendChild(q_video);
+        q_video_div.appendChild(q_video);
+        QDiv.current.appendChild(q_video_div);
 
         /* W */
         WName.current.innerText = `W - ${info.spells[1].name}`;
@@ -104,10 +111,13 @@ function ChampionSkills() {
         w_img.setAttribute("class", style.skillImg);
         const w_description = document.createElement("p");
         w_description.setAttribute("class", style.skillDescription);
-        w_description.innerText = info.spells[1].description;
+        w_description.innerHTML = info.spells[1].description;
 
         WDescription.current.appendChild(w_img);
         WDescription.current.appendChild(w_description);
+
+        const w_video_div = document.createElement("div");
+        w_video_div.setAttribute("class", style.videoDiv);
 
         const w_video = document.createElement("video");
         w_video.setAttribute("class", style.skillVideo);
@@ -120,7 +130,8 @@ function ChampionSkills() {
         );
         w_source.setAttribute("type", "video/webm");
         w_video.appendChild(w_source);
-        WDiv.current.appendChild(w_video);
+        w_video_div.appendChild(w_video);
+        WDiv.current.appendChild(w_video_div);
 
         /* E */
         EName.current.innerText = `E - ${info.spells[2].name}`;
@@ -129,10 +140,13 @@ function ChampionSkills() {
         e_img.setAttribute("class", style.skillImg);
         const e_description = document.createElement("p");
         e_description.setAttribute("class", style.skillDescription);
-        e_description.innerText = info.spells[2].description;
+        e_description.innerHTML = info.spells[2].description;
 
         EDescription.current.appendChild(e_img);
         EDescription.current.appendChild(e_description);
+
+        const e_video_div = document.createElement("div");
+        e_video_div.setAttribute("class", style.videoDiv);
 
         const e_video = document.createElement("video");
         e_video.setAttribute("class", style.skillVideo);
@@ -145,7 +159,8 @@ function ChampionSkills() {
         );
         e_source.setAttribute("type", "video/webm");
         e_video.appendChild(e_source);
-        EDiv.current.appendChild(e_video);
+        e_video_div.appendChild(e_video);
+        EDiv.current.appendChild(e_video_div);
 
         /* R */
         RName.current.innerText = `R - ${info.spells[3].name}`;
@@ -154,15 +169,23 @@ function ChampionSkills() {
         r_img.setAttribute("class", style.skillImg);
         const r_description = document.createElement("p");
         r_description.setAttribute("class", style.skillDescription);
-        r_description.innerText = info.spells[3].description;
+        r_description.innerHTML = info.spells[3].description;
+
+        //r_description.on = () => {
+        //    r_video.removeAttribute("id", style.invisible);
+        //};
 
         RDescription.current.appendChild(r_img);
         RDescription.current.appendChild(r_description);
+
+        const r_video_div = document.createElement("div");
+        r_video_div.setAttribute("class", style.videoDiv);
 
         const r_video = document.createElement("video");
         r_video.setAttribute("class", style.skillVideo);
         r_video.setAttribute("controls", "");
         r_video.setAttribute("width", "300");
+        //r_video.setAttribute("id", style.invisible);
         const r_source = document.createElement("source");
         r_source.setAttribute(
             "src",
@@ -170,7 +193,8 @@ function ChampionSkills() {
         );
         r_source.setAttribute("type", "video/webm");
         r_video.appendChild(r_source);
-        RDiv.current.appendChild(r_video);
+        r_video_div.appendChild(r_video);
+        RDiv.current.appendChild(r_video_div);
     };
 
     useEffect(() => {
@@ -180,7 +204,7 @@ function ChampionSkills() {
     return (
         <>
             <div className={style.skills}>
-                <p className={style.skillsTitle}>Skills</p>
+                <p className={style.skillsTitle}>스킬</p>
                 <div className={style.skillswrapper}>
                     <div className={style.passiveSkill} ref={passiveDiv}>
                         <p className={style.skillName} ref={passiveName}></p>

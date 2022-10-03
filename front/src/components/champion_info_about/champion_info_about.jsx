@@ -3,10 +3,13 @@ import Riot from "../../network/riotAPI.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useRef } from "react";
 
 function ChampionInfoAbout() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
     const { id } = useParams();
+
+    const Title = useRef(null);
 
     const translate = (info) => {
         if (info === "Tank") return "탱커";
@@ -25,6 +28,8 @@ function ChampionInfoAbout() {
 
         const about_div = document.querySelector("." + style["about"]);
         const about_title = document.querySelector("." + style["aboutTitle"]);
+
+        Title.current.innerHTML = `About`;
 
         const lore = document.createElement("p");
         lore.setAttribute("class", style.lore);
@@ -54,8 +59,8 @@ function ChampionInfoAbout() {
 
         thead_td1.innerText = "주 역할군";
         thead_td2.innerText = "보조 역할군";
-        thead_td3.innerText = "소속";
-        thead_td4.innerText = "가격";
+        thead_td3.innerText = "??";
+        thead_td4.innerText = "??";
 
         const class_img1 = document.createElement("img");
         const class_name1 = document.createElement("p");
@@ -108,7 +113,7 @@ function ChampionInfoAbout() {
     return (
         <>
             <div className={style.about}>
-                <p className={style.aboutTitle}>About Me</p>
+                <p className={style.aboutTitle} ref={Title}></p>
             </div>
         </>
     );

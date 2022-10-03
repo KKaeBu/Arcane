@@ -12,48 +12,11 @@ function Champion() {
 
     const [champions, setChampion] = useState([]); // 챔피언 API 데이터를 저장
 
-    const preloading_data = Object.values(champions);
-
     const getChamp = async () => {
         const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
         await showChampBtn();
-        preImgloading(preloading_data);
     }; // 챔피언 API를 받아옴 비동기 처리함
-
-    useEffect(() => {
-        getChamp();
-    }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
-
-    async function preImgloading(testArr) {
-        console.log("preloading...");
-        let n = testArr.length;
-        for (let i = 0; i < n; i++) {
-            let c_img = new Image();
-            let imgQ = new Image();
-            let imgW = new Image();
-            let imgE = new Image();
-            let imgR = new Image();
-            let imgP = new Image();
-            let info = await riot.getChampion(testArr[i].id);
-            c_img.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/champion/${testArr[i].id}.png`;
-            imgQ.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/spell/${
-                info.data[testArr[i].id].spells[0].id
-            }.png`;
-            imgW.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/spell/${
-                info.data[testArr[i].id].spells[1].id
-            }.png`;
-            imgE.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/spell/${
-                info.data[testArr[i].id].spells[2].id
-            }.png`;
-            imgR.src = `https://ddragon.leagueoflegends.com/cdn/${Version}/img/spell/${
-                info.data[testArr[i].id].spells[3].id
-            }.png`;
-            imgP.src = `http://ddragon.leagueoflegends.com/cdn/${Version}/img/passive/${
-                info.data[testArr[i].id].passive.image.full
-            }`;
-        }
-    }
 
     const showChampBtn = async () => {
         const champArr = Object.values(champions).sort((a, b) =>
@@ -83,25 +46,28 @@ function Champion() {
                 btn_text = document.createTextNode(champArr[i].name); // 버튼 텍스트 삽입
             }
             btn.appendChild(btn_img); // 각 버튼에 아까 받아온 이미지 append
-            btn.onclick = async function () {
+            btn.onclick = async () => {
                 // 각 버튼 onClick시 실행할 함수 정의
                 navigate(`/champions/${champArr[i].id}`);
             };
+
             btn.appendChild(btn_text); // 각 버튼에 위에서 설정해던 text 집어넣음
             btnDiv[0].appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야함
         }
     };
+
+    useEffect(() => {
+        getChamp();
+    }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
+
+    useEffect(() => {
+        showChampBtn();
+    });
+
     return (
         <div className="mainDisplay">
             <h1>챔피언을 선택해 주세요!</h1>
             <div className="button_div"></div>
-            {/* 아래 버튼은 컴포넌트가 실행됐을때 자동으로 showChampBtn을 한번 실행하도록 임의로 넣은것 
-            수정 요망 */}
-            <button
-                id="champList"
-                display="none"
-                onClick={showChampBtn()}
-            ></button>
         </div>
     );
 }
