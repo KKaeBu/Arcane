@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import style from "./history.module.css";
 import Riot_API from "../../network/riotAPI";
+import { createElement } from "react";
 
 function History(props) {
     const riot = new Riot_API();
@@ -16,7 +17,7 @@ function History(props) {
         if (!puuid)
             return;
         
-        const matchIdListData = await riot.getMatchIdList(puuid, 0, 2);
+        const matchIdListData = await riot.getMatchIdList(puuid, 0, 5);
         queueTypeJson = await riot.getQueueType();
         spellJson = await riot.getAllSpell();
         runesJson = await riot.getAllRunes();
@@ -49,7 +50,7 @@ function History(props) {
         let assists; // 해당 게임에서 내가 한 assist 스코어
         let kda; // 해당 게임에서 내가 기록한 kda
         let cs; // 해당 게임에서 내가 기록 한 cs 개수 (neutralMinionsKilled: 몬스터 + totalMinionsKilled: 미니언)
-
+        let summoners = new Array(); // 해당 게임에 참가한 모든 참가자들의 간략한 정보(이름, 챔피언 아이콘, 나중에 상세정보 추가한다면 여기에 정보 추가)
         let queueType; //해당 게임의 큐타입
 
         // 게임 큐 타입 확인하기
@@ -66,8 +67,10 @@ function History(props) {
         // 내가 사용한 스펠 정보 확인
         // 내가 사용한 룬 정보 확인
         // 내가 기록한 K/D/A확인
+        // 같이 플레이한 소환사들의 정보
         // 승리 여부 확인
-        for (const p in participants) {
+        for (const p in participants) { 
+            summoners.push(summonersInfo(participants[p]));
             if (participants[p].summonerId === summData.id) {
                 myTeam = participants[p].teamId;
                 champion = participants[p].championName;
@@ -94,25 +97,27 @@ function History(props) {
                 cs = participants[p].neutralMinionsKilled + participants[p].totalMinionsKilled;
                 if (participants[p].win)
                     win = "승리";
-                break;
             }
         }
 
-        console.log(items);
 
         li.setAttribute("class", style.matchInfoBox);
+        if (win === "승리")
+            li.style.backgroundColor = "#28344E";
+
         const boxLeft = await createBoxLeft(li, queueType, win, queueDate);
         const boxLeftToMiddle = await createBoxLeftToMiddle(li, champion, champLevel, spells, runes);
         const boxMiddle1 = await createBoxMiddle1(li, items);
         const boxMiddle2 = await createBoxMiddle2(li, kills, deaths, assists, kda, cs);
         const boxMiddleToRight = await createBoxMiddleToRight(time);
+        const boxRight = await createBoxRight(summoners);
 
-        console.log(queueType);
         li.appendChild(boxLeft);
         li.appendChild(boxLeftToMiddle);
         li.appendChild(boxMiddle1);
         li.appendChild(boxMiddle2);
         li.appendChild(boxMiddleToRight);
+        li.appendChild(boxRight);
 
         matchHistory.appendChild(li);
     }
@@ -209,6 +214,15 @@ function History(props) {
         return resultTime;
     }
 
+    const summonersInfo = (participant) => {
+        const pInfo = {
+            "pName": participant.summonerName,
+            "pChampion": participant.championName,
+        };
+
+        return pInfo
+    }
+
     const createBoxLeft = async (li, qType, win, qDate) => {
         // 요소 생성
         const div = document.createElement("div");
@@ -218,6 +232,11 @@ function History(props) {
 
         // 속성 부여
         div.setAttribute("class", style.infoLeft);
+        spanQueue.setAttribute("class", style.spanQueue)
+        if (win === "승리")
+            spanWin.style.color = "#4444CC";
+        else
+            spanWin.style.color = "#CC5867";
 
         // 값 설정
         spanQueue.innerText = qType;
@@ -241,8 +260,14 @@ function History(props) {
         const championImg = document.createElement("img");
         const levelWrapper = document.createElement("div");
         const championLevel = document.createElement("span");
+        
+        const spellDWrapper = document.createElement("div");
+        const spellFWrapper = document.createElement("div");
         const spellD = document.createElement("img");
         const spellF = document.createElement("img");
+
+        const mainRuneWrapper = document.createElement("div");
+        const subRuneWrapper = document.createElement("div");
         const mainRune = document.createElement("img");
         const subRune = document.createElement("img");
 
@@ -261,8 +286,14 @@ function History(props) {
         championImg.setAttribute("class", style.championImg);
         levelWrapper.setAttribute("class", style.levelWrapper);
         championLevel.setAttribute("class", style.championLevel);
+
+        spellDWrapper.setAttribute("class", style.spellWrapper);
+        spellFWrapper.setAttribute("class", style.spellWrapper);
         spellD.setAttribute("class", style.spellD);
         spellF.setAttribute("class", style.spellF);
+
+        mainRuneWrapper.setAttribute("class", style.runeWrapper);
+        subRuneWrapper.setAttribute("class", style.runeWrapper);
         mainRune.setAttribute("class", style.mainRune);
         subRune.setAttribute("class", style.subRune);
 
@@ -278,17 +309,25 @@ function History(props) {
         subRune.setAttribute("src", subRuneLink);
         subRune.setAttribute("alt", "sub rune image");
 
+        championLevel.innerText = champLevel;
+
         // 각 테그들의 부모자식 관계 설정
         levelWrapper.appendChild(championLevel);
 
         championIcon.appendChild(championImg);
         championIcon.appendChild(levelWrapper);
 
-        spellBox.appendChild(spellD);
-        spellBox.appendChild(spellF);
+        spellDWrapper.appendChild(spellD);
+        spellFWrapper.appendChild(spellF);
 
-        runeBox.appendChild(mainRune);
-        runeBox.appendChild(subRune);
+        spellBox.appendChild(spellDWrapper);
+        spellBox.appendChild(spellFWrapper);
+
+        mainRuneWrapper.appendChild(mainRune);
+        subRuneWrapper.appendChild(subRune);
+
+        runeBox.appendChild(mainRuneWrapper);
+        runeBox.appendChild(subRuneWrapper);
 
         infoLeftToMiddle.appendChild(championIcon);
         infoLeftToMiddle.appendChild(spellBox);
@@ -312,6 +351,7 @@ function History(props) {
             const item = document.createElement("li");
             const itemImg = document.createElement("img");
             const link = await riot.getItemImgLink(items[i]);
+
             if (parseInt(i) === items.length - 1) {
                 wardItem.setAttribute("src", link);
                 break;
@@ -321,8 +361,13 @@ function History(props) {
             itemImg.setAttribute("class", style.itemImg);
             itemImg.setAttribute("alt", "item Img");
             itemImg.setAttribute("src", link);
-
-            item.appendChild(itemImg);
+            
+            if (items[i] === 0) {
+                const emptyItemImg = document.createElement("img");
+                item.appendChild(emptyItemImg);
+            } else
+                item.appendChild(itemImg);
+            
             itemBuild.appendChild(item);
         }
 
@@ -344,8 +389,15 @@ function History(props) {
 
         // 속성 부여
         infoMiddle2.setAttribute("class", style.infoMiddle2);
-        kdaLabel.innerText = `${kills} / ${deaths} / ${assists}`;
-        kdaScoreLabel.innerText = `평점: ${calcKDA}`;
+        kdaLabel.setAttribute("class", style.kdaLabel);
+        kdaLabel.innerHTML = `${kills} / <span style="color: red; font-weight: bold">${deaths}</span> / ${assists}`;
+        if (calcKDA >= 3 && calcKDA < 4)
+            kdaScoreLabel.innerHTML = `평점: <span style="color: #4444CC; font-weight: bold">${calcKDA}</span>`;
+        else if (calcKDA >= 4)
+            kdaScoreLabel.innerHTML = `평점: <span style="color: #CC5867; font-weight: bold">${calcKDA}</span>`;
+        else
+            kdaScoreLabel.innerText = `평점: ${calcKDA}`;
+
         csLabel.innerText = `CS: ${cs}`;
 
         infoMiddle2.appendChild(kdaLabel);
@@ -370,6 +422,48 @@ function History(props) {
         return infoMiddleToRight;
     }
 
+    const createBoxRight = async (summoners) => {
+        // 요소 생성
+        const infoRight = document.createElement("div");
+        const blueTeams = document.createElement("ul");
+        const redTeams = document.createElement("ul");
+
+        infoRight.setAttribute("class", style.infoRight);
+        blueTeams.setAttribute("class", style.blueTeams);
+        redTeams.setAttribute("class", style.redTeams);
+
+        for (const s in summoners) {
+            const summoner = document.createElement("li");
+            const playedChampionImg = document.createElement("img");
+            const summonerName = document.createElement("span");
+
+            const champImgLink = riot.getChampionIcon(summoners[s].pChampion);
+            
+            summoner.setAttribute("class", style.summoner);
+            playedChampionImg.setAttribute("class", style.playedChampionImg);
+            playedChampionImg.setAttribute("src", champImgLink);
+            playedChampionImg.setAttribute("alt", "summoner's played champ");
+            summonerName.setAttribute("class", style.summonerName);
+
+            summonerName.innerText = summoners[s].pName;
+
+            summoner.appendChild(playedChampionImg);
+            summoner.appendChild(summonerName);
+            
+
+            if (s < 5)
+                blueTeams.appendChild(summoner);
+            else
+                redTeams.appendChild(summoner);
+
+        }
+
+        infoRight.appendChild(blueTeams);
+        infoRight.appendChild(redTeams);
+
+        return infoRight;
+    }
+
     useEffect(() => {
         getMatchHistory();
     }, [summData]);
@@ -382,101 +476,6 @@ function History(props) {
                 <div className={`${style.flexHistory} ${style.sortBtn}`}><span>자유랭크</span></div>
             </div>
             <ul className={style.matchHistory}>
-                <li className={style.matchInfoBox}>
-                    {/* left */}
-                    <div className={style.infoLeft}>
-                        <span>솔로랭크</span>
-                        <span>WIN</span>
-                        <span>2022/9/24</span>
-                    </div>
-                    {/* left to middle */}
-                    <div className={style.infoLeftToMiddle}>
-                        <div className={style.championIcon}>
-                            {/* <img src={profileLink} alt="userProfile" className={style.profileIcon} /> */}
-                            <div className={style.championImg}></div>
-                            <div className={style.levelWrapper}>
-                                <span className={style.championLevel}>18</span>
-                            </div>
-                        </div>
-                        <div className={style.spellBox}>
-                            <div className={style.spellD}></div>
-                            <div className={style.spellF}></div>
-                        </div>
-                        <div className={style.runeBox}>
-                            <div className={style.mainRune}></div>
-                            <div className={style.subRune}></div>
-                        </div>
-                    </div>
-                    {/* middle 1 */}
-                    <div className={style.infoMiddle1}>
-                        <ul className={style.itemBuild}>
-                            <li className={style.item}></li>
-                            <li className={style.item}></li>
-                            <li className={style.item}></li>
-                            <li className={style.item}></li>
-                            <li className={style.item}></li>
-                            <li className={style.item}></li>
-                        </ul>
-                        <div className={`${style.item} ${style.wardItem}`}></div>
-                    </div>
-                    {/* middle 2 */}
-                    <div className={style.infoMiddle2}>
-                        <span>8 / 2 / 5</span>
-                        <span>평점: 6.50</span>
-                        <span>CS 213</span>
-                    </div>
-                    {/* middle to right */}
-                    <div className={style.infoMiddleToRight}>
-                        <span>38:28</span>
-                    </div>
-                    {/* right */}
-                    <div className={style.infoRight}>
-                        <ul className={style.blueTeams}>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                        </ul>
-                        <ul className={style.redTeams}>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                            <li className={style.summoner}>
-                                <div className={style.playedChampionImg}></div>
-                                <span className={style.summonerName}>hide on bush</span>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
             </ul>
         </div>
     );

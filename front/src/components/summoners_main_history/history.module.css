@@ -1,19 +1,21 @@
 .historyContainer {
-    background-color: darksalmon;
+    background-color: #282626;
 }
 
 /* Topbar */
 .historyTopbar {
-    background-color: bisque;
+    background-color: #302E2E;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(240, 233, 233);
     padding: 3px 0;
+
+    color: rgb(240, 233, 233);
 }
 
 .sortBtn {
-    border: 1px solid black;
+    border: 1px solid rgb(240, 233, 233);
     border-radius: 3px;
     font-weight: bold;
     font-size: 17px;
@@ -33,17 +35,17 @@
 
 /* MatchBox */
 .matchHistory {
-    background-color: rgb(188, 216, 149);
+    background-color: #282626;
     padding: 0;
 }
 
 .matchInfoBox {
-    background-color: peru;
-    border: 1px solid black;
+    background-color: rgb(89, 52, 59);
     border-radius: 5px;
     display: flex;
     justify-content: space-around;
-    margin: 8px 4px;
+    margin: 8px 6px;
+    color: gray;
 
     min-height: 108px;
 }
@@ -54,6 +56,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: gray;
+
+    width: 102px;
+}
+
+.spanQueue {
+    font-weight: bold;
+    font-size: 16px;
+    color: rgb(240, 233, 233);
 }
 
 /* matchBox Left To Middle */
@@ -62,6 +73,7 @@
     justify-content: center;
     align-items: center;
     
+    width: 142px;
 }
 
 .championIcon {
@@ -74,7 +86,7 @@
 .championImg {
     width: 100%;
     height: 100%;
-    border: 1px solid white;
+    border: 2px solid black;
     border-radius: 4px;
 }
 
@@ -100,11 +112,16 @@
     margin-left: 2px;
 }
 
-.spellD,
-.spellF {
+.spellWrapper {
     width: 34px;
     height: 34px;
-    background-color: brown;
+    border-radius: 4px;
+}
+
+.spellD,
+.spellF {
+    width: 100%;
+    height: 100%;
     border: 1px solid black;
     border-radius: 4px;
 }
@@ -117,12 +134,20 @@
     margin-top: 1px;
 }
 
-.mainRune,
-.subRune {
+.runeBox:first-child {
+    background-color: #34373C;
+}
+
+.runeWrapper {
     width: 34px;
     height: 34px;
-    background-color: green;
-    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.mainRune,
+.subRune {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
 }
 
@@ -139,6 +164,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    width: 144px;
 }
 
 .itemBuild {
@@ -154,7 +181,7 @@
 .item {
     width: 34px;
     height: 34px;
-    background-color: yellow;
+    background-color: #34373C;
     border-radius: 4px;
 }
 
@@ -174,6 +201,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 90px;
+}
+
+.kdaLabel {
+    font-weight: bold;
+    color: rgb(240, 233, 233);
 }
 
 /* matchBox Middle To Right */
@@ -182,6 +216,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 73px;
 }
 
 /* matchBox Right */
@@ -190,6 +226,8 @@
     justify-content: center;
     align-items: center;
     padding-left: 0;
+    
+    width: 258px;
 }
 
 .blueTeams,
@@ -214,3 +252,10 @@
     border-radius: 50%;
     background-color: blue;
 }   
+
+.summonerName {
+    width: 98px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

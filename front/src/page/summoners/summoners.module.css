@@ -1,6 +1,6 @@
 .summonersContainer {
-    width: 100vw;
-    min-width: 1000px;
+    width: 100%;
+    min-width: 1200px;
     min-height: 100vh;
     height: 100%;
     background-color: #191B1B;

@@ -4,7 +4,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-6fc8d712-d789-4bf2-a2ed-f7004ced2844";
+    #Riot_API_Key = "RGAPI-639d858f-62d6-4e47-a5e6-ba15f02dc355";
     #Language = "ko_KR";
     #Version = "12.18.1";
     #headers = {
@@ -57,6 +57,12 @@ class Riot_API {
             participatnsArr.push(data.info.participants);
         });
 
+    }
+
+    async getChallengerLeagueSolo() {
+        const link = `https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=${this.#Riot_API_Key}`;
+        const json = await getFetch(link);
+        return json;
     }
 
 
@@ -164,7 +170,6 @@ class Riot_API {
         if (detailRune === "LethalTempo") {
             detailRunePng = "LethalTempoTemp";
         }
-        console.log("rune: " + rune + ", " + "detailRune: " + detailRune);
         const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`
         return link;
     }

@@ -12,6 +12,7 @@ function Summoners()  {
     const { summoner } = useParams();
     const [summonerData, setSummonerData] = useState({});
     const riot = new Riot_API();
+    console.log(summoner);
 
     const findSummoner = async () => {
         try{

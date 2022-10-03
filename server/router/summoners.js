@@ -6,4 +6,5 @@ const router = express.Router();
 
 router.get("/", summonersController.temp);
 
+
 export default router;
