@@ -1,7 +1,7 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-785aa7e6-d58f-4b0d-896e-74672892dfa9";
+    #Riot_API_Key = "RGAPI-888bc412-4873-4705-8cf8-35ad8fd5786e";
     #Language = "ko_KR";
-    #Version = "12.14.1";
+    #Version = "12.18.1";
     // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
@@ -33,6 +33,15 @@ class Riot_API {
         const link = `http://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/data/${this.#Language}/champion/${champion_id}.json`;
+        const json = getFetch(link);
+        return json;
+    }
+
+    //로테이션 챔피언 목록 불러오기
+    async getRotationChampion() {
+        const link = `https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=${
+            this.#Riot_API_Key
+        }`;
         const json = getFetch(link);
         return json;
     }

@@ -1,0 +1,93 @@
+@font-face {
+    font-family: "lol";
+    src: url(../../../assets/fonts/RIXGOM.TTF) format("truetype");
+}
+
+.buttonDiv {
+    max-width: 1200px;
+    min-width: 800px;
+    margin: auto;
+}
+
+.championButton {
+    position: relative;
+
+    margin: 25px;
+    padding: 0;
+    background-color: transparent;
+    color: #fbceb1;
+}
+
+.championButton:hover > .champion_img {
+    border: 1px solid #fbceb1;
+}
+
+.champion_img {
+    display: block;
+    width: 82px;
+    height: 82px;
+}
+
+.freeDiv {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+
+    background-color: green;
+    color: white;
+
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+
+    font-family: "lol";
+    font-size: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all ease 0.5s;
+}
+
+.newfreeDiv {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+
+    background-color: yellow;
+    color: black;
+
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+
+    font-family: "lol";
+    font-size: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all ease 0.5s;
+}
+
+.freeImg {
+    width: 30px;
+    height: 30px;
+
+    color: white;
+}
+
+.mainDisplay {
+    padding-left: 100px;
+    padding-right: 100px;
+    background-color: black;
+}
+
+.mainDisplay > h1 {
+    font-weight: normal;
+    text-align: center;
+    margin: 0;
+    color: white;
+}

@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Riot from "../../network/riotAPI.js";
 import { useNavigate } from "react-router-dom";
-import "./champions.css";
+import style from "./champions.module.css";
 
 function Champion() {
     const navigate = useNavigate();
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
-    const Version = riot.getVersion();
-    const btnDiv = document.getElementsByClassName("button_div");
+    const btnDiv = useRef(null);
     // btnDiv > 버튼을 집어넣을 div
 
     const [champions, setChampion] = useState([]); // 챔피언 API 데이터를 저장
@@ -15,10 +14,14 @@ function Champion() {
     const getChamp = async () => {
         const json = await riot.getAllChampions();
         setChampion(json.data, null, "\t");
-        await showChampBtn();
     }; // 챔피언 API를 받아옴 비동기 처리함
 
     const showChampBtn = async () => {
+        const rotation_data = await riot.getRotationChampion();
+        const free_champion_ids = rotation_data.freeChampionIds;
+        const free_for_newPlayers = rotation_data.freeChampionIdsForNewPlayers;
+        const max_free_level = rotation_data.maxNewPlayerLevel;
+
         const champArr = Object.values(champions).sort((a, b) =>
             a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
         );
@@ -33,10 +36,12 @@ function Champion() {
 
         for (let i = 0; i < champArr.length; i++) {
             // 모든 champArr배열의 속성값에 대해 실행하도록 반복문을 설정
+
             const btn_img = document.createElement("img"); // 각각의 버튼 안에 해당 챔피언 이미지 삽입
             btn_img.src = riot.getChampionIcon(champArr[i].id); // 버튼안에 넣을 이미지
             const btn = document.createElement("button"); // champions 오브젝트 각각 버튼 생성 누르면 챔피언정보 보여줄것임
-            btn_img.setAttribute("id", "champion_img");
+            btn.setAttribute("class", style.championButton);
+            btn_img.setAttribute("class", style.champion_img);
             var btn_text;
             if (champArr[i].name.length > 7) {
                 btn_text = document.createTextNode(
@@ -51,8 +56,33 @@ function Champion() {
                 navigate(`/champions/${champArr[i].id}`);
             };
 
+            // 로테이션 챔피언인지 판별
+            for (let j = 0; j < free_champion_ids.length; j++) {
+                if (parseInt(champArr[i].key) === free_champion_ids[j]) {
+                    const free_div = document.createElement("div");
+
+                    // const free_img = document.createElement("img");
+                    // free_img.src = "/img/free.png";
+                    // free_img.setAttribute("class", style.freeImg);
+                    // free_div.appendChild(free_img);
+
+                    free_div.setAttribute("class", style.freeDiv);
+                    free_div.innerHTML = "FREE";
+                    btn.appendChild(free_div);
+                }
+            }
+
+            for (let j = 0; j < free_for_newPlayers.length; j++) {
+                if (parseInt(champArr[i].key) === free_for_newPlayers[j]) {
+                    const new_free_div = document.createElement("div");
+                    new_free_div.setAttribute("class", style.newfreeDiv);
+                    new_free_div.innerHTML = "Free For<br>New";
+                    btn.appendChild(new_free_div);
+                }
+            }
+
             btn.appendChild(btn_text); // 각 버튼에 위에서 설정해던 text 집어넣음
-            btnDiv[0].appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야함
+            btnDiv.current.appendChild(btn); // 각 버튼을 btnDiv에 append, 근데 btnDiv.appendChild하면 안됨 [0]써야함
         }
     };
 
@@ -65,9 +95,9 @@ function Champion() {
     });
 
     return (
-        <div className="mainDisplay">
+        <div className={style.mainDisplay}>
             <h1>챔피언을 선택해 주세요!</h1>
-            <div className="button_div"></div>
+            <div className={style.buttonDiv} ref={btnDiv}></div>
         </div>
     );
 }

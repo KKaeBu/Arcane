@@ -121,6 +121,7 @@
 }
 
 .skillVideo {
+    width: 500px;
 }
 
 @keyframes fadein {

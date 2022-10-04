@@ -184,7 +184,6 @@ function ChampionSkills() {
         const r_video = document.createElement("video");
         r_video.setAttribute("class", style.skillVideo);
         r_video.setAttribute("controls", "");
-        r_video.setAttribute("width", "300");
         //r_video.setAttribute("id", style.invisible);
         const r_source = document.createElement("source");
         r_source.setAttribute(
