@@ -8,7 +8,8 @@ function History(props) {
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
     let runesJson; // ddragon에서 가져온 모든 룬 정보
-    const matchHistory = document.querySelector("." + style["matchHistory"]);
+    const matchHistory = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
+    const allHistory = document.querySelector("." + style["allHistory"]);
 
     const summData = props.summonerData;
 
@@ -17,7 +18,7 @@ function History(props) {
         if (!puuid)
             return;
         
-        const matchIdListData = await riot.getMatchIdList(puuid, 0, 5);
+        const matchIdListData = await riot.getMatchIdList(puuid, 0, 10);
         queueTypeJson = await riot.getQueueType();
         spellJson = await riot.getAllSpell();
         runesJson = await riot.getAllRunes();
@@ -32,7 +33,7 @@ function History(props) {
     }
     
     const createMatchBox = async (data) => {
-        const li = document.createElement("id");
+        const li = document.createElement("li");
         const participants = data.info.participants; // 게임에 참여한 10명의 해당 게임내의 정보 배열
         const queueId = data.info.queueId; // 해당게임의 큐 타입 아이디값
         const queueDate = Unix_timestamp(data.info.gameCreation); // 해당 게임이 진행된 날짜
@@ -104,6 +105,7 @@ function History(props) {
         li.setAttribute("class", style.matchInfoBox);
         if (win === "승리")
             li.style.backgroundColor = "#28344E";
+        li.dataset.queue = queueType;
 
         const boxLeft = await createBoxLeft(li, queueType, win, queueDate);
         const boxLeftToMiddle = await createBoxLeftToMiddle(li, champion, champLevel, spells, runes);
@@ -350,7 +352,9 @@ function History(props) {
         for (const i in items) {
             const item = document.createElement("li");
             const itemImg = document.createElement("img");
-            const link = await riot.getItemImgLink(items[i]);
+            let link = "";
+            if (items[i] !== 0)
+                link = await riot.getItemImgLink(items[i]);
 
             if (parseInt(i) === items.length - 1) {
                 wardItem.setAttribute("src", link);
@@ -464,6 +468,35 @@ function History(props) {
         return infoRight;
     }
 
+    // 정렬 아이템 클릭시 실행 함수
+    const sortClick = (e) => {
+        let clickedSortItem = e.target;
+        if (e.target.parentNode.classList[0] === style.sortBtn)
+            clickedSortItem = e.target.parentNode;
+
+        const activeSortItem = document.querySelector("." + style["active"]); //현재 활성화된 정렬기준
+
+        activeSortItem.classList.remove(style.active);
+        clickedSortItem.classList.add(style.active);
+
+        const matchList = matchHistory.childNodes;
+
+        if (clickedSortItem.innerText === "전체") {
+            for (let i = 0; i < matchList.length; i++) {
+                matchList[i].style.display = "flex";
+            }
+        } else {
+            for (let i = 0; i < matchList.length; i++) {
+                if (matchList[i].dataset.queue === clickedSortItem.innerText)
+                    matchList[i].style.display = "flex";
+                else
+                    matchList[i].style.display = "none";
+            }
+        }
+
+    }
+
+
     useEffect(() => {
         getMatchHistory();
     }, [summData]);
@@ -471,9 +504,9 @@ function History(props) {
     return (
         <div className={style.historyContainer}>
             <div className={style.historyTopbar}>
-                <div className={`${style.allHistory} ${style.sortBtn}`}><span>전체</span></div>
-                <div className={`${style.soloHistory} ${style.sortBtn}`}><span>솔로랭크</span></div>
-                <div className={`${style.flexHistory} ${style.sortBtn}`}><span>자유랭크</span></div>
+                <div id="allHistory" className={`${style.sortBtn} ${style.active}`} onClick={sortClick}><span>전체</span></div>
+                <div id="soloHistory" className={`${style.sortBtn}`} onClick={sortClick}><span>솔로랭크</span></div>
+                <div id="flexHistory" className={`${style.sortBtn}`} onClick={sortClick}><span>자유랭크</span></div>
             </div>
             <ul className={style.matchHistory}>
             </ul>
