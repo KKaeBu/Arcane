@@ -36,10 +36,10 @@ function ChampionInfo() {
         championNameDiv.current.appendChild(titleSpanDiv);
 
         // ********** champion, skill의 img 설정 부분
-        const champion_icon = document.createElement("img");
-        champion_icon.setAttribute("src", riot.getChampionIcon(id));
-        champion_icon.setAttribute("class", "championIcon");
-        home.current.prepend(champion_icon);
+        // const champion_icon = document.createElement("img");
+        // champion_icon.setAttribute("src", riot.getChampionIcon(id));
+        // champion_icon.setAttribute("class", "championIcon");
+        // home.current.prepend(champion_icon);
     };
 
     useEffect(() => {

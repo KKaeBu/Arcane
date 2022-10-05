@@ -13,8 +13,8 @@
 .about {
     padding-top: 5%;
     padding-bottom: 5%;
-    margin-left: 10%;
-    margin-right: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
     margin-top: 0;
     background-color: gray;
     align-content: center;
@@ -48,14 +48,29 @@
 
 .aboutTitle {
     font-size: 38px;
-    font-family: "나눔고딕";
+    font-family: "Community";
     font-weight: bolder;
+
+    margin-bottom: 3%;
+}
+
+.titleAddendum {
+    color: white;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 2px black;
+
+    opacity: 0.5;
 
     margin-bottom: 5%;
 }
+
 .lore {
     font-family: "Community";
     font-weight: bold;
+    font-size: 18px;
+
     margin-bottom: 5%;
     margin-top: 5%;
 }

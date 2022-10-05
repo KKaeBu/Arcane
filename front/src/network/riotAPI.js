@@ -1,5 +1,5 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-888bc412-4873-4705-8cf8-35ad8fd5786e";
+    #Riot_API_Key = "RGAPI-7e3e0c38-f551-40ae-9060-e29f942d38fd";
     #Language = "ko_KR";
     #Version = "12.18.1";
     // ========= 임시로 버전 변경함
@@ -28,6 +28,12 @@ class Riot_API {
     async getChampionIllustration(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_0.jpg`;
     }
+
+    // 챔피언 스킨 일러스트 불러오기
+    async getChampionSkinIllustration(champion, number) {
+        return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_${number}.jpg`;
+    }
+
     // 특정 챔피언 정보 불러오기
     async getChampion(champion_id) {
         const link = `http://ddragon.leagueoflegends.com/cdn/${

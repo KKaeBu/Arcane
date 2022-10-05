@@ -16,16 +16,33 @@
     padding-top: 3%;
     padding-bottom: 5%;
 
-    margin-left: 10%;
-    margin-right: 10%;
-    background-color: darkslategrey;
+    /* margin-left: 10%;
+    margin-right: 10%; */
+
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 /* 스킬 아이콘 이미지 */
 .skillsTitle {
     font-size: 38px;
-    font-family: "나눔고딕";
+    font-family: "Community";
     font-weight: bolder;
+
+    color: white;
+    text-shadow: 0 0 20px black;
+
+    margin-bottom: 3%;
+}
+
+.skillAddendum {
+    color: white;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 20px black;
+
+    opacity: 0.7;
 
     margin-bottom: 5%;
 }
@@ -40,7 +57,7 @@
     margin: auto;
     margin-bottom: 3%;
 
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -49,7 +66,7 @@
     margin: auto;
     margin-bottom: 3%;
 
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -58,7 +75,7 @@
     margin: auto;
     margin-bottom: 3%;
 
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -67,7 +84,7 @@
     margin: auto;
     margin-bottom: 3%;
 
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -76,7 +93,7 @@
     margin: auto;
     margin-bottom: 3%;
 
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -91,7 +108,7 @@
 
 .skillDescriptionDiv {
     display: flex;
-    background-color: darkturquoise;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .skillImg {

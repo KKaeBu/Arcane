@@ -8,6 +8,9 @@ function ChampionSkills() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
     const { id } = useParams();
 
+    const skill = useRef(null);
+    const title = useRef(null);
+
     const passiveDiv = useRef(null);
     const passiveName = useRef(null);
     const passiveDescription = useRef(null);
@@ -34,6 +37,11 @@ function ChampionSkills() {
         const info = await riot.getInfo(json, id);
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
 
+        skill.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
+            id,
+            info.skins[info.skins.length - 1].num
+        )})`;
+
         var champion_key;
         if (info.key < 10) {
             champion_key = "000" + info.key;
@@ -42,6 +50,11 @@ function ChampionSkills() {
         } else if (info.key < 1000) {
             champion_key = "0" + info.key;
         }
+
+        const skill_addendum = document.createElement("p");
+        skill_addendum.setAttribute("class", style.skillAddendum);
+        skill_addendum.innerHTML = `${info.name} 하고싶으면 스킬은 알아야.`;
+        title.current.appendChild(skill_addendum);
 
         /* 패시브 */
         passiveName.current.innerText = `패시브 - ${info.passive.name}`;
@@ -202,8 +215,10 @@ function ChampionSkills() {
 
     return (
         <>
-            <div className={style.skills}>
-                <p className={style.skillsTitle}>스킬</p>
+            <div className={style.skills} ref={skill}>
+                <p className={style.skillsTitle} ref={title}>
+                    스킬
+                </p>
                 <div className={style.skillswrapper}>
                     <div className={style.passiveSkill} ref={passiveDiv}>
                         <p className={style.skillName} ref={passiveName}></p>

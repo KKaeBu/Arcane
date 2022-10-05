@@ -14,8 +14,8 @@
     margin: 0;
     padding-top: 10%;
     padding-bottom: 10%;
-    margin-left: 10%;
-    margin-right: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
     text-align: center;
     align-content: center;
 
@@ -42,21 +42,22 @@
     transition: all ease 0.5s;
 }
 
-.championIcon:hover {
+/* .championIcon:hover {
     transform: scale(1.1);
-}
+} */
 /* 챔피언 초상화 이미지 */
 
 /* 챔피언 초상화, 스킬아이콘 Div들의 상위 Div */
 
 .championName {
+    margin: 5% 0 5% 0;
 }
 
 .championNameSpan {
     font-family: "Community";
     font-size: 32px;
     font-weight: bold;
-    text-shadow: 0 0 2px black;
+    text-shadow: 0 0 20px black;
 
     color: white;
     margin-bottom: 1%;
@@ -67,8 +68,9 @@
     font-family: "Community";
     font-size: 20px;
     font-style: italic;
-    text-shadow: 0 0 2px black;
+    text-shadow: 0 0 20px black;
 }
+
 /* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
 
 .passiveIcon,

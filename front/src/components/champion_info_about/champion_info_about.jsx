@@ -9,6 +9,7 @@ function ChampionInfoAbout() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
     const { id } = useParams();
 
+    const about = useRef(null);
     const Title = useRef(null);
 
     const translate = (info) => {
@@ -29,12 +30,12 @@ function ChampionInfoAbout() {
         const about_div = document.querySelector("." + style["about"]);
         const about_title = document.querySelector("." + style["aboutTitle"]);
 
-        Title.current.innerHTML = `About`;
+        Title.current.innerHTML = `스토리`;
 
-        const lore = document.createElement("p");
-        lore.setAttribute("class", style.lore);
-        lore.innerText = info.lore;
-        about_div.firstChild.after(lore);
+        const titleAddendum = document.createElement("p");
+        titleAddendum.setAttribute("class", style.titleAddendum);
+        titleAddendum.innerHTML = `${info.name}의 이야기가 궁금하다면.`;
+        about_div.firstChild.after(titleAddendum);
 
         const illustration = document.createElement("img");
         illustration.setAttribute("class", style.illustration);
@@ -42,7 +43,12 @@ function ChampionInfoAbout() {
             "src",
             await riot.getChampionIllustration(id)
         );
-        about_title.after(illustration);
+        titleAddendum.after(illustration);
+
+        const lore = document.createElement("p");
+        lore.setAttribute("class", style.lore);
+        lore.innerText = info.lore;
+        illustration.after(lore);
 
         const table = document.createElement("table");
         table.setAttribute("class", style.table);
@@ -112,7 +118,7 @@ function ChampionInfoAbout() {
 
     return (
         <>
-            <div className={style.about}>
+            <div className={style.about} ref={about}>
                 <p className={style.aboutTitle} ref={Title}></p>
             </div>
         </>

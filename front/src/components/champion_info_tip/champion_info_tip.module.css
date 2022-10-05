@@ -1,0 +1,66 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
+.tip {
+    padding: 5% 0 5% 0;
+    margin: 0 10% 0 10%;
+}
+
+.tipTitle {
+    text-align: center;
+
+    font-size: 38px;
+    font-family: "Community";
+    font-weight: bolder;
+
+    margin-bottom: 2%;
+}
+
+.tipAddendum {
+    text-align: center;
+
+    color: black;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 20px black;
+
+    opacity: 0.7;
+
+    margin-bottom: 5%;
+}
+.ally {
+    background-color: aliceblue;
+}
+.allyTips {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15%;
+}
+
+.allyTip {
+    background-color: brown;
+    width: 200px;
+}
+.enemy {
+    background-color: burlywood;
+}
+.enemyTips {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15%;
+}
+
+.enemyTip {
+    background-color: blanchedalmond;
+    width: 200px;
+}
