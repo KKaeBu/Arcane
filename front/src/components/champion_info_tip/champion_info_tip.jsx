@@ -15,7 +15,26 @@ function ChampionInfoTip() {
     const allytip = useRef(null);
     const enemytip = useRef(null);
 
+    const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.6,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry.isIntersecting);
+            if (entry.isIntersecting) {
+                entry.target.setAttribute("id", style.active);
+            } else {
+                entry.target.removeAttribute("id", style.active);
+            }
+        });
+    }, options);
+
     const showTips = async () => {
+        observer.observe(allytip.current);
+
         const json = await riot.getChampion(id);
         // 해당 페이지 챔피언의 id를 통해 챔피언 객체 저장
         const info = await riot.getInfo(json, id);
@@ -67,9 +86,23 @@ function ChampionInfoTip() {
         // ******* enemytips *******
     };
 
+    // const handleScroll = () => {
+    //     console.log(`현재 스크롤 위치:${window.scrollY}`);
+    //     console.log(
+    //         `?:${window.scrollY + tip.current.getBoundingClientRect().top}`
+    //     );
+    // };
+
     useEffect(() => {
         showTips();
     }, []);
+
+    // useEffect(() => {
+    //     window.addEventListener("scroll", handleScroll);
+    //     return () => {
+    //         window.removeEventListener("scroll", handleScroll);
+    //     };
+    // }, []);
 
     return (
         <>

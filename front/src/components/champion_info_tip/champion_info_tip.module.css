@@ -39,16 +39,34 @@
     margin-bottom: 5%;
 }
 .ally {
-    background-color: aliceblue;
+    background-color: ;
 }
 .allyTips {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
+
     margin-bottom: 15%;
+
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 1s;
+}
+
+#active {
+    transform: translateX(0);
+
+    opacity: 1;
 }
 
 .allyTip {
-    background-color: brown;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1%;
+    padding: 1%;
+    border-radius: 10px;
+
+    background-color: rgba(0, 0, 0, 0.3);
     width: 200px;
 }
 .enemy {
