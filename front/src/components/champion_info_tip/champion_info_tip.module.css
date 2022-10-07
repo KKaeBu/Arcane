@@ -11,74 +11,126 @@
 }
 
 .tip {
-    padding: 5% 0 5% 0;
-    margin: 0 10% 0 10%;
 }
 
 .tipTitle {
+    color: white;
     text-align: center;
 
     font-size: 38px;
     font-family: "Community";
     font-weight: bolder;
-
-    margin-bottom: 2%;
 }
 
 .tipAddendum {
     text-align: center;
 
-    color: black;
+    color: white;
     font-family: "Community";
     font-size: 20px;
     font-style: italic;
     text-shadow: 0 0 20px black;
 
     opacity: 0.7;
-
-    margin-bottom: 5%;
 }
 .ally {
-    background-color: ;
+    display: flex;
+    flex-direction: column;
+
+    background-size: cover;
+    background-attachment: fixed;
+
+    min-height: 100vh;
+    padding-top: 10%;
 }
 .allyTips {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 
-    margin-bottom: 15%;
+    margin-top: 7%;
 
     transform: translateX(-50%);
     opacity: 0;
     transition: 1s;
 }
 
-#active {
-    transform: translateX(0);
-
-    opacity: 1;
-}
-
 .allyTip {
+    font-family: "Community";
+
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
     padding: 1%;
     border-radius: 10px;
 
     background-color: rgba(0, 0, 0, 0.3);
-    width: 200px;
+    width: fit-content;
+
+    color: white;
 }
 .enemy {
-    background-color: burlywood;
+    display: flex;
+    flex-direction: column;
+
+    background-size: cover;
+    background-attachment: fixed;
+
+    min-height: 90vh;
+    padding-top: 10%;
 }
 .enemyTips {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    margin-bottom: 15%;
+
+    margin-top: 7%;
+
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 1s;
 }
 
 .enemyTip {
-    background-color: blanchedalmond;
-    width: 200px;
+    font-family: "Community";
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    padding: 1%;
+    border-radius: 10px;
+
+    background-color: rgba(0, 0, 0, 0.3);
+    width: fit-content;
+
+    color: white;
+}
+
+.skinName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Community";
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.5);
+
+    width: fit-content;
+    margin: 0 auto 0 auto;
+    padding-top: 10%;
+}
+
+.allytipButton {
+    position: fixed;
+    right: 0;
+    top: 55%;
+}
+.enemytipButton {
+    position: fixed;
+    right: 0;
+    top: 60%;
+}
+#active {
+    transform: translateX(0);
+    opacity: 1;
 }

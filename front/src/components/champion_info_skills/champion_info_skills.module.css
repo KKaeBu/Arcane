@@ -141,6 +141,26 @@
     width: 500px;
 }
 
+.skinName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Community";
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.5);
+
+    width: fit-content;
+    margin: 0 auto 0 auto;
+    padding-top: 10%;
+}
+
+.skillButton {
+    position: fixed;
+    right: 0;
+    top: 50%;
+}
+
 @keyframes fadein {
     from {
         opacity: 0;

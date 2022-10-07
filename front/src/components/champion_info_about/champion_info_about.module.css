@@ -90,8 +90,8 @@
     font-weight: bold;
 }
 
-tr {
-}
-
-td {
+.aboutButton {
+    position: fixed;
+    right: 0;
+    top: 45%;
 }

@@ -18,12 +18,11 @@ function ChampionInfoTip() {
     const options = {
         root: null,
         rootMargin: "0px",
-        threshold: 0.6,
+        threshold: 0.3,
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            console.log(entry.isIntersecting);
             if (entry.isIntersecting) {
                 entry.target.setAttribute("id", style.active);
             } else {
@@ -34,6 +33,7 @@ function ChampionInfoTip() {
 
     const showTips = async () => {
         observer.observe(allytip.current);
+        observer.observe(enemytip.current);
 
         const json = await riot.getChampion(id);
         // 해당 페이지 챔피언의 id를 통해 챔피언 객체 저장
@@ -41,6 +41,56 @@ function ChampionInfoTip() {
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
         const allytips = info.allytips;
         const enemytips = info.enemytips;
+
+        if (info.skins.length < 3) {
+            allytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
+                id,
+                info.skins[info.skins.length - 1].num
+            )})`;
+            enemytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
+                id,
+                info.skins[info.skins.length].num
+            )})`;
+
+            const first_skin_name = info.skins[info.skins.length - 1].name;
+            const second_skin_name = info.skins[info.skins.length].name;
+
+            const first_skin_name_div = document.createElement("div");
+            const second_skin_name_div = document.createElement("div");
+
+            first_skin_name_div.setAttribute("class", style.skinName);
+            second_skin_name_div.setAttribute("class", style.skinName);
+
+            first_skin_name_div.innerHTML = `-${first_skin_name}-`;
+            second_skin_name_div.innerHTML = `-${second_skin_name}-`;
+
+            allytip_div.current.appendChild(first_skin_name_div);
+            enemytip_div.current.appendChild(second_skin_name_div);
+        } else {
+            allytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
+                id,
+                info.skins[info.skins.length - 2].num
+            )})`;
+            enemytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
+                id,
+                info.skins[info.skins.length - 3].num
+            )})`;
+
+            const first_skin_name = info.skins[info.skins.length - 2].name;
+            const second_skin_name = info.skins[info.skins.length - 3].name;
+
+            const first_skin_name_div = document.createElement("div");
+            const second_skin_name_div = document.createElement("div");
+
+            first_skin_name_div.setAttribute("class", style.skinName);
+            second_skin_name_div.setAttribute("class", style.skinName);
+
+            first_skin_name_div.innerHTML = `-${first_skin_name}-`;
+            second_skin_name_div.innerHTML = `-${second_skin_name}-`;
+
+            allytip_div.current.appendChild(first_skin_name_div);
+            enemytip_div.current.appendChild(second_skin_name_div);
+        }
 
         // ******* allytips *******
         const title = document.createElement("div");
@@ -50,7 +100,7 @@ function ChampionInfoTip() {
 
         const tip_addendum = document.createElement("p");
         tip_addendum.setAttribute("class", style.tipAddendum);
-        tip_addendum.innerHTML = `${info.name}. 더 잘 알고싶다면.`;
+        tip_addendum.innerHTML = `${info.name}. 더 잘하고 싶다면.`;
         allytip_div.current.insertBefore(tip_addendum, allytip.current);
 
         for (let i = 0; i < allytips.length; i++) {
@@ -92,17 +142,24 @@ function ChampionInfoTip() {
     //         `?:${window.scrollY + tip.current.getBoundingClientRect().top}`
     //     );
     // };
-
-    useEffect(() => {
-        showTips();
-    }, []);
-
     // useEffect(() => {
     //     window.addEventListener("scroll", handleScroll);
     //     return () => {
     //         window.removeEventListener("scroll", handleScroll);
     //     };
     // }, []);
+
+    const goToAllyTip = () => {
+        allytip_div.current.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const goToEnemyTip = () => {
+        enemytip_div.current.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        showTips();
+    }, []);
 
     return (
         <>
@@ -115,6 +172,12 @@ function ChampionInfoTip() {
                     <div className={style.enemyTips} ref={enemytip}></div>
                 </div>
             </div>
+            <button onClick={goToAllyTip} className={style.allytipButton}>
+                ally tip
+            </button>
+            <button onClick={goToEnemyTip} className={style.enemytipButton}>
+                enemy tip
+            </button>
         </>
     );
 }

@@ -112,6 +112,10 @@ function ChampionInfoAbout() {
         about_div.appendChild(table);
     };
 
+    const goToAbout = () => {
+        about.current.scrollIntoView({ behavior: "smooth" });
+    };
+
     useEffect(() => {
         showChampAbout();
     }, []);
@@ -121,6 +125,9 @@ function ChampionInfoAbout() {
             <div className={style.about} ref={about}>
                 <p className={style.aboutTitle} ref={Title}></p>
             </div>
+            <button onClick={goToAbout} className={style.aboutButton}>
+                story
+            </button>
         </>
     );
 }

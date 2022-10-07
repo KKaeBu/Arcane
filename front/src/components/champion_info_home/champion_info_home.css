@@ -71,52 +71,10 @@
     text-shadow: 0 0 20px black;
 }
 
-/* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
-
-.passiveIcon,
-.qIcon,
-.wIcon,
-.eIcon,
-.rIcon {
-    margin: 0.5%;
-    position: relative;
-    display: inline-block;
-}
-/* 스킬아이콘들이 들어가있는 Div안의 Div */
-
-.passiveInfo,
-.qInfo,
-.wInfo,
-.eInfo,
-.rInfo {
-    color: white;
-
-    background-color: black;
-
-    position: absolute;
-    display: inline;
-    z-index: 10px;
-    width: 200px;
-
-    left: 30%;
-    top: 80%;
-
-    animation: fadein 0.3s;
-}
-/* 스킬 상세 정보 창 */
-
-.skill_name {
-    font-family: LOLFontlight;
-    font-size: medium;
-    line-height: 3;
-}
-.skill_description {
-    font-family: LOLFontlight;
-    font-size: small;
-}
-.skill_tooltip {
-    font-family: LOLFontlight;
-    font-size: small;
+.homeButton {
+    position: fixed;
+    right: 0;
+    top: 40%;
 }
 
 @keyframes fadein {

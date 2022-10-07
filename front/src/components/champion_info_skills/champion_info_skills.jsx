@@ -207,6 +207,17 @@ function ChampionSkills() {
         r_video.appendChild(r_source);
         r_video_div.appendChild(r_video);
         RDiv.current.appendChild(r_video_div);
+
+        const first_skin_name = info.skins[info.skins.length - 1].name;
+        const first_skin_name_div = document.createElement("div");
+
+        first_skin_name_div.setAttribute("class", style.skinName);
+        first_skin_name_div.innerHTML = `-${first_skin_name}-`;
+        skill.current.appendChild(first_skin_name_div);
+    };
+
+    const goToSkill = () => {
+        skill.current.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
@@ -261,6 +272,9 @@ function ChampionSkills() {
                     </div>
                 </div>
             </div>
+            <button onClick={goToSkill} className={style.skillButton}>
+                skill
+            </button>
         </>
     );
 }

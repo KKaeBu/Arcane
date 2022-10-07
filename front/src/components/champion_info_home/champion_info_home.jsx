@@ -42,14 +42,23 @@ function ChampionInfo() {
         // home.current.prepend(champion_icon);
     };
 
+    const goToHome = () => {
+        home.current.scrollIntoView({ behavior: "smooth" });
+    };
+
     useEffect(() => {
         showChampInfo();
     }, []);
 
     return (
-        <div className="home" ref={home}>
-            <div className="championName" ref={championNameDiv}></div>
-        </div>
+        <>
+            <div className="home" ref={home}>
+                <div className="championName" ref={championNameDiv}></div>
+            </div>
+            <button onClick={goToHome} className="homeButton">
+                home
+            </button>
+        </>
     );
 }
 

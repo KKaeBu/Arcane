@@ -1,7 +1,7 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-7e3e0c38-f551-40ae-9060-e29f942d38fd";
+    #Riot_API_Key = "RGAPI-71c6fc34-a6f2-49cb-831b-3d77cc145c8b";
     #Language = "ko_KR";
-    #Version = "12.18.1";
+    #Version = "12.19.1";
     // ========= 임시로 버전 변경함
     // 특정 소환사의 pid, ppuid 등의 정보 가져오기
     // 소환사명 필요
