@@ -12,7 +12,12 @@ function Topbar() {
         event.preventDefault(); // 새로고침 방지
         console.log(inputValue);
         if (inputValue !== ""){
-            navigate(`/summoners/${inputValue}`);
+            // navigate(`/summoners/${inputValue}`);
+            navigate(`/summoners/${inputValue}`, {
+                state: {
+                    summoner: inputValue,
+                }
+            })
         }else
             alert("소환사명을 입력해주세요!");
     };

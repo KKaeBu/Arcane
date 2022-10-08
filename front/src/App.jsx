@@ -25,8 +25,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/summoners" element={<Summoners />} />
-                <Route path="/summoners/:summoner" element={<Summoners />} />
+                <Route path="/summoners/:id" element={<Summoners />} />
                 <Route path="/community/*" element={<Community main={true} write={false}/>} />
                 <Route path="/community/write/:id" element={<Community main={false} write={true} />} />
                 <Route path="/community/read/:id" element={<Community main={false} write={false}/>} />

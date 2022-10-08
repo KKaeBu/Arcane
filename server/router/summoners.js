@@ -4,7 +4,7 @@ import * as summonersController from "../controller/summoners.js";
 
 const router = express.Router();
 
-router.get("/", summonersController.temp);
+router.get("/", summonersController.getRiotApi);
 
 
 export default router;

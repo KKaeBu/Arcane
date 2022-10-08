@@ -20,7 +20,7 @@ function Topbar() {
         //     .catch((e) => console.log("오류남 ㅋ"));
         if (inputValue !== "") {
             // navigate(`/summoners/${inputValue}`);   
-            navigate("/summoners", {
+            navigate(`/summoners/${inputValue}`, {
                 state: {
                     summoner: inputValue,
                 }
