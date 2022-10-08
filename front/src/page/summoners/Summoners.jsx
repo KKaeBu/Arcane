@@ -37,6 +37,7 @@ function Summoners() {
 
     }
 
+
     useEffect(() => {
         findSummoner();
 
