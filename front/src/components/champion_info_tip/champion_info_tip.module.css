@@ -85,6 +85,8 @@
     justify-content: space-around;
 
     margin-top: 7%;
+    margin-bottom: 7%;
+    padding-bottom: 5%;
 
     transform: translateX(-50%);
     opacity: 0;
@@ -118,17 +120,48 @@
     width: fit-content;
     margin: 0 auto 0 auto;
     padding-top: 10%;
+    padding-bottom: 5%;
 }
 
 .allytipButton {
+    width: 170px;
+    z-index: 100;
     position: fixed;
     right: 0;
     top: 55%;
+
+    font-family: "Community";
+    font-size: 18px;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
 }
 .enemytipButton {
+    width: 180px;
+    z-index: 100;
     position: fixed;
     right: 0;
     top: 60%;
+
+    font-family: "Community";
+    font-size: 18px;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
+}
+
+.arrow {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+
+    vertical-align: middle;
 }
 #active {
     transform: translateX(0);

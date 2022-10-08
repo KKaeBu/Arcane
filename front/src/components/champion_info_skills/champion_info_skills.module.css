@@ -156,9 +156,29 @@
 }
 
 .skillButton {
+    width: 170px;
+    z-index: 100;
     position: fixed;
     right: 0;
     top: 50%;
+
+    font-family: "Community";
+    font-size: 18px;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
+}
+
+.arrow {
+    margin-right: 5px;
+
+    width: 40px;
+    height: 40px;
+
+    vertical-align: middle;
 }
 
 @keyframes fadein {

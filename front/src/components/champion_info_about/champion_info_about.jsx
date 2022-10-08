@@ -12,6 +12,9 @@ function ChampionInfoAbout() {
     const about = useRef(null);
     const Title = useRef(null);
 
+    const button = useRef(null);
+    const arrow = useRef(null);
+
     const translate = (info) => {
         if (info === "Tank") return "탱커";
         else if (info === "Mage") return "메이지";
@@ -110,11 +113,49 @@ function ChampionInfoAbout() {
         table.appendChild(thead);
         table.appendChild(tbody);
         about_div.appendChild(table);
+
+        button.current.addEventListener("mouseover", () => {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        });
+
+        button.current.addEventListener("mouseout", () => {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+            handleScroll();
+        });
     };
 
     const goToAbout = () => {
         about.current.scrollIntoView({ behavior: "smooth" });
+        return false;
     };
+
+    const handleScroll = () => {
+        if (
+            window.scrollY + 1 >=
+                window.scrollY +
+                    about.current.getBoundingClientRect().top -
+                    400 &&
+            window.scrollY + 1 <
+                window.scrollY +
+                    about.current.getBoundingClientRect().bottom -
+                    400
+        ) {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        } else {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     useEffect(() => {
         showChampAbout();
@@ -125,7 +166,17 @@ function ChampionInfoAbout() {
             <div className={style.about} ref={about}>
                 <p className={style.aboutTitle} ref={Title}></p>
             </div>
-            <button onClick={goToAbout} className={style.aboutButton}>
+            <button
+                onClick={goToAbout}
+                className={style.aboutButton}
+                ref={button}
+            >
+                <img
+                    src="/img/arrow.png"
+                    alt=""
+                    className={style.arrow}
+                    ref={arrow}
+                />
                 story
             </button>
         </>

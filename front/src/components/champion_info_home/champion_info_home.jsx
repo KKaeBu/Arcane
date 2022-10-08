@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import "./champion_info_home.css";
+import style from "./champion_info_home.module.css";
 import Riot from "../../network/riotAPI.js";
 import { useEffect, useRef } from "react";
 
@@ -9,6 +9,8 @@ function ChampionInfo() {
 
     const championNameDiv = useRef(null);
     const home = useRef(null);
+    const button = useRef(null);
+    const arrow = useRef(null);
 
     const showChampInfo = async () => {
         const json = await riot.getChampion(id);
@@ -23,28 +25,56 @@ function ChampionInfo() {
         const nameSpan = document.createElement("span");
         const nameSpanDiv = document.createElement("div");
 
-        nameSpanDiv.setAttribute("class", "championNameSpan");
+        nameSpanDiv.setAttribute("class", style.championNameSpan);
         nameSpan.innerHTML = info.name;
         nameSpanDiv.appendChild(nameSpan);
         championNameDiv.current.appendChild(nameSpanDiv);
 
         const titleSpan = document.createElement("span");
         const titleSpanDiv = document.createElement("div");
-        titleSpanDiv.setAttribute("class", "titleSpan");
+        titleSpanDiv.setAttribute("class", style.titleSpan);
         titleSpan.innerHTML = '"' + info.title + '"';
         titleSpanDiv.appendChild(titleSpan);
         championNameDiv.current.appendChild(titleSpanDiv);
 
         // ********** champion, skill의 img 설정 부분
-        // const champion_icon = document.createElement("img");
-        // champion_icon.setAttribute("src", riot.getChampionIcon(id));
-        // champion_icon.setAttribute("class", "championIcon");
-        // home.current.prepend(champion_icon);
+        button.current.addEventListener("mouseover", () => {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        });
+
+        button.current.addEventListener("mouseout", () => {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+            handleScroll();
+        });
+        handleScroll();
     };
 
     const goToHome = () => {
         home.current.scrollIntoView({ behavior: "smooth" });
+        return false;
     };
+
+    const handleScroll = () => {
+        if (
+            window.scrollY + 1 <
+            window.scrollY + home.current.getBoundingClientRect().bottom - 400
+        ) {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        } else {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     useEffect(() => {
         showChampInfo();
@@ -52,10 +82,20 @@ function ChampionInfo() {
 
     return (
         <>
-            <div className="home" ref={home}>
-                <div className="championName" ref={championNameDiv}></div>
+            <div className={style.home} ref={home}>
+                <div className={style.championName} ref={championNameDiv}></div>
             </div>
-            <button onClick={goToHome} className="homeButton">
+            <button
+                onClick={goToHome}
+                className={style.homeButton}
+                ref={button}
+            >
+                <img
+                    src="/img/arrow.png"
+                    alt=""
+                    className={style.arrow}
+                    ref={arrow}
+                />
                 home
             </button>
         </>

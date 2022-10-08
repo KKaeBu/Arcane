@@ -15,6 +15,11 @@ function ChampionInfoTip() {
     const allytip = useRef(null);
     const enemytip = useRef(null);
 
+    const button1 = useRef(null);
+    const arrow1 = useRef(null);
+    const button2 = useRef(null);
+    const arrow2 = useRef(null);
+
     const options = {
         root: null,
         rootMargin: "0px",
@@ -45,15 +50,15 @@ function ChampionInfoTip() {
         if (info.skins.length < 3) {
             allytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
                 id,
-                info.skins[info.skins.length - 1].num
+                info.skins[info.skins.length - 2].num
             )})`;
             enemytip_div.current.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${await riot.getChampionSkinIllustration(
                 id,
-                info.skins[info.skins.length].num
+                info.skins[info.skins.length - 1].num
             )})`;
 
-            const first_skin_name = info.skins[info.skins.length - 1].name;
-            const second_skin_name = info.skins[info.skins.length].name;
+            const first_skin_name = info.skins[info.skins.length - 2].name;
+            const second_skin_name = info.skins[info.skins.length - 1].name;
 
             const first_skin_name_div = document.createElement("div");
             const second_skin_name_div = document.createElement("div");
@@ -103,15 +108,25 @@ function ChampionInfoTip() {
         tip_addendum.innerHTML = `${info.name}. 더 잘하고 싶다면.`;
         allytip_div.current.insertBefore(tip_addendum, allytip.current);
 
-        for (let i = 0; i < allytips.length; i++) {
+        if (allytips.length === 0) {
             const new_tip = document.createElement("p");
-            new_tip.innerHTML = allytips[i];
+            new_tip.innerHTML = `현재 RIOT API에 ${info.name}의 정보가 업데이트 되어있지 않습니다.`;
             const new_tip_div = document.createElement("div");
             new_tip_div.setAttribute("class", style.allyTip);
-
             new_tip_div.appendChild(new_tip);
             allytip.current.appendChild(new_tip_div);
+        } else {
+            for (let i = 0; i < allytips.length; i++) {
+                const new_tip = document.createElement("p");
+                new_tip.innerHTML = allytips[i];
+                const new_tip_div = document.createElement("div");
+                new_tip_div.setAttribute("class", style.allyTip);
+
+                new_tip_div.appendChild(new_tip);
+                allytip.current.appendChild(new_tip_div);
+            }
         }
+
         // ******* allytips *******
         // ******* enemytips *******
         const enemy_title = document.createElement("div");
@@ -124,37 +139,100 @@ function ChampionInfoTip() {
         enemy_tip_addendum.innerHTML = `${info.name}. 적으로 만난다면.`;
         enemytip_div.current.insertBefore(enemy_tip_addendum, enemytip.current);
 
-        for (let i = 0; i < enemytips.length; i++) {
+        if (enemytips.length === 0) {
             const new_tip = document.createElement("p");
-            new_tip.innerHTML = enemytips[i];
+            new_tip.innerHTML = `현재 RIOT API에 ${info.name}의 정보가 업데이트 되어있지 않습니다.`;
             const new_tip_div = document.createElement("div");
             new_tip_div.setAttribute("class", style.enemyTip);
-
             new_tip_div.appendChild(new_tip);
             enemytip.current.appendChild(new_tip_div);
+        } else {
+            for (let i = 0; i < enemytips.length; i++) {
+                const new_tip = document.createElement("p");
+                new_tip.innerHTML = enemytips[i];
+                const new_tip_div = document.createElement("div");
+                new_tip_div.setAttribute("class", style.enemyTip);
+
+                new_tip_div.appendChild(new_tip);
+                enemytip.current.appendChild(new_tip_div);
+            }
         }
         // ******* enemytips *******
+
+        button1.current.addEventListener("mouseover", () => {
+            button1.current.style.transform = "scale(1.2)";
+            arrow1.current.src = "/img/arrow-hover.png";
+        });
+
+        button1.current.addEventListener("mouseout", () => {
+            button1.current.style.transform = "scale(1)";
+            arrow1.current.src = "/img/arrow.png";
+            handleScroll();
+        });
+
+        button2.current.addEventListener("mouseover", () => {
+            button2.current.style.transform = "scale(1.2)";
+            arrow2.current.src = "/img/arrow-hover.png";
+        });
+
+        button2.current.addEventListener("mouseout", () => {
+            button2.current.style.transform = "scale(1)";
+            arrow2.current.src = "/img/arrow.png";
+            handleScroll();
+        });
     };
 
-    // const handleScroll = () => {
-    //     console.log(`현재 스크롤 위치:${window.scrollY}`);
-    //     console.log(
-    //         `?:${window.scrollY + tip.current.getBoundingClientRect().top}`
-    //     );
-    // };
-    // useEffect(() => {
-    //     window.addEventListener("scroll", handleScroll);
-    //     return () => {
-    //         window.removeEventListener("scroll", handleScroll);
-    //     };
-    // }, []);
+    const handleScroll = () => {
+        if (
+            window.scrollY + 1 >=
+                window.scrollY +
+                    allytip_div.current.getBoundingClientRect().top -
+                    400 &&
+            window.scrollY + 1 <
+                window.scrollY +
+                    allytip_div.current.getBoundingClientRect().bottom -
+                    400
+        ) {
+            button1.current.style.transform = "scale(1.2)";
+            arrow1.current.src = "/img/arrow-hover.png";
+            button2.current.style.transform = "scale(1)";
+            arrow2.current.src = "/img/arrow.png";
+        } else if (
+            window.scrollY + 1 >=
+            window.scrollY +
+                allytip_div.current.getBoundingClientRect().bottom -
+                400
+        ) {
+            button1.current.style.transform = "scale(1)";
+            arrow1.current.src = "/img/arrow.png";
+            button2.current.style.transform = "scale(1.2)";
+            arrow2.current.src = "/img/arrow-hover.png";
+        } else {
+            button1.current.style.transform = "scale(1)";
+            arrow1.current.src = "/img/arrow.png";
+            button2.current.style.transform = "scale(1)";
+            arrow2.current.src = "/img/arrow.png";
+        }
+    };
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     const goToAllyTip = () => {
         allytip_div.current.scrollIntoView({ behavior: "smooth" });
+        button1.current.style.transform = "scale(1.2)";
+        arrow1.current.src = "/img/arrow-hover.png";
+        return false;
     };
 
     const goToEnemyTip = () => {
         enemytip_div.current.scrollIntoView({ behavior: "smooth" });
+        button2.current.style.transform = "scale(1.2)";
+        arrow2.current.src = "/img/arrow-hover.png";
+        return false;
     };
 
     useEffect(() => {
@@ -172,10 +250,30 @@ function ChampionInfoTip() {
                     <div className={style.enemyTips} ref={enemytip}></div>
                 </div>
             </div>
-            <button onClick={goToAllyTip} className={style.allytipButton}>
+            <button
+                onClick={goToAllyTip}
+                className={style.allytipButton}
+                ref={button1}
+            >
+                <img
+                    src="/img/arrow.png"
+                    alt=""
+                    className={style.arrow}
+                    ref={arrow1}
+                />
                 ally tip
             </button>
-            <button onClick={goToEnemyTip} className={style.enemytipButton}>
+            <button
+                onClick={goToEnemyTip}
+                className={style.enemytipButton}
+                ref={button2}
+            >
+                <img
+                    src="/img/arrow.png"
+                    alt=""
+                    className={style.arrow}
+                    ref={arrow2}
+                />
                 enemy tip
             </button>
         </>

@@ -9,7 +9,6 @@ function MainDisplay() {
     const riot = new Riot();
 
     const [illust, setIllust] = useState();
-
     const getChampion = async () => {
         const json = await riot.getAllChampions(); // 모든 챔피언 정보 불러오기
         // random 한 챔피언을 선택하도록 해야함

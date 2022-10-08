@@ -31,6 +31,9 @@ function ChampionSkills() {
     const RName = useRef(null);
     const RDescription = useRef(null);
 
+    const button = useRef(null);
+    const arrow = useRef(null);
+
     const showSkills = async () => {
         const json = await riot.getChampion(id);
         // 해당 페이지 챔피언의 id를 통해 챔피언 객체 저장
@@ -214,11 +217,50 @@ function ChampionSkills() {
         first_skin_name_div.setAttribute("class", style.skinName);
         first_skin_name_div.innerHTML = `-${first_skin_name}-`;
         skill.current.appendChild(first_skin_name_div);
+
+        button.current.addEventListener("mouseover", () => {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        });
+
+        button.current.addEventListener("mouseout", () => {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+            handleScroll();
+        });
     };
 
     const goToSkill = () => {
         skill.current.scrollIntoView({ behavior: "smooth" });
+        button.current.style.transform = "scale(1.2)";
+        arrow.current.src = "/img/arrow-hover.png";
+        return false;
     };
+
+    const handleScroll = () => {
+        if (
+            window.scrollY + 1 >=
+                window.scrollY +
+                    skill.current.getBoundingClientRect().top -
+                    400 &&
+            window.scrollY + 1 <
+                window.scrollY +
+                    skill.current.getBoundingClientRect().bottom -
+                    400
+        ) {
+            button.current.style.transform = "scale(1.2)";
+            arrow.current.src = "/img/arrow-hover.png";
+        } else {
+            button.current.style.transform = "scale(1)";
+            arrow.current.src = "/img/arrow.png";
+        }
+    };
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     useEffect(() => {
         showSkills();
@@ -272,7 +314,17 @@ function ChampionSkills() {
                     </div>
                 </div>
             </div>
-            <button onClick={goToSkill} className={style.skillButton}>
+            <button
+                onClick={goToSkill}
+                className={style.skillButton}
+                ref={button}
+            >
+                <img
+                    src="/img/arrow.png"
+                    alt=""
+                    className={style.arrow}
+                    ref={arrow}
+                />
                 skill
             </button>
         </>

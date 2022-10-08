@@ -264,11 +264,11 @@ function Read(props) {
 
                 <div className={style.content}>
                     {/* \n이나 <br/>태그 등 줄바꿈을 작동하도록 함 */}
-                    {text.split("\n").map((txt) => (
-                        <>
+                    {text.split("\n").map((txt, index) => (
+                        <div key={index}>
                             {txt}
                             <br />
-                        </>
+                        </div>
                     ))}
                 </div>
 
