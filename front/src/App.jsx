@@ -10,6 +10,7 @@ import Login from "./page/login/Login.jsx";
 import Signup from "./page/signup/Signup.jsx";
 import Community from "./page/community/Community.jsx";
 import Summoners from "./page/summoners/Summoners.jsx";
+import MyPage from "./page/mypage/Mypage";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -73,6 +74,7 @@ function App() {
                     }
                 />
                 <Route path="/summoners" element={<Search />} />
+                <Route path="/mypage" element={<MyPage />} />
                 <Route
                     path="/"
                     element={

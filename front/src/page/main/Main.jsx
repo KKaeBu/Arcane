@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Riot from "../../network/riotAPI.js";
 import Topbar from "../../components/main_topbar/Topbar";
 import Menu from "../../components/main_menu/Menu";
@@ -7,6 +7,8 @@ import style from "./main.module.css";
 function MainDisplay() {
     // const userName = "승수몬";
     const riot = new Riot();
+
+    const wrapper = useRef(null);
 
     const [illust, setIllust] = useState();
     const getChampion = async () => {
@@ -22,9 +24,22 @@ function MainDisplay() {
 
         // const chooseRandomChamp = json.data.Ahri.id; // 임시로 일러 아리로 고정
 
-        const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+        // const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+        // setIllust(img); // 챔피언 일러스트 링크 저장
 
-        setIllust(img); // 챔피언 일러스트 링크 저장
+        wrapper.current.style.backgroundImage = `linear-gradient(
+            to right,
+            rgba(0, 0, 0, 1) 10%,
+            rgba(0, 0, 0, 0.5) 25%,
+            rgba(0, 0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.5) 75%,
+            rgba(0, 0, 0, 1) 90%
+        ), url(${await riot.getChampionIllustration(chooseRandomChamp)})`;
+
+        // wrapper.current.style.backgroundImage = `radial-gradient(
+        //     rgba(0, 0, 0, 0) 10%,
+        //     rgba(0, 0, 0, 1) 70%
+        // ), url(${await riot.getChampionIllustration(chooseRandomChamp)})`;
     };
 
     useEffect(() => {
@@ -34,12 +49,12 @@ function MainDisplay() {
     return (
         <div className={style.mainDisplay}>
             <Topbar />
-            <div className={style.mainDisplayWrapper}>
-                <img
+            <div className={style.mainDisplayWrapper} ref={wrapper}>
+                {/* <img
                     src={illust}
                     alt="Champion Illustration"
                     className={style.championIllustration}
-                />
+                /> */}
                 <Menu />
             </div>
         </div>

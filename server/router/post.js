@@ -1,5 +1,4 @@
 import express from "express";
-// import { User } from "../model/schema.js";
 import * as postController from "../controller/post.js";
 
 const router = express.Router();
