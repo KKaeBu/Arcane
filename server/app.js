@@ -2,6 +2,8 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import path from "path";
+import history from "connect-history-api-fallback";
 import "express-async-errors";
 import summonersRouter from "./router/summoners.js";
 import championRouter from "./router/champion.js";
@@ -13,11 +15,13 @@ import { initSocket } from "./connection/socket.js";
 import postRouter from "./router/post.js";
 
 const app = express();
+const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
+// app.use(history());
 
 // 회원가입 & 로그인
 app.use("/auth", authRouter);
@@ -25,16 +29,27 @@ app.use("/auth", authRouter);
 // 글 작성
 app.use("/post", postRouter);
 
-app.use("/summoners", summonersRouter);
+// app.use("/api/community", (req, res, next) => {
+
+// });
+
+// 유저 전적 검색
+app.use("/api/summoners", summonersRouter);
+
+// app.use(express.static(path.join(__dirname, '../front/public')));
+
+// app.get('/*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '../front/public', 'index.html'));
+// });
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
-    res.sendStatus(404);
+    res.sendStatus(404);    
 });
 
 // 에러 발생시
 app.use((error, req, res, next) => {
-    console.error(error);
+    console.error("error: " + error);
     res.sendStatus(500);
 });
 

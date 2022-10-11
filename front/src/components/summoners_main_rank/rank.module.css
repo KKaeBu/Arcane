@@ -1,0 +1,71 @@
+.rankContainer {
+    width: 100%;
+    height: 240px;
+    background-color: #282626;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.soloRankWrapper,
+.flexRankWrapper {
+    background-color: #302E2E;
+    border: 1px solid gold;
+    width: 47%;
+    height: 205px;
+    padding: 10px 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.soloRankWrapper {
+    margin-right: 10px;
+}
+
+.flexRankWrapper {
+    margin-left: 10px;
+}
+
+/* solo & flex */
+/* left */
+.soloLeft,
+.flexLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    flex: 4;
+}
+
+.TierImg {
+    width: 130px;
+}
+
+.TierLabel {
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+}
+
+/* right */
+.soloRight,
+.flexRight {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+
+    margin-left: 15px;
+    font-size: 18px;
+}
+
+.queueType {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+

@@ -1,0 +1,266 @@
+.historyContainer {
+    background-color: #282626;
+}
+
+/* Topbar */
+.historyTopbar {
+    background-color: #302E2E;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid rgb(240, 233, 233);
+    padding: 3px 0;
+
+    color: rgb(240, 233, 233);
+}
+
+.sortBtn {
+    border: 1px solid rgb(240, 233, 233);
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 17px;
+    margin-left: 10px;
+    padding: 2px;
+
+    cursor: pointer;
+}
+
+.sortBtn:first-child {
+    margin-left: 3px;
+}
+
+.sortBtn.active {
+    background-color: #616160;
+}
+
+/* MatchBox */
+.matchHistory {
+    background-color: #282626;
+    padding: 0;
+}
+
+.matchInfoBox {
+    background-color: rgb(89, 52, 59);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    margin: 8px 6px;
+    color: gray;
+
+    min-height: 108px;
+}
+
+/* matchBox Left */
+.infoLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+
+    width: 102px;
+}
+
+.spanQueue {
+    font-weight: bold;
+    font-size: 16px;
+    color: rgb(240, 233, 233);
+}
+
+/* matchBox Left To Middle */
+.infoLeftToMiddle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 142px;
+}
+
+.championIcon {
+    width: 70px;
+    height: 70px;
+
+    position: relative;
+}
+
+.championImg {
+    width: 100%;
+    height: 100%;
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+.championLevel {
+    width: max-content;
+    height: max-content;
+    background-color: gray;
+    padding: 0 5px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: white;
+
+    border: 1px solid black;
+
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spellBox,
+.runeBox {
+    margin-left: 2px;
+}
+
+.spellWrapper {
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+}
+
+.spellD,
+.spellF {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.spellD {
+    margin-bottom: 1px;
+}
+
+.spellF {
+    margin-top: 1px;
+}
+
+.runeBox:first-child {
+    background-color: #34373C;
+}
+
+.runeWrapper {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+
+.mainRune,
+.subRune {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.mainRune {
+    margin-bottom: 1px;
+}
+
+.subRune {
+    margin-top: 1px;
+}
+
+/* matchBox Middle1 */
+.infoMiddle1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 144px;
+}
+
+.itemBuild {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+
+    width: 110px;
+}
+
+.item {
+    width: 34px;
+    height: 34px;
+    background-color: #34373C;
+    border-radius: 4px;
+}
+
+.itemImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.wardItem {
+    background-color: cornflowerblue;
+}
+
+/* matchBox Middle2 */
+.infoMiddle2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+}
+
+.kdaLabel {
+    font-weight: bold;
+    color: rgb(240, 233, 233);
+}
+
+/* matchBox Middle To Right */
+.infoMiddleToRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 73px;
+}
+
+/* matchBox Right */
+.infoRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    
+    width: 258px;
+}
+
+.blueTeams,
+.redTeams {
+    padding-left: 30px;
+}
+
+.blueTeams {
+    padding: 0;
+}
+
+
+.summoner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playedChampionImg {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: blue;
+}   
+
+.summonerName {
+    width: 98px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.summonerName:hover {
+    color: purple;
+}

@@ -1,17 +1,18 @@
 .summonersContainer {
-    width: 100vw;
-    min-width: 1000px;
+    width: 100%;
     min-height: 100vh;
+    min-width: 1200px;
     height: 100%;
-    background-color: #f0f2f5;
+    background-color: #191B1B;
 }
 
 .summonersWrapper {
     width: 80%;
     min-height: 100vh;
+    min-width: 1000px;
     height: 100%;
     display: flex;
-    background-color: aquamarine;
+    background-color: #302E2E;
 
     margin: 0 auto;
     margin-top: 70px;

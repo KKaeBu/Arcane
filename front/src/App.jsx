@@ -4,7 +4,7 @@ import MainDisplay from "./page/main/Main";
 import ChampionListPage from "./page/champion_list/champion_list.jsx";
 import ChampionInfoPage from "./page/champion_info/champion_info.jsx";
 import ReactDOM from "react-dom/client";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, HashRouter } from "react-router-dom";
 import Search from "./page/search/Search.jsx";
 import Login from "./page/login/Login.jsx";
 import Signup from "./page/signup/Signup.jsx";
@@ -25,7 +25,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/summoners/:summoner" element={<Summoners />} />
+                <Route path="/summoners/:id" element={<Summoners />} />
                 <Route path="/community/*" element={<Community main={true} write={false}/>} />
                 <Route path="/community/write/:id" element={<Community main={false} write={true} />} />
                 <Route path="/community/read/:id" element={<Community main={false} write={false}/>} />

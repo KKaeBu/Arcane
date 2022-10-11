@@ -131,9 +131,8 @@ function Main(props) {
                 );
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
-                await postingList(i);
-                navigate(`/community/page=${i}`);
-                localStorage.setItem("page", i);
+                postingList(i);
+                navigate(`/community/?page=${i}`);
             };
             pageListUl.lastChild.before(li);
         }
@@ -198,8 +197,7 @@ function Main(props) {
         if (current_page !== 1) {
             await pageList(current_page - 1);
             await postingList(current_page - 1);
-            localStorage.setItem("page", current_page - 1);
-            navigate(`/community/page=${current_page - 1}`);
+            navigate(`/community/?page=${current_page - 1}`);
         }
     };
 
@@ -215,10 +213,7 @@ function Main(props) {
         if (current_page !== parseInt(prev_selected.innerHTML)) {
             await pageList(parseInt(prev_selected.innerHTML) + 1);
             await postingList(parseInt(prev_selected.innerHTML) + 1);
-            localStorage.setItem("page", parseInt(prev_selected.innerHTML) + 1);
-            navigate(
-                `/community/page=${parseInt(prev_selected.innerHTML) + 1}`
-            );
+            navigate(`/community/?page=${parseInt(prev_selected.innerHTML) + 1}`);
         }
     };
 
