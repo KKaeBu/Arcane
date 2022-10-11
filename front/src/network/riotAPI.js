@@ -4,7 +4,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-f92321f4-c5e6-4737-992a-ef2d10b7d67b";
+    #Riot_API_Key = "RGAPI-2e9b0e52-bb99-47b7-ae03-93589dc7326a";
     #Language = "ko_KR";
     #Version = "12.19.1";
     #headers = {
@@ -111,6 +111,8 @@ class Riot_API {
     }
 
     getChampionIcon(champion_id) {
+        if (champion_id === "FiddleSticks")
+            champion_id = "Fiddlesticks";
         const link = `https://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/champion/${champion_id}.png`;
@@ -169,6 +171,9 @@ class Riot_API {
         let detailRunePng = detailRune;
         if (detailRune === "LethalTempo") {
             detailRunePng = "LethalTempoTemp";
+        } else if (detailRune === "Aftershock") {
+            detailRune = "VeteranAftershock";
+            detailRunePng = "VeteranAftershock";
         }
         const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`
         return link;
@@ -263,7 +268,7 @@ async function getAPIwithServer(link){
     //     .then((res) => data=res.data)
     //     .catch(err => console.log("getAPIwithServer error: " + err));
     
-    let data = await axios.get("/summoners", { headers: { link: link } });
+    let data = await axios.get("/api/summoners", { headers: { link: link } });
     if (!data)
         throw new Error("getAPIwithServer error");
 

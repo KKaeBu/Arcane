@@ -60,6 +60,10 @@
     cursor: pointer;
 }
 
+.bookMark.active {
+    color: red;
+}
+
 .refreshHistory {
     width: 130px;
     height: 30px;

@@ -30,7 +30,7 @@
 }
 
 .sortBtn.active {
-    background-color: aqua;
+    background-color: #616160;
 }
 
 /* MatchBox */
@@ -258,4 +258,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: pointer;
+}
+
+.summonerName:hover {
+    color: purple;
 }

@@ -13,6 +13,7 @@ function Summoners() {
     const summoner = useLocation().state.summoner;
     localStorage.setItem("summoner", summoner);
     const [summonerData, setSummonerData] = useState({});
+    const [refresh, setRefresh] = useState(false);
     const riot = new Riot_API();
 
     const findSummoner = async () => {
@@ -37,6 +38,10 @@ function Summoners() {
 
     }
 
+    const isRefresh = (r) => {
+        setRefresh(!refresh);
+    }
+
 
     useEffect(() => {
         findSummoner();
@@ -47,10 +52,11 @@ function Summoners() {
         <div className={style.summonersContainer}>
             <div className={style.summonersWrapper}>
                 <Topbar />
-                <User summonerData={summonerData} />
+                <User summonerData={summonerData} isRefresh={isRefresh} />
                 <Rank summonerData={summonerData}/>
                 {/* <Most summonerData={summonerData}/> */}
-                <History summonerData={summonerData}/>
+                {/* {refresh ? <History summonerData={summonerData} isRefresh={isRefresh} /> : <History summonerData={summonerData}/> } */}
+                <History summonerData={summonerData} isRefresh={refresh}/>
             </div>
         </div>
     );

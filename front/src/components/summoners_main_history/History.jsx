@@ -2,18 +2,23 @@ import { useState, useEffect } from "react";
 import style from "./history.module.css";
 import Riot_API from "../../network/riotAPI";
 import { createElement } from "react";
+import { useNavigate } from "react-router-dom";
 
 function History(props) {
     const riot = new Riot_API();
+    const navigate = useNavigate();
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
     let runesJson; // ddragon에서 가져온 모든 룬 정보
     const matchHistory = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
-    const allHistory = document.querySelector("." + style["allHistory"]);
 
     const summData = props.summonerData;
+    const isRefresh = props.isRefresh;
 
     const getMatchHistory = async () => {
+        if (matchHistory) {
+            removeAllchild(matchHistory);
+        }
         const puuid = summData.puuid;
         if (!puuid)
             return;
@@ -94,7 +99,10 @@ function History(props) {
                 kills = participants[p].kills;
                 deaths = participants[p].deaths
                 assists = participants[p].assists;
-                kda = participants[p].challenges.kda;
+                if (participants[p].challenges)
+                    kda = participants[p].challenges.kda;
+                else
+                    kda = (kills + assists) / deaths;
                 cs = participants[p].neutralMinionsKilled + participants[p].totalMinionsKilled;
                 if (participants[p].win)
                     win = "승리";
@@ -450,6 +458,8 @@ function History(props) {
             summonerName.setAttribute("class", style.summonerName);
 
             summonerName.innerText = summoners[s].pName;
+            summonerName.onclick = function() { summonerNavigate(summoners[s].pName) };
+            // summonerName.setAttribute("onClick", "summonerNavigate()");
 
             summoner.appendChild(playedChampionImg);
             summoner.appendChild(summonerName);
@@ -496,10 +506,23 @@ function History(props) {
 
     }
 
+    const removeAllchild = (div) => {
+        while(div.hasChildNodes()){
+            div.removeChild(div.firstChild);
+        }
+    }
+
+    const summonerNavigate = (summonerName) => {
+        navigate(`/summoners/${summonerName}`, {
+            state: {
+                summoner: summonerName,
+            }
+        })
+    }
 
     useEffect(() => {
         getMatchHistory();
-    }, [summData]);
+    }, [summData, isRefresh]);
     
     return (
         <div className={style.historyContainer}>
@@ -542,6 +565,10 @@ function queueTypeConverter(queue) {
             break;
         case "Ultimate Spellbook games":
             convertedQueue = "궁국기 주문서";
+            break;
+        
+        case "Pick URF games":
+            convertedQueue = "U.R.F.";
             break;
         
         default:

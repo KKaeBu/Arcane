@@ -29,14 +29,18 @@ app.use("/auth", authRouter);
 // 글 작성
 app.use("/post", postRouter);
 
+// app.use("/api/community", (req, res, next) => {
+
+// });
+
 // 유저 전적 검색
-app.use("/summoners", summonersRouter);
+app.use("/api/summoners", summonersRouter);
 
-app.use(express.static(path.join(__dirname, '../front/public')));
+// app.use(express.static(path.join(__dirname, '../front/public')));
 
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../front/public', 'index.html'));
-});
+// app.get('/*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '../front/public', 'index.html'));
+// });
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
