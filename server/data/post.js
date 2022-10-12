@@ -60,10 +60,6 @@ export async function updatePostContent(new_title, new_content, id) {
     await Post.findOneAndUpdate(filter, update);
 }
 
-export async function deleteAll() {
-    await Comment.deleteMany({ username: "oooo" });
-}
-
 export async function deleteByID(id) {
     /* 수동으로 데이터베이스 간 참조무결성을 지켜줌 > mongoose엔 foreign key 등의 기능이 없음 */
     const user = await User.find({});

@@ -74,12 +74,6 @@ export async function Deleting(req, res) {
     return res.status(201).json(req.body);
 }
 
-export async function DeleteAll(req, res) {
-    //await postRepository.deleteByUsername(req.body.username);
-    await postRepository.deleteAll(); //이건다 삭제해버림
-    return res.status(201).json(req.body);
-}
-
 export async function PostingComment(req, res) {
     const { username, content, postid } = req.body;
     await postRepository.commentPost({ username, content, postid }, postid);

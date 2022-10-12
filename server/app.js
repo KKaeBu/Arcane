@@ -12,7 +12,6 @@ import { connectDB } from "./db/db.js";
 import { User } from "./model/schema.js";
 import { initSocket } from "./connection/socket.js";
 import postRouter from "./router/post.js";
-// import communityRouter from "./router/community.js";
 
 const app = express();
 
@@ -32,8 +31,6 @@ app.use("/summoners", summonersRouter);
 
 // 내 정보
 app.use("/api/mypage", mypageRouter);
-
-// app.use("/api/community", communityRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {

@@ -15,9 +15,6 @@ import queryString from "query-string";
 
 function Main() {
     const page_query = queryString.parse(useLocation().search);
-    console.log(page_query);
-    localStorage.setItem("page", parseInt(page_query.page));
-
     moment.tz.setDefault("Asia/Seoul");
     const navigate = useNavigate();
 
@@ -170,9 +167,6 @@ function Main() {
 
         for (let i = 1; i <= (data.length - 1) / 15 + 1; i++) {
             const pageListUl = await document.getElementById(style.pageList);
-            // const listRightBtn = await document.querySelector(
-            //     "." + style["listRightBtn"]
-            // );
             const li = document.createElement("li");
             li.setAttribute("class", style.listItem);
             li.innerText = i;
@@ -185,7 +179,7 @@ function Main() {
                 );
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
-                // await postingList(i);
+                await postingList(i);
                 navigate(`/community?page=${i}`);
                 localStorage.setItem("page", i);
             };
@@ -209,16 +203,8 @@ function Main() {
      ***** 조회수를 DB에 연결하지 않아서 새로고침하면 조회수가 0이 되어버림 > 해결
      */
 
-    const deleteAll = async () => {
-        await axios.delete("/post/delete/all", {
-            data: {
-                username: "oooo",
-            },
-            withCredentials: true,
-        });
-    };
-
     const isValidToken = async () => {
+        localStorage.setItem("page", parseInt(page_query.page));
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
 
@@ -272,7 +258,7 @@ function Main() {
 
     useEffect(() => {
         isValidToken();
-    }, []);
+    }, [page_query]);
 
     /*
      ***** socket의 on 메소드는 거의 항상 useEffect안에 넣는것이 맞는듯하다
@@ -352,12 +338,6 @@ function Main() {
                         <VisibilityIcon className={style.eyeIcon} />
                         &nbsp;조회순
                     </div>
-                    {/* <div
-                        className={`${style.listSortItem}`}
-                        onClick={deleteAll}
-                    >
-                        데이터 다 삭제(개발하는동안 실험용)
-                    </div> */}
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost} onClick={writePost}>
