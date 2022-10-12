@@ -10,14 +10,30 @@ function User(props) {
     const [summoner, setSummoner] = useState({});
     const [bookToggle, setBookToggle] = useState(false);
     const [profileLink, setProfileLink] = useState();
+    const [isLogin, setLogin] = useState(false);
+    const [userName, setuserNmae] = useState();
     const riot = new Riot_API();
     const token = new TokenStorage();
     const db = new DB();
 
     const getSummonerInfo = async () => {
         const profile = await riot.getSummonerProfileIcon(props.summonerData.profileIconId);
+
+        if (props.isLogin && props.summonerData.name && props.userName) {
+            const sn = props.summonerData.name;
+            const un = props.userName;
+            console.log(await db.checkMarking(sn, un)); 
+            if (await db.checkMarking(sn, un)) {
+                console.log("오긴하냐?");
+                const bookMark = document.querySelector("." + style["bookMark"]);
+                bookMark.classList.add(style.active);   
+            }
+        }
+
         setProfileLink(profile);
         setSummoner(props.summonerData);
+        setLogin(props.isLogin);
+        setuserNmae(props.userName);
     }
 
     const refresh = () => {
@@ -25,8 +41,7 @@ function User(props) {
     }
 
     const marking = (e) => {
-        const loginUser = token.getToken();
-        if (loginUser === null) {
+        if (!isLogin) {
             alert("로그인이 필요한 기능입니다!");
             return;
         }
@@ -41,9 +56,8 @@ function User(props) {
             bookMark.classList.remove(style.active);
         } else {
             // 북마크 설정시
+            db.bookMarkingDB(summoner.name, userName);
             bookMark.classList.add(style.active);
-            db.bookMarkingDB(summoner.name);
-            
         }
 
         setBookToggle(!bookToggle);

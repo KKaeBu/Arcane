@@ -59,10 +59,6 @@ export async function login(req, res) {
     res.status(201).json({ token, username });
 }
 
-export async function bookMarking(req, res, next) {
-    
-}
-
 export async function me(req, res, next) {
     const { token } = req.headers;
     const decoded = jwt.verify(token, config.jwt.secretKey);
@@ -72,6 +68,33 @@ export async function me(req, res, next) {
 
     const user = await userRepository.findById(decoded.id);
     res.status(201).json({ username: user.username, postlike: user.postlike });
+}
+
+export async function bookMarking(req, res, next) {
+    const { markingUser, userName } = req.body;
+
+    const user = await userRepository.findByUsername(userName);
+
+    user.bookMark.push(markingUser);
+    user.save();
+
+    return res.status(201).json(true);
+}
+
+export async function checkMarking(req, res, next) {
+    const mUser = decodeURIComponent(req.headers.muser);
+    const username = req.headers.username;
+
+    const user = await userRepository.findByUsername(username);
+
+    for (const b in user.bookMark) {
+        if (user.bookMark[b] === mUser)
+            return res.status(201).json(true);
+    }
+    
+        
+    return res.status(201).json(false);
+
 }
 
 // jwt 토큰 생성

@@ -23,7 +23,7 @@ function History(props) {
         if (!puuid)
             return;
         
-        const matchIdListData = await riot.getMatchIdList(puuid, 0, 10);
+        const matchIdListData = await riot.getMatchIdList(puuid, 0, 3);
         queueTypeJson = await riot.getQueueType();
         spellJson = await riot.getAllSpell();
         runesJson = await riot.getAllRunes();

@@ -22,7 +22,7 @@ const userSchema = new Mongoose.Schema({
     password: { type: String, require: true },
     email: { type: String, require: true },
     postlike: [postSchema],
-    bookMark: [String],
+    bookMark: [],
 });
 
 export const User = Mongoose.model("User", userSchema);

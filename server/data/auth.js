@@ -15,3 +15,9 @@ export async function createUser(user) {
         .then((data) => data.id)
         .catch((err) => console.log(err));
 }
+
+export async function updateBookMarking(userName, mUser, tog) {
+    const conditions = { username: userName };
+    const update = { bookMark: mUser };
+    await User.findOneAndUpdate(conditions, update);
+}
