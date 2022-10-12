@@ -10,4 +10,6 @@ router.get("/login", authController.login);
 
 router.post("/signup", authController.signup);
 
+router.post("/mark", authController.bookMarking);
+
 export default router;

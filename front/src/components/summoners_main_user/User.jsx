@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { Bookmark, Autorenew } from '@mui/icons-material';
+import { Bookmark, Autorenew, Dvr } from '@mui/icons-material';
 import Riot_API from "../../network/riotAPI";
 import style from "./user.module.css";
+import TokenStorage from "../../db/token";
+import DB from "../../db/db";
 
 
 function User(props) {
@@ -9,6 +11,8 @@ function User(props) {
     const [bookToggle, setBookToggle] = useState(false);
     const [profileLink, setProfileLink] = useState();
     const riot = new Riot_API();
+    const token = new TokenStorage();
+    const db = new DB();
 
     const getSummonerInfo = async () => {
         const profile = await riot.getSummonerProfileIcon(props.summonerData.profileIconId);
@@ -21,15 +25,27 @@ function User(props) {
     }
 
     const marking = (e) => {
+        const loginUser = token.getToken();
+        if (loginUser === null) {
+            alert("로그인이 필요한 기능입니다!");
+            return;
+        }
+
         let bookMark = e.target;
         if (bookMark.childNodes.length === 0)
             bookMark = e.target.parentNode;
             
+        
         if (bookToggle) {
+            // 북마크 해제시
             bookMark.classList.remove(style.active);
         } else {
+            // 북마크 설정시
             bookMark.classList.add(style.active);
+            db.bookMarkingDB(summoner.name);
+            
         }
+
         setBookToggle(!bookToggle);
     }
 

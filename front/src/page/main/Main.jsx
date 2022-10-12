@@ -26,11 +26,17 @@ function MainDisplay() {
 
         // const chooseRandomChamp = json.data.Ahri.id; // 임시로 일러 아리로 고정
 
-        // const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
-        // setIllust(img); // 챔피언 일러스트 링크 저장
+        const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+        setIllust(img); // 챔피언 일러스트 링크 저장
 
-        // 검색 토큰 삭제
-        token.clearThisToken("summoner");
+        // 로그인 제외 모든 토큰 삭제
+        const authToken = token.getToken();
+        if (authToken != null) {
+            token.clearThisToken("page");
+            token.clearThisToken("summoner");
+            token.clearThisToken("sort");
+        } else
+            token.clearAllToken();
 
         setIllust(img); // 챔피언 일러스트 링크 저장
     };
@@ -43,11 +49,11 @@ function MainDisplay() {
         <div className={style.mainDisplay}>
             <Topbar />
             <div className={style.mainDisplayWrapper} ref={wrapper}>
-                {/* <img
+                <img
                     src={illust}
                     alt="Champion Illustration"
                     className={style.championIllustration}
-                /> */}
+                />
                 <Menu />
             </div>
         </div>

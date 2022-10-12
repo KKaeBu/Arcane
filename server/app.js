@@ -24,7 +24,7 @@ app.use(cors());
 app.use(morgan("tiny"));
 // app.use(history());
 
-// 회원가입 & 로그인
+// 회원가입 & 로그인 & 유저관련 디비 설정
 app.use("/auth", authRouter);
 
 // 글 작성

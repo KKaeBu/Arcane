@@ -23,8 +23,9 @@
     width: 100%;
     height: 100%;
     /* object-fit: cover 로 해주니까 윗부분이 잘림 */
-    object-fit: contain;
+    object-fit: cover;
     background-size: contain;
     /* 이미지 어둡게 해주기 */
     filter: brightness(65%);
+
 }

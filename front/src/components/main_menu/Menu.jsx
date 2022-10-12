@@ -14,7 +14,6 @@ import style from "./menu.module.css";
 import { io } from "socket.io-client";
 
 function Menu() {
-    localStorage.setItem("page", 1); // 커뮤니티 페이지의 페이지리스트를 1로 변경.. 뭔가 이상하긴함 방법이
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
     const socket = io.connect("http://localhost:5000");

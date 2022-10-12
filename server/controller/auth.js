@@ -59,6 +59,10 @@ export async function login(req, res) {
     res.status(201).json({ token, username });
 }
 
+export async function bookMarking(req, res, next) {
+    
+}
+
 export async function me(req, res, next) {
     const { token } = req.headers;
     const decoded = jwt.verify(token, config.jwt.secretKey);

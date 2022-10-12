@@ -30,4 +30,8 @@ export default class TokenStorage {
     clearThisToken(t) {
         localStorage.removeItem(t);
     }
+
+    clearAllToken() {
+        localStorage.clear();
+    }
 }
