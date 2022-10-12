@@ -16,4 +16,18 @@ export default class TokenStorage {
     clearToken() {
         localStorage.clear(TOKEN);
     }
+
+    // 위에는 로그인용 아래는 특정 토큰 사용을 위한 함수들
+
+    saveThisItem(k, v) {
+        localStorage.setItem(k, v);
+    }
+
+    getThisToken(t) {
+        return localStorage.getItem(t);
+    }
+
+    clearThisToken(t) {
+        localStorage.removeItem(t);
+    }
 }

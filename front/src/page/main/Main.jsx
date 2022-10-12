@@ -3,10 +3,12 @@ import Riot from "../../network/riotAPI.js";
 import Topbar from "../../components/main_topbar/Topbar";
 import Menu from "../../components/main_menu/Menu";
 import style from "./main.module.css";
+import TokenStorage from "../../db/token.js";
 
 function MainDisplay() {
     // const userName = "승수몬";
     const riot = new Riot();
+    const token = new TokenStorage();
 
     const [illust, setIllust] = useState();
 
@@ -24,6 +26,9 @@ function MainDisplay() {
         // const chooseRandomChamp = json.data.Ahri.id; // 임시로 일러 아리로 고정
 
         const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+
+        // 검색 토큰 삭제
+        token.clearThisToken("summoner");
 
         setIllust(img); // 챔피언 일러스트 링크 저장
     };
