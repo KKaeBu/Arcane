@@ -23,8 +23,6 @@ router.put("/correct", postController.CorrectingPost);
 
 router.delete("/delete", postController.Deleting);
 
-router.delete("/delete/all", postController.DeleteAll);
-
 router.delete("/comment/delete", postController.DeletingComment);
 
 export default router;

@@ -117,7 +117,7 @@ function Menu() {
             >
                 <div className={style.menuSubItemContainer}>
                     <Link
-                        to="/community"
+                        to="/community?page=1"
                         className={style.menuSubItemContainer}
                     >
                         <Forum className={style.icon} />

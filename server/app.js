@@ -40,7 +40,7 @@ app.use("/api/summoners", summonersRouter);
 // });
 
 // 내 정보
-app.use("/mypage", mypageRouter);
+app.use("/api/mypage", mypageRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
