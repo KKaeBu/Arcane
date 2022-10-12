@@ -4,16 +4,20 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-
 import { io } from "socket.io-client";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import TokenStorage from "./../../db/token";
 import axios from "axios";
 import moment from "moment/moment";
-import tz from "moment-timezone";
+import { tz } from "moment-timezone";
+import queryString from "query-string";
 
-function Main(props) {
+function Main() {
+    const page_query = queryString.parse(useLocation().search);
+    console.log(page_query);
+    localStorage.setItem("page", parseInt(page_query.page));
+
     moment.tz.setDefault("Asia/Seoul");
     const navigate = useNavigate();
 
@@ -23,6 +27,7 @@ function Main(props) {
 
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
+
     let data = []; // 게시물 object 배열
     const socket = io.connect("http://localhost:5000");
 
@@ -72,7 +77,6 @@ function Main(props) {
                         view: data[i].view,
                     })
                     .then((res) => {
-                        // props.propFunction(data[i]._id);
                         navigate(`/community/read/${data[i]._id}`, {
                             state: data[i]._id,
                         });
@@ -181,8 +185,8 @@ function Main(props) {
                 );
                 prev_selected.removeAttribute("id");
                 li.setAttribute("id", style.selectedItem);
-                await postingList(i);
-                navigate(`/community/page=${i}`);
+                // await postingList(i);
+                navigate(`/community?page=${i}`);
                 localStorage.setItem("page", i);
             };
             pageListUl.lastChild.before(li);
@@ -217,16 +221,10 @@ function Main(props) {
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
-        let p;
-        if (localStorage.getItem("page") === null) {
-            p = 1;
-        } else {
-            p = parseInt(localStorage.getItem("page"));
-        }
 
-        navigate(`/community/page=${p}`);
-        await pageList(p);
-        await postingList(p);
+        await pageList(parseInt(window.localStorage.getItem("page")));
+        await postingList(parseInt(window.localStorage.getItem("page")));
+
         await axios
             .get("/auth", {
                 headers: {
@@ -249,7 +247,7 @@ function Main(props) {
             await pageList(current_page - 1);
             await postingList(current_page - 1);
             localStorage.setItem("page", current_page - 1);
-            navigate(`/community/page=${current_page - 1}`);
+            navigate(`/community?page=${current_page - 1}`);
         }
     };
 
@@ -261,13 +259,13 @@ function Main(props) {
         const current_page = parseInt(
             pageListUl.lastChild.previousSibling.innerHTML
         );
-
+        //
         if (current_page !== parseInt(prev_selected.innerHTML)) {
             await pageList(parseInt(prev_selected.innerHTML) + 1);
             await postingList(parseInt(prev_selected.innerHTML) + 1);
             localStorage.setItem("page", parseInt(prev_selected.innerHTML) + 1);
             navigate(
-                `/community/page=${parseInt(prev_selected.innerHTML) + 1}`
+                `/community?page=${parseInt(prev_selected.innerHTML) + 1}`
             );
         }
     };
@@ -301,7 +299,7 @@ function Main(props) {
                             await pageList(1);
                             await postingList(1);
                             localStorage.setItem("page", 1);
-                            navigate(`/community/page=${1}`);
+                            navigate(`/community?page=${1}`);
 
                             listSortItem[0].setAttribute(
                                 "id",
@@ -321,7 +319,7 @@ function Main(props) {
                             await pageList(1);
                             await postingList(1);
                             localStorage.setItem("page", 1);
-                            navigate(`/community/page=${1}`);
+                            navigate(`/community?page=${1}`);
 
                             listSortItem[1].setAttribute(
                                 "id",
@@ -341,7 +339,7 @@ function Main(props) {
                             await pageList(1);
                             await postingList(1);
                             localStorage.setItem("page", 1);
-                            navigate(`/community/page=${1}`);
+                            navigate(`/community?page=${1}`);
 
                             listSortItem[2].setAttribute(
                                 "id",

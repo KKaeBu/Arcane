@@ -29,6 +29,7 @@
         "concurrently": "^7.2.2",
         "jsonwebtoken": "^8.5.1",
         "moment": "^2.29.4",
-        "moment-timezone": "^0.5.37"
+        "moment-timezone": "^0.5.37",
+        "query-string": "^7.1.1"
     }
 }

@@ -1,5 +1,5 @@
 class Riot_API {
-    #Riot_API_Key = "RGAPI-1b5d47be-bd8d-48f7-8acf-6f427c389627";
+    #Riot_API_Key = "RGAPI-316a648a-9022-45b6-a2c2-b1259f169fcf";
     #Language = "ko_KR";
     #Version = "12.19.1";
     // ========= 임시로 버전 변경함

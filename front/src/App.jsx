@@ -27,6 +27,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/summoners/:summoner" element={<Summoners />} />
+
                 <Route
                     path="/community/*"
                     element={
