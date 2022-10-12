@@ -1,0 +1,14 @@
+.ChangePassword {
+    margin: 10%;
+}
+
+.pwBox {
+    margin: auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.changePWInput {
+    margin-bottom: 2%;
+}

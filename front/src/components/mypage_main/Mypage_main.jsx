@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 
 function MyPageMain() {
-    const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
+    const username = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
     const navigate = useNavigate();
 
     const deleteAccount = async () => {
@@ -12,7 +12,7 @@ function MyPageMain() {
             await axios
                 .delete("api/mypage/delete", {
                     data: {
-                        username: id.state,
+                        username: username.state,
                     },
                 })
                 .then((res) => {
@@ -26,9 +26,20 @@ function MyPageMain() {
         }
     };
 
+    const changePassword = () => {
+        navigate("/mypage/changePassword", {
+            state: username.state,
+        });
+    };
+
     return (
         <>
-            <div onClick={deleteAccount}>{id.state} 회원 탈퇴</div>
+            <div className={style.deleteAccount} onClick={deleteAccount}>
+                유저 이름:{username.state}**************회원 탈퇴***************
+            </div>
+            <div className={style.changePW} onClick={changePassword}>
+                비밀번호 변경
+            </div>
         </>
     );
 }
