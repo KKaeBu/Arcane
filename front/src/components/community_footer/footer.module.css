@@ -1,8 +1,10 @@
 .footerContainer {
     width: auto;
     height: 132px;
-    border: 1px solid black;
 
+    border: 0;
+    margin-right: 3%;
+    margin-left: 3%;
     /* 하단고정 */
     bottom: 0;
 
@@ -10,7 +12,8 @@
     justify-content: space-between;
     align-items: center;
 
-    background-color: antiquewhite;
+    background-color: white;
+    box-shadow: 0 0 3px black;
 }
 
 .footerLeft {
@@ -36,8 +39,7 @@
     margin-bottom: 0;
 }
 
-
-.footerCenter{
+.footerCenter {
     flex: 3;
 }
 

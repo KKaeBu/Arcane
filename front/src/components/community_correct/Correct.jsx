@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import style from "./posting.module.css";
+import style from "./correct.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
-import { useNavigate } from "react-router-dom";
-import { history } from "./../../history";
+import { useLocation, useNavigate } from "react-router-dom";
+import moment from "moment/moment";
+import { useRef } from "react";
 
-function Posting(props) {
+function Correcting(props) {
+    moment.tz.setDefault("Asia/Seoul");
+
     const navigate = useNavigate();
-
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
@@ -19,11 +21,9 @@ function Posting(props) {
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
 
-    const [isblocking, setBlocking] = useState(false);
+    const posting_title = useRef(null);
 
-    const onChangeTitle = (e) => {
-        setTitle(e.target.value);
-    };
+    const id = useLocation();
 
     const onChange = async () => {
         const fileInput = document.getElementById("files");
@@ -176,7 +176,11 @@ function Posting(props) {
 
     const cancelPosting = () => {
         if (
-            window.confirm("변경 사항이 저장되지 않습니다.\n진행하시겠습니까?")
+            window.confirm(
+                "변경 사항이 저장되지 않을 수도 있습니다." +
+                    "\n" +
+                    "진행하시겠습니까?"
+            )
         ) {
             // props.propFunction(false);
             navigate("/community");
@@ -188,23 +192,29 @@ function Posting(props) {
             alert("내용을 작성해주세요.");
         } else if (isLogin) {
             await axios
-                .post("/post", {
+                .put("/post/correct", {
                     title: title,
-                    username: userName,
-                    content: text,
-                    view: 0,
+                    content:
+                        text +
+                        `\n======================\n${moment(Date.now()).format(
+                            "YYYY-MM-DD HH:mm"
+                        )}에 수정됨`,
+                    _id: id.state,
                 })
                 .then((res) => {})
                 .catch((error) => {
                     console.error(error);
                 });
-            // props.propFunction(false);
-            navigate("/community");
+            navigate(`/community/read/${id.state}`, {
+                state: id.state,
+            });
         } else {
             window.alert("로그인이 필요한 기능입니다.");
         }
     };
-
+    const titleClick = () => {
+        window.alert("제목은 수정할 수 없습니다.");
+    };
     const isValidToken = async () => {
         const tokenStorage = new TokenStorage();
         const token = tokenStorage.getToken();
@@ -220,28 +230,21 @@ function Posting(props) {
                 setLogin(true);
             })
             .catch((err) => console.log(err));
+
+        await axios
+            .get("/post", {
+                headers: {
+                    _id: id.state,
+                },
+            })
+            .then((res) => {
+                setText(res.data.content);
+                setTitle(res.data.title);
+            });
     };
 
     useEffect(() => {
         isValidToken();
-    }, []);
-
-    useEffect(() => {
-        const preventGoBack = () => {
-            window.history.pushState(null, "", window.location.href);
-
-            if (
-                window.confirm(
-                    "변경 사항이 저장되지 않습니다.\n진행하시겠습니까?"
-                )
-            ) {
-                navigate("/community");
-            }
-        };
-        window.history.pushState(null, "", window.location.href);
-        window.addEventListener("popstate", preventGoBack);
-
-        return () => window.removeEventListener("popstate", preventGoBack);
     }, []);
 
     return (
@@ -249,9 +252,10 @@ function Posting(props) {
             <div action="" className={style.postingWrapper}>
                 <input
                     className={style.postingTitle}
-                    placeholder="제목을 입력해주세요. (최대 30자)"
-                    onChange={onChangeTitle}
-                    maxLength={30}
+                    placeholder="제목"
+                    defaultValue={title}
+                    onClick={titleClick}
+                    readOnly
                 ></input>
                 <div className={style.postingAttach}>
                     {/* input과 label을 연결해 input은 숨기고 label을 input으로 활용 */}
@@ -286,10 +290,10 @@ function Posting(props) {
                             id="postingText"
                             cols="30"
                             rows="10"
-                            placeholder="내용을 입력해 주세요. (최대 500자)"
+                            placeholder="내용을 입력해 주세요."
+                            defaultValue={text}
                             className={style.postingText}
                             onChange={textUpdate}
-                            maxLength={500}
                         ></textarea>
                     </div>
                 </div>
@@ -306,7 +310,7 @@ function Posting(props) {
                         className={style.completeBtn}
                         onClick={submitPosting}
                     >
-                        완료
+                        수정
                     </button>
                 </div>
             </div>
@@ -365,4 +369,4 @@ function handleFiles(files, postingMain) {
     }
 }
 
-export default Posting;
+export default Correcting;

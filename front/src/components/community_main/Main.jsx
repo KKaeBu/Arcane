@@ -1,5 +1,10 @@
 import style from "./main.module.css";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +17,10 @@ function Main(props) {
     moment.tz.setDefault("Asia/Seoul");
     const navigate = useNavigate();
 
+    if (window.localStorage.getItem("sort") === null) {
+        window.localStorage.setItem("sort", "default");
+    }
+
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
     let data = []; // 게시물 object 배열
@@ -19,6 +28,7 @@ function Main(props) {
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
+    const listSortItem = document.getElementsByClassName(style.listSortItem);
 
     const isLastPage = (page) => {
         if (parseInt((data.length - 1) / 15) === page - 1) {
@@ -35,18 +45,27 @@ function Main(props) {
             i--
         ) {
             const tr = document.createElement("tr");
+            tr.setAttribute("class", style.list);
             const td_title = document.createElement("td");
             td_title.setAttribute("class", style.title);
             const a_title = document.createElement("a");
             a_title.setAttribute("class", style.titleLink);
             // eslint-disable-next-line no-loop-func
             a_title.onclick = async function () {
-                await axios.get("/post/all", {}).then((res) => {
-                    data = res.data;
-                    // *******************  조회수 증가 onClick 함수
-                    // *******************  조회수 증가시키기 전에 서버에서 조회수를 다시 받아옴
-                    // *******************  => 페이지를 켜놓은 동안에 다른 클라이언트에서 조회했을 조회수도 반영하기 위해서
-                });
+                if (window.localStorage.getItem("sort") === "default") {
+                    await axios.get("/post/all", {}).then((res) => {
+                        data = res.data;
+                    });
+                } else if (window.localStorage.getItem("sort") === "view") {
+                    await axios.get("/post/all/viewsort", {}).then((res) => {
+                        data = res.data;
+                    });
+                } else if (window.localStorage.getItem("sort") === "like") {
+                    await axios.get("/post/all/likesort", {}).then((res) => {
+                        data = res.data;
+                    });
+                }
+
                 await axios
                     .put("/post/read", {
                         _id: data[i]._id,
@@ -62,12 +81,22 @@ function Main(props) {
                         console.error(error);
                     });
             };
-            a_title.innerText = data[i].title;
+            if (data[i].title.length > 20) {
+                a_title.innerText = `${data[i].title.substr(0, 20)}... (${
+                    data[i].comment.length
+                })`;
+            } else {
+                a_title.innerText = `${data[i].title} (${data[i].comment.length})`;
+            }
             td_title.appendChild(a_title);
 
             const td_username = document.createElement("td");
             td_username.setAttribute("class", style.nick);
-            td_username.innerText = data[i].username;
+            if (data[i].username.length > 8) {
+                td_username.innerText = `${data[i].username.substr(0, 7)}...`;
+            } else {
+                td_username.innerText = data[i].username;
+            }
 
             const td_date = document.createElement("td");
             td_date.setAttribute("class", style.date);
@@ -85,18 +114,39 @@ function Main(props) {
             td_view.setAttribute("class", style.view);
             td_view.innerText = data[i].view;
 
+            const td_like = document.createElement("td");
+            td_like.setAttribute("class", style.like);
+            td_like.innerText = data[i].Like;
+
             tr.appendChild(td_title);
             tr.appendChild(td_username);
             tr.appendChild(td_date);
             tr.appendChild(td_view);
+            tr.appendChild(td_like);
             tbody[0].appendChild(tr);
         }
     };
 
     const pageList = async (current_page) => {
-        await axios.get("/post/all", {}).then((res) => {
-            data = res.data;
-        });
+        if (window.localStorage.getItem("sort") === "default") {
+            await axios.get("/post/all", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("최신순 정렬(default)");
+            listSortItem[0].setAttribute("id", style.selectedSort);
+        } else if (window.localStorage.getItem("sort") === "view") {
+            await axios.get("/post/all/viewsort", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("조회수 순으로 정렬");
+            listSortItem[2].setAttribute("id", style.selectedSort);
+        } else if (window.localStorage.getItem("sort") === "like") {
+            await axios.get("/post/all/likesort", {}).then((res) => {
+                data = res.data;
+            });
+            console.log("추천 순으로 정렬");
+            listSortItem[1].setAttribute("id", style.selectedSort);
+        }
 
         // ***** 페이지 버튼 삭제 후 다시 생성 > 중복 생성 방지
         const pageListUl = await document.getElementById(style.pageList);
@@ -155,9 +205,9 @@ function Main(props) {
      */
 
     const deleteAll = async () => {
-        await axios.delete("/post/delete", {
+        await axios.delete("/post/delete/all", {
             data: {
-                postnum: 1,
+                username: "oooo",
             },
             withCredentials: true,
         });
@@ -241,29 +291,75 @@ function Main(props) {
                 <div className={style.mainTopLeft}>
                     <div
                         className={`${style.listSortByNew} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "default");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+
+                            listSortItem[0].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[1].removeAttribute("id");
+                            listSortItem[2].removeAttribute("id");
+                        }}
                     >
-                        최신순
+                        <AccessTimeIcon className={style.clockIcon} />{" "}
+                        &nbsp;최신순
                     </div>
                     <div
                         className={`${style.listSortByLike} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "like");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+
+                            listSortItem[1].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[0].removeAttribute("id");
+                            listSortItem[2].removeAttribute("id");
+                        }}
                     >
-                        추천순
+                        <LocalFireDepartmentIcon className={style.fireIcon} />
+                        &nbsp;추천순
                     </div>
                     <div
                         className={`${style.listSortByLookup} ${style.listSortItem}`}
+                        onClick={async () => {
+                            localStorage.setItem("sort", "view");
+                            await pageList(1);
+                            await postingList(1);
+                            localStorage.setItem("page", 1);
+                            navigate(`/community/page=${1}`);
+
+                            listSortItem[2].setAttribute(
+                                "id",
+                                style.selectedSort
+                            );
+                            listSortItem[1].removeAttribute("id");
+                            listSortItem[0].removeAttribute("id");
+                        }}
                     >
-                        조회순
+                        <VisibilityIcon className={style.eyeIcon} />
+                        &nbsp;조회순
                     </div>
-                    <div
+                    {/* <div
                         className={`${style.listSortItem}`}
                         onClick={deleteAll}
                     >
                         데이터 다 삭제(개발하는동안 실험용)
-                    </div>
+                    </div> */}
                 </div>
                 <div className={style.mainTopRight}>
                     <div className={style.writePost} onClick={writePost}>
-                        글쓰기
+                        <EditIcon className={style.pencilIcon} />
+                        &nbsp;글쓰기
                     </div>
                 </div>
             </div>
@@ -289,22 +385,13 @@ function Main(props) {
                         <th>닉네임</th>
                         <th>날짜</th>
                         <th>조회수</th>
+                        <th>추천수</th>
                     </tr>
                 </thead>
                 <tbody className={style.tbody}>
                     {/* 개시글이 작성될때마다 동적으로 변동 */}
                     {/* 페이지당 10개씩 보이도록 */}
                     {/* 위의 선택된 정렬순서 대로 보여주기 */}
-                    {/* <tr>
-                        <td className={style.title}>
-                            <a className={style.titleLink}>
-                                어쩌구저쩌구 제목1
-                            </a>
-                        </td>
-                        <td className={style.nick}>테스트닉넴</td>
-                        <td className={style.date}>2022.33.33</td>
-                        <td className={style.view}>{viewNum}</td>
-                    </tr> */}
                 </tbody>
             </table>
 

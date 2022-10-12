@@ -96,12 +96,25 @@ class Riot_API {
     async getChampionSquareAssetsLink(champion) {
         return `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/champion/${champion}.png`
     }
+    // 챔피언 스킨 일러스트 불러오기
+    async getChampionSkinIllustration(champion, number) {
+        return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_${number}.jpg`;
+    }
 
     // 특정 챔피언 정보 불러오기
     async getChampion(champion_id) {
         const link = `http://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/data/${this.#Language}/champion/${champion_id}.json`;
+        const json = getFetch(link);
+        return json;
+    }
+
+    //로테이션 챔피언 목록 불러오기
+    async getRotationChampion() {
+        const link = `https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=${
+            this.#Riot_API_Key
+        }`;
         const json = getFetch(link);
         return json;
     }

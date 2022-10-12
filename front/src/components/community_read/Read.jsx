@@ -1,17 +1,25 @@
 import style from "./read.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import TokenStorage from "../../db/token";
+import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { useRef } from "react";
+import moment from "moment/moment";
+import { useNavigate } from "react-router-dom";
 
 function Read(props) {
+    const navigate = useNavigate();
+
+    const [isliked, setisLiked] = useState(false);
+    const [login_user_likedpost, setLoginLikedPost] = useState([]);
     const [login_user, setLoginuserName] = useState("");
     const [islogin, setLogin] = useState(false);
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [view, setView] = useState(0);
+    const [date, setDate] = useState("");
     const [username, setName] = useState("");
     const [user_id, setID] = useState("");
     const [like, setLike] = useState(0);
@@ -21,7 +29,11 @@ function Read(props) {
     // const commentWrapper = document.querySelector(
     //     "." + style["commenttitle"]
     // );
+    //const deleteDiv = document.querySelector("." + style["delete"]);
+    const likeDiv = useRef(null);
+    const deleteDiv = useRef(null);
     const commentWrapper = useRef(null);
+    const correctDiv = useRef(null);
     const id = useLocation(); //navigate의 option값으로 받아온 유저 id를 담은 객체
 
     const findWriter = async () => {
@@ -36,25 +48,63 @@ function Read(props) {
                 setName(res.data.username);
                 setView(res.data.view);
                 setText(res.data.content);
+                setDate(res.data.date);
                 setTitle(res.data.title);
                 setLike(res.data.Like);
                 setComments(res.data.comment);
-                for (let i = 0; i < res.data.comment.length; i++) {
-                    const commentDiv = document.createElement("div");
-                    commentDiv.setAttribute("class", style.comments);
-                    const commentUserName = document.createElement("span");
-                    commentUserName.setAttribute(
-                        "class",
-                        style.commentusername
-                    );
-                    commentUserName.innerText = res.data.comment[i].username;
-                    const commentContent = document.createElement("span");
-                    commentContent.setAttribute("class", style.commentcontent);
-                    commentContent.innerText = res.data.comment[i].content;
+                if (username !== "" && login_user !== "") {
+                    for (let i = 0; i < res.data.comment.length; i++) {
+                        const commentDiv = document.createElement("div");
+                        commentDiv.setAttribute("class", style.comments);
+                        const commentUserName = document.createElement("span");
+                        commentUserName.setAttribute(
+                            "class",
+                            style.commentusername
+                        );
 
-                    commentDiv.appendChild(commentUserName);
-                    commentDiv.appendChild(commentContent);
-                    commentWrapper.current.appendChild(commentDiv);
+                        commentUserName.innerText =
+                            res.data.comment[i].username;
+
+                        const commentContent = document.createElement("span");
+                        commentContent.setAttribute(
+                            "class",
+                            style.commentcontent
+                        );
+                        commentContent.innerText = res.data.comment[i].content;
+
+                        if (login_user === res.data.comment[i].username) {
+                            const commentDelete =
+                                document.createElement("span");
+                            commentDelete.setAttribute(
+                                "class",
+                                style.commentDelete
+                            );
+                            commentDelete.innerText = "댓글 삭제";
+                            commentDelete.onclick = async () => {
+                                await axios
+                                    .delete("/post/comment/delete", {
+                                        data: {
+                                            _id: res.data.comment[i]._id,
+                                            post_id: id.state,
+                                        },
+                                    })
+                                    .then((res) => {
+                                        window.location.reload();
+                                    })
+                                    .catch((e) => {
+                                        console.error(e);
+                                    });
+                            };
+                            commentDiv.appendChild(commentUserName);
+                            commentDiv.appendChild(commentContent);
+                            commentDiv.appendChild(commentDelete);
+                        } else {
+                            commentDiv.appendChild(commentUserName);
+                            commentDiv.appendChild(commentContent);
+                        }
+
+                        commentWrapper.current.appendChild(commentDiv);
+                    }
                 }
             })
             .catch((error) => {
@@ -81,7 +131,7 @@ function Read(props) {
                 .post("/post/comment", {
                     username: login_user,
                     content: new_comment,
-                    _id: id.state,
+                    postid: id.state,
                 })
                 .then((res) => {
                     window.location.reload();
@@ -90,6 +140,71 @@ function Read(props) {
                     console.error(error);
                 });
         }
+    };
+
+    const deletePost = async () => {
+        if (window.confirm("삭제 후 복구는 불가능합니다. 삭제하시겠습니까?")) {
+            await axios
+                .delete("/post/delete", {
+                    data: {
+                        _id: id.state,
+                    },
+                })
+                .then((res) => {
+                    window.location.replace(`http://localhost:3000/community`);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
+    };
+
+    const likePost = async () => {
+        if (islogin) {
+            for (let i = 0; i < login_user_likedpost.length; i++) {
+                if (login_user_likedpost[i]._id === id.state) {
+                    await axios
+                        .put("/post/like", {
+                            _id: id.state,
+                            like: like,
+                            user: login_user,
+                            isliked: isliked,
+                        })
+                        .then((res) => {
+                            setLike(res.data.like);
+                            setisLiked(res.data.isliked);
+                            setLoginLikedPost(res.data.postlike);
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                        });
+                    return;
+                }
+            }
+            await axios
+                .put("/post/like", {
+                    _id: id.state,
+                    like: like,
+                    user: login_user,
+                    isliked: isliked,
+                })
+                .then((res) => {
+                    setLike(res.data.like);
+                    setisLiked(res.data.isliked);
+                    setLoginLikedPost(res.data.postlike);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        } else {
+            alert("로그인이 필요한 서비스입니다.");
+        }
+    };
+
+    const correctPost = async () => {
+        navigate(`/community/correct/${id.state}`, {
+            state: id.state,
+        });
     };
 
     const isValidToken = async () => {
@@ -103,42 +218,99 @@ function Read(props) {
                 },
             })
             .then((res) => {
+                setLoginLikedPost(res.data.postlike);
                 setLoginuserName(res.data.username);
                 setLogin(true);
+                if (login_user !== "" && username !== "") {
+                    if (username === login_user) {
+                        deleteDiv.current.removeAttribute("id");
+                        correctDiv.current.removeAttribute("id");
+                    }
+                }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
+
+        for (let i = 0; i < login_user_likedpost.length; i++) {
+            if (login_user_likedpost[i]._id === id.state) {
+                setisLiked(true);
+            } else {
+                setisLiked(false);
+            }
+        }
     };
 
     useEffect(() => {
         isValidToken();
-    }, []);
+    }, [login_user, username]);
 
     useEffect(() => {
         findWriter();
-    }, []);
+    }, [username, login_user]);
 
     return (
         <div className={style.readWrapper}>
             <div className={style.read}>
                 <div className={style.titleBar}>{title}</div>
-                <div className={style.username}>{username}</div>
-                <div className={style.view}>{view} views</div>
+                <div className={style.info}>
+                    <div className={style.username}>{username}</div>
+                    <div className={style.date}>
+                        {moment(date).format("YYYY-MM-DD HH:mm")}
+                    </div>
+                    <div className={style.view}>조회 {view}</div>
+                    <div className={style.commentInfo}>
+                        댓글 {comments.length}
+                    </div>
+                </div>
+
                 <div className={style.content}>
                     {/* \n이나 <br/>태그 등 줄바꿈을 작동하도록 함 */}
-                    {text.split("\n").map((txt) => (
-                        <>
+                    {text.split("\n").map((txt, index) => (
+                        <div key={index}>
                             {txt}
                             <br />
-                        </>
+                        </div>
                     ))}
                 </div>
+
                 <div className={style.like}>
-                    {like} people likes(하트모양 이모티콘)
+                    <div className={style.iconBox}>
+                        {isliked === true ? (
+                            <Favorite
+                                className={style.heart}
+                                onClick={likePost}
+                            />
+                        ) : (
+                            <FavoriteBorder
+                                className={style.heart}
+                                onClick={likePost}
+                            />
+                        )}
+                    </div>
+                    {like}
                 </div>
             </div>
+            <div
+                className={style.delete}
+                onClick={deletePost}
+                id={style.invisible}
+                ref={deleteDiv}
+            >
+                글 삭제
+            </div>
+            <div
+                className={style.correct}
+                onClick={correctPost}
+                id={style.invisible}
+                ref={correctDiv}
+            >
+                수정
+            </div>
+
             <div className={style.comment}>
-                <div className={style.commenttitle} ref={commentWrapper}>
-                    {comments.length}comments
+                <div className={style.commentmain} ref={commentWrapper}>
+                    <p className={style.commenttitle}>
+                        댓글 {comments.length}개
+                    </p>
                 </div>
                 {/* 댓글 */}
                 {/* <div className={style.comments}>
@@ -153,6 +325,8 @@ function Read(props) {
                         type="text"
                         onChange={writeComment}
                         className={style.writeComment}
+                        placeholder="내용을 입력해 주세요. (최대 50자)"
+                        maxLength={50}
                     />
                     <div
                         className={style.submitCommentButton}

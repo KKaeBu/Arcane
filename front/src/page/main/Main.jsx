@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Riot from "../../network/riotAPI.js";
 import Topbar from "../../components/main_topbar/Topbar";
 import Menu from "../../components/main_menu/Menu";
@@ -10,8 +10,9 @@ function MainDisplay() {
     const riot = new Riot();
     const token = new TokenStorage();
 
-    const [illust, setIllust] = useState();
+    const wrapper = useRef(null);
 
+    const [illust, setIllust] = useState();
     const getChampion = async () => {
         const json = await riot.getAllChampions(); // 모든 챔피언 정보 불러오기
         // random 한 챔피언을 선택하도록 해야함
@@ -25,7 +26,8 @@ function MainDisplay() {
 
         // const chooseRandomChamp = json.data.Ahri.id; // 임시로 일러 아리로 고정
 
-        const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+        // const img = await riot.getChampionIllustration(chooseRandomChamp); // 특정 챔피언의 id 값을 사용해 챔피언 일러스트 불러오기
+        // setIllust(img); // 챔피언 일러스트 링크 저장
 
         // 검색 토큰 삭제
         token.clearThisToken("summoner");
@@ -40,12 +42,12 @@ function MainDisplay() {
     return (
         <div className={style.mainDisplay}>
             <Topbar />
-            <div className={style.mainDisplayWrapper}>
-                <img
+            <div className={style.mainDisplayWrapper} ref={wrapper}>
+                {/* <img
                     src={illust}
                     alt="Champion Illustration"
                     className={style.championIllustration}
-                />
+                /> */}
                 <Menu />
             </div>
         </div>

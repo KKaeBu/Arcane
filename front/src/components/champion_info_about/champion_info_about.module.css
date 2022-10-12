@@ -1,10 +1,22 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 .about {
     padding-top: 5%;
     padding-bottom: 5%;
-    margin-left: 10%;
-    margin-right: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
     margin-top: 0;
-    background-color: gray;
+    background-color: black;
     align-content: center;
     text-align: center;
 }
@@ -27,6 +39,7 @@
 
 .lore,
 .aboutTitle {
+    color: white;
     margin-left: 10%;
     margin-right: 10%;
     align-content: center;
@@ -35,13 +48,30 @@
 }
 
 .aboutTitle {
-    font-size: xx-large;
-    font-family: "LOLFontBold";
+    font-size: 38px;
+    font-family: "Community";
+    font-weight: bolder;
+
+    margin-bottom: 3%;
+}
+
+.titleAddendum {
+    color: white;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 2px black;
+
+    opacity: 0.5;
+
     margin-bottom: 5%;
 }
+
 .lore {
-    font-family: "LOLFontlight";
-    font-weight: lighter;
+    font-family: "Community";
+    font-weight: bold;
+    font-size: 18px;
+
     margin-bottom: 5%;
     margin-top: 5%;
 }
@@ -54,14 +84,35 @@
     text-align: center;
     display: table;
     table-layout: fixed;
+
+    border-radius: 10px;
+
+    font-family: "Community";
+    font-weight: bold;
 }
 
-tr {
-    /* font-family: LOLFontlight;
-    font-size: medium; */
+.aboutButton {
+    width: 170px;
+    z-index: 100;
+    position: fixed;
+    right: 0;
+    top: 45%;
+
+    font-family: "Community";
+    font-size: 18px;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
 }
 
-td {
-    /* border: 2px solid black;
-    padding: 10px; */
+.arrow {
+    margin-right: 5px;
+
+    width: 40px;
+    height: 40px;
+
+    vertical-align: middle;
 }

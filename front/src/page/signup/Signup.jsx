@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Home } from "@mui/icons-material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import style from "./signup.module.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 
@@ -10,6 +11,9 @@ function Signup() {
     const [inputEmail, setEmail] = useState("");
     const [inputPassword, setPassword] = useState("");
     const [inputPasswordAgain, setPasswordAgain] = useState("");
+
+    const showPassword = useRef(null);
+    const inputPasswordDiv = useRef(null);
 
     const token = new TokenStorage();
 
@@ -29,6 +33,15 @@ function Signup() {
     const changePasswordAgain = () => {
         const PasswordAgain = document.getElementById("passwordAgain");
         setPasswordAgain(PasswordAgain.value);
+    };
+    const ChangePasswordShow = () => {
+        if (showPassword.current.getAttribute("opacity")) {
+            showPassword.current.removeAttribute("opacity");
+            inputPasswordDiv.current.setAttribute("type", "text");
+        } else {
+            showPassword.current.setAttribute("opacity", 0.5);
+            inputPasswordDiv.current.setAttribute("type", "password");
+        }
     };
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -72,29 +85,41 @@ function Signup() {
                 <div className={style.loginRight}>
                     <form className={style.loginBox} onSubmit={onSubmit}>
                         <input
-                            placeholder="아이디"
-                            className={style.logoinInput}
+                            placeholder="아이디 (최대 10자)"
+                            className={style.loginInput}
                             id="username"
                             onChange={changeUsername}
+                            maxLength={10}
                         />
                         <input
                             placeholder="이메일"
-                            className={style.logoinInput}
+                            className={style.loginInput}
                             id="email"
                             onChange={changeEmail}
                         />
                         <input
                             placeholder="비밀번호"
-                            className={style.logoinInput}
+                            className={style.loginInput}
                             id="password"
                             onChange={changePassword}
                         />
-                        <input
-                            placeholder="비밀번호 확인"
-                            className={style.logoinInput}
-                            id="passwordAgain"
-                            onChange={changePasswordAgain}
-                        />
+                        <div className={style.loginInput}>
+                            <input
+                                type="password"
+                                placeholder="비밀번호 확인"
+                                className={style.loginInputDiv}
+                                id="passwordAgain"
+                                onChange={changePasswordAgain}
+                                ref={inputPasswordDiv}
+                            />
+                            <VisibilityIcon
+                                className={style.viewIcon}
+                                ref={showPassword}
+                                onClick={ChangePasswordShow}
+                                opacity="0.5"
+                            />
+                        </div>
+
                         <button className={style.loginButton}>Sign Up</button>
 
                         <Link to="/login" className={style.loginRegisterButton}>

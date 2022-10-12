@@ -1,103 +1,184 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 .skills {
     text-align: center;
     align-content: center;
-    padding-top: 5%;
-    padding-bottom: 50%;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 0;
-    background-color: beige;
-}
+    padding-top: 3%;
+    padding-bottom: 5%;
 
-#invisible {
-    display: none;
+    /* margin-left: 10%;
+    margin-right: 10%; */
+
+    background-size: cover;
+    background-attachment: fixed;
 }
-/* 안보이는 설정 */
 
 /* 스킬 아이콘 이미지 */
 .skillsTitle {
-    font-size: xx-large;
-    font-family: "LOLFontBold";
+    font-size: 38px;
+    font-family: "Community";
+    font-weight: bolder;
+
+    color: white;
+    text-shadow: 0 0 20px black;
+
+    margin-bottom: 3%;
+}
+
+.skillAddendum {
+    color: white;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 20px black;
+
+    opacity: 0.7;
+
     margin-bottom: 5%;
 }
-.championIcon {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 5px solid white;
-    margin: 1%;
-    position: relative;
-}
-/* 챔피언 초상화 이미지 */
 
-/* 챔피언 초상화, 스킬아이콘 Div들의 상위 Div */
-
-.championName {
+.skillswrapper {
+    display: flex;
+    flex-direction: column;
 }
 
-.championNameSpan {
-    margin-bottom: 1%;
-    font-size: 38px;
+.passiveSkill {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.QSkill {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.WSkill {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.ESkill {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.RSkill {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.skillName {
+    margin: 0;
+    padding: 3% 0% 3% 0%;
+
+    font-family: "나눔고딕";
+    font-size: 32px;
     font-weight: bolder;
 }
 
-.titleSpan {
+.skillDescriptionDiv {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.skillImg {
+    object-fit: scale-down;
+    padding: 1% 1% 1% 1%;
+
+    border-right: 1px solid black;
+}
+
+.skillDescription {
+    display: flex;
+    font-family: "Community";
     font-weight: bold;
-    font-size: 24px;
-    font-style: italic;
-}
-/* 챔피언 초상화, 스킬아이콘들이 들어가있는 Div */
+    text-align: center;
 
-.skillsIcon,
-#skillIcon {
+    margin-left: 1%;
+    margin-right: 1%;
+
+    justify-content: center;
+    align-items: center;
 }
 
-.passiveIcon,
-.qIcon,
-.wIcon,
-.eIcon,
-.rIcon {
-    margin: 0.5%;
-    position: relative;
-    display: inline-block;
-}
-/* 스킬아이콘들이 들어가있는 Div안의 Div */
-
-.passiveInfo,
-.qInfo,
-.wInfo,
-.eInfo,
-.rInfo {
-    color: white;
-    border-radius: 5%;
+.videoDiv {
     background-color: black;
+    padding: 2% 0% 2% 0%;
+    margin-bottom: 1%;
+}
 
-    position: absolute;
-    display: inline;
+.skillVideo {
+    width: 500px;
+}
+
+.skinName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Community";
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.5);
+
+    width: fit-content;
+    margin: 0 auto 0 auto;
+    padding-top: 10%;
+}
+
+.skillButton {
+    width: 170px;
     z-index: 100;
-    min-width: 200px;
-    width: 300px;
+    position: fixed;
+    right: 0;
+    top: 50%;
 
-    left: 30%;
-    top: 80%;
-    padding-bottom: 20px;
-
-    animation: fadein 0.3s;
-}
-/* 스킬 상세 정보 창 */
-
-.skill_name {
-    font-family: LOLFontlight;
+    font-family: "Community";
     font-size: 18px;
-    line-height: 2;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
 }
-.skill_description {
-    font-family: LOLFontlight;
-    font-size: 15px;
-}
-.skill_tooltip {
-    font-family: LOLFontlight;
-    font-size: 12px;
+
+.arrow {
+    margin-right: 5px;
+
+    width: 40px;
+    height: 40px;
+
+    vertical-align: middle;
 }
 
 @keyframes fadein {
@@ -108,3 +189,8 @@
         opacity: 1;
     }
 }
+
+#invisible {
+    display: none;
+}
+/* 안보이는 설정 */

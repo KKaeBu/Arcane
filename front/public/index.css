@@ -1,18 +1,45 @@
+* {
+    margin: 0;
+    /* font-family: "Roboto", sans-serif; */
+    box-sizing: border-box;
+}
+/* 
+body {
+    cursor: url(https://raw.communitydragon.org/latest/game/assets/ux/cursors/hand1.png)
+            20 30,
+        grab;
+} */
+
+@font-face {
+    font-family: "MabinogiClassicR";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2207-01@1.0/MabinogiClassicR.woff2")
+        format("woff2");
+}
+
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
 @font-face {
     font-family: "LOLFontlight";
     src: url(../assets/fonts/RIXGOM.TTF) format("truetype");
-    font-weight: normal;
 }
 
 @font-face {
     font-family: "LOLFontBold";
     src: url(../assets/fonts/RIXGOEB.TTF) format("truetype");
-    font-weight: normal;
-}
-* {
-    box-sizing: border-box;
 }
 
-body {
-    margin: 0;
+@font-face {
+    font-family: "diary";
+    src: url(../assets/fonts/EF_Diary.ttf) format("truetype");
 }

@@ -22,7 +22,6 @@
 
 /* posting title */
 .postingTitle {
-    outline: none;
     font-size: 14px;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -33,10 +32,6 @@
 
     border: 0;
     background-color: rgb(235, 235, 235);
-}
-
-.postingTitle:focus {
-    outline: none;
 }
 
 /* posting attach */

@@ -1,0 +1,106 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
+.home {
+    margin: 0;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
+    text-align: center;
+    align-content: center;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#invisible {
+    display: none;
+}
+/* 안보이는 설정 */
+
+/* 스킬 아이콘 이미지 */
+
+.championIcon {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    margin: 1%;
+    position: relative;
+
+    transition: all ease 0.5s;
+}
+
+/* .championIcon:hover {
+    transform: scale(1.1);
+} */
+/* 챔피언 초상화 이미지 */
+
+/* 챔피언 초상화, 스킬아이콘 Div들의 상위 Div */
+
+.championName {
+    margin: 5% 0 5% 0;
+}
+
+.championNameSpan {
+    font-family: "Community";
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 0 20px black;
+
+    color: white;
+    margin-bottom: 1%;
+}
+
+.titleSpan {
+    color: white;
+    font-family: "Community";
+    font-size: 20px;
+    font-style: italic;
+    text-shadow: 0 0 20px black;
+}
+
+.homeButton {
+    width: 170px;
+    z-index: 100;
+    position: fixed;
+    right: 0;
+    top: 40%;
+
+    font-family: "Community";
+    font-size: 18px;
+
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+
+    transition: all ease 0.5s;
+}
+
+.arrow {
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+
+    vertical-align: middle;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

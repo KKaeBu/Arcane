@@ -7,6 +7,7 @@ import history from "connect-history-api-fallback";
 import "express-async-errors";
 import summonersRouter from "./router/summoners.js";
 import championRouter from "./router/champion.js";
+import mypageRouter from "./router/mypage.js";
 import authRouter from "./router/auth.js";
 import { config } from "./config.js";
 import { connectDB } from "./db/db.js";
@@ -29,10 +30,6 @@ app.use("/auth", authRouter);
 // 글 작성
 app.use("/post", postRouter);
 
-// app.use("/api/community", (req, res, next) => {
-
-// });
-
 // 유저 전적 검색
 app.use("/api/summoners", summonersRouter);
 
@@ -41,6 +38,9 @@ app.use("/api/summoners", summonersRouter);
 // app.get('/*', function (req, res) {
 //     res.sendFile(path.join(__dirname, '../front/public', 'index.html'));
 // });
+
+// 내 정보
+app.use("/mypage", mypageRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {

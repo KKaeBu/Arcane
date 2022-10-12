@@ -67,7 +67,7 @@ export async function me(req, res, next) {
     }
 
     const user = await userRepository.findById(decoded.id);
-    res.status(201).json({ username: user.username });
+    res.status(201).json({ username: user.username, postlike: user.postlike });
 }
 
 // jwt 토큰 생성
