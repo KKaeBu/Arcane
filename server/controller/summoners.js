@@ -9,6 +9,15 @@ export async function getRiotApi(req, res, next) {
     res.status(200).json(result.data);
 }
 
+export async function isSummoner(req, res, next) {
+
+}
+
+export async function saveSummonerInfo(req, res, next) {
+
+}
+
+
 async function getApi(data) {
     const response = await axios.get(data);
 

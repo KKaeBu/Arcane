@@ -1,6 +1,5 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import style from "./summoners.module.css";
 import Topbar from "../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
@@ -15,8 +14,6 @@ function Summoners() {
     const summoner = useLocation().state.summoner;
     localStorage.setItem("summoner", summoner);
     const [summonerData, setSummonerData] = useState({});
-    const [userName, setuserName] = useState({});
-    const [isLogin, setLogin] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const riot = new Riot_API();
 
@@ -28,7 +25,6 @@ function Summoners() {
         //     console.log("not found");
         //     console.log(e);
         // }
-
 
         const user = localStorage.getItem("summoner");
 
@@ -46,27 +42,6 @@ function Summoners() {
         setRefresh(!refresh);
     }
 
-    const isValidToken = async () => {
-        const tokenStorage = new TokenStorage();
-        const token = tokenStorage.getToken();
-
-        await axios
-            .get("/auth", {
-                headers: {
-                    token: token,
-                },
-            })
-            .then((res) => {
-                setuserName(res.data.username);
-                setLogin(true);
-            })
-            .catch((err) => console.log(err));
-    };
-
-    useEffect(() => {
-        isValidToken();
-    }, []);
-
     useEffect(() => {
         findSummoner();
     }, [summoner]);
@@ -75,7 +50,7 @@ function Summoners() {
         <div className={style.summonersContainer}>
             <div className={style.summonersWrapper}>
                 <Topbar />
-                <User summonerData={summonerData} isRefresh={isRefresh} isLogin={isLogin} userName={userName} />
+                <User summonerData={summonerData} isRefresh={isRefresh}/>
                 <Rank summonerData={summonerData}/>
                 {/* <Most summonerData={summonerData}/> */}
                 {/* {refresh ? <History summonerData={summonerData} isRefresh={isRefresh} /> : <History summonerData={summonerData}/> } */}

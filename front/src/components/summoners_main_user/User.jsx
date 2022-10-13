@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bookmark, Autorenew, Dvr } from '@mui/icons-material';
+import axios from "axios";
 import Riot_API from "../../network/riotAPI";
 import style from "./user.module.css";
 import TokenStorage from "../../db/token";
@@ -9,31 +10,62 @@ import DB from "../../db/db";
 function User(props) {
     const [summoner, setSummoner] = useState({});
     const [bookToggle, setBookToggle] = useState(false);
+    const [summName, setSummonerName] = useState("");
     const [profileLink, setProfileLink] = useState();
+    const [summLevel, setLevel] = useState(0);
     const [isLogin, setLogin] = useState(false);
-    const [userName, setuserNmae] = useState();
+    const [userName, setuserName] = useState("");
     const riot = new Riot_API();
-    const token = new TokenStorage();
     const db = new DB();
+    const bmTag = document.querySelector("." + style["bookMark"]);
+
+    const summ = props.summonerData;
 
     const getSummonerInfo = async () => {
-        const profile = await riot.getSummonerProfileIcon(props.summonerData.profileIconId);
+        // 데베상에 현재 검색한 유저가 있다면
+        if (await db.isSummoner(summ.name)) {
+            const { summonerName, profileIconId, level } = await db.getSummonerInfo();
+            const profile = await riot.getSummonerProfileIcon(profileIconId);
 
-        if (props.isLogin && props.summonerData.name && props.userName) {
-            const sn = props.summonerData.name;
-            const un = props.userName;
-            console.log(await db.checkMarking(sn, un)); 
-            if (await db.checkMarking(sn, un)) {
-                console.log("오긴하냐?");
-                const bookMark = document.querySelector("." + style["bookMark"]);
-                bookMark.classList.add(style.active);   
-            }
+            setSummonerName(summonerName);
+            setProfileLink(profile);
+            setLevel(level);
+        } else {
+            // 데베에 검색한 유저가 없다면
+            const profile = await riot.getSummonerProfileIcon(summ.profileIconId);
+
+            await saveDB();
+
+            setSummonerName(summ.name);
+            setProfileLink(profile);
+            setLevel(summ.summonerLevel);
+            setSummoner(summ);
         }
 
-        setProfileLink(profile);
-        setSummoner(props.summonerData);
-        setLogin(props.isLogin);
-        setuserNmae(props.userName);
+        // topbar를 통해 유저 검색시 남아있을 active 클래스를 지워주고
+        // 로그인된 유저의 디비에서 북마크 정보를 가져와서 북마크에
+        // active 추가 여부 결정
+        bmTag.classList.remove(style.active);
+        if (isLogin) {
+            const sn = summ.name;
+            const un = userName;
+            await db.checkMarking(sn, un)
+                .then((res) => {
+                    if (res)
+                        bmTag.classList.add(style.active);
+                    setBookToggle(res);
+                })
+                .catch((err) => console.log("user mark check error"));
+        }
+    }
+
+    // 디비에 건색한 유저의 정보 저장
+    const saveDB = async () => {
+        await db.saveSummonerInfo(
+            summ.name,
+            summ.profileIconId,
+            summ.summonerLevel
+        );
     }
 
     const refresh = () => {
@@ -44,28 +76,45 @@ function User(props) {
         if (!isLogin) {
             alert("로그인이 필요한 기능입니다!");
             return;
-        }
-
-        let bookMark = e.target;
-        if (bookMark.childNodes.length === 0)
-            bookMark = e.target.parentNode;
-            
+        }   
         
         if (bookToggle) {
             // 북마크 해제시
-            bookMark.classList.remove(style.active);
+            db.bookMarkingDB(summoner.name, userName)
+                .then(bmTag.classList.remove(style.active));
         } else {
             // 북마크 설정시
-            db.bookMarkingDB(summoner.name, userName);
-            bookMark.classList.add(style.active);
+            db.bookMarkingDB(summoner.name, userName)
+                .then(bmTag.classList.add(style.active));
         }
 
         setBookToggle(!bookToggle);
     }
 
+    const isValidToken = async () => {
+        const tokenStorage = new TokenStorage();
+        const token = tokenStorage.getToken();
+
+        await axios
+            .get("/auth", {
+                headers: {
+                    token: token,
+                },
+            })
+            .then((res) => {
+                setuserName(res.data.username);
+                setLogin(true);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        isValidToken();
+    }, []);
+
     useEffect(() => {
         getSummonerInfo();
-    }, [props]);
+    }, [summ, isLogin, bookToggle]);
 
     return (
         <div className={style.userContainer}>
@@ -73,13 +122,13 @@ function User(props) {
                 <div className={style.icon}>
                     <img src={profileLink} alt="userProfile" className={style.profileIcon} />
                     <div>
-                        <span className={style.level}>{props.summonerData.summonerLevel}</span>
+                        <span className={style.level}>{summLevel}</span>
                     </div>
                 </div>
             </div>
             <div className={style.userInfo}>
                 <div className={style.nameAndBook}>
-                    <span className={style.userName}>{props.summonerData.name}</span>
+                    <span className={style.userName}>{summName}</span>
                     <Bookmark className={style.bookMark} onClick={marking} />
                 </div>
                 <div className={style.refreshHistory} onClick={refresh}>

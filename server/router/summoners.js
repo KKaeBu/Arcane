@@ -6,4 +6,8 @@ const router = express.Router();
 
 router.get("/", summonersController.getRiotApi);
 
+router.get("/isin", summonersController.isSummoner);
+
+router.post("/saveinfo", summonersController.saveSummonerInfo);
+
 export default router;
