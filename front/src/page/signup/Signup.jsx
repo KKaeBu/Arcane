@@ -1,16 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Home } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import style from "./signup.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 
 function Signup() {
+    const navigate = useNavigate();
+
     const [inputUsername, setUsername] = useState("");
     const [inputEmail, setEmail] = useState("");
     const [inputPassword, setPassword] = useState("");
     const [inputPasswordAgain, setPasswordAgain] = useState("");
+
+    const [isExist, setExist] = useState(false);
 
     const showPassword = useRef(null);
     const inputPasswordDiv = useRef(null);
@@ -18,9 +22,9 @@ function Signup() {
     const token = new TokenStorage();
 
     // 아래 change함수들은 input값의 변화를 감지하고 변화된 값을 set함수를 통해 저장함
-    const changeUsername = () => {
+    const changeUsername = async (e) => {
         const Username = document.getElementById("username");
-        setUsername(Username.value);
+        await setUsername(Username.value);
     };
     const changeEmail = () => {
         const Email = document.getElementById("email");
@@ -46,14 +50,14 @@ function Signup() {
     const onSubmit = async (event) => {
         event.preventDefault();
         if (inputPassword !== inputPasswordAgain) {
-            alert("비밀번호가 다릅니다!");
+            alert("입력한 비밀번호가 일치하지 않습니다");
         } else if (
             inputUsername === "" ||
             inputEmail === "" ||
             inputPassword === "" ||
             inputPasswordAgain === ""
         ) {
-            alert("빈칸을 모두 채워주세요!");
+            alert("빈칸을 모두 채워주세요");
         } else {
             await axios
                 .post("/auth/signup", {
@@ -63,15 +67,30 @@ function Signup() {
                 })
                 .then((res) => {
                     alert("회원가입에 성공했습니다!");
-                    console.log(res.data.token);
-                    // token.saveToken(res.data.token);
-                    // window.location.replace("/login");
+                    navigate("/");
                 })
                 .catch((e) => {
                     console.error(e);
+                    window.alert(e.response.data.message);
                 });
         }
     };
+
+    useEffect(() => {
+        axios
+            .get("/auth/exist", {
+                headers: {
+                    username: inputUsername,
+                },
+            })
+            .then((res) => {
+                setExist(res.data.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    }, [inputUsername]);
+
     return (
         <div className={style.login}>
             <div className={style.loginWrapper}>
@@ -91,6 +110,13 @@ function Signup() {
                             onChange={changeUsername}
                             maxLength={10}
                         />
+                        <div>
+                            {inputUsername === ""
+                                ? "아이디를 입력해주세요."
+                                : isExist
+                                ? "이미 존재하는 아이디입니다."
+                                : "사용가능한 아이디입니다."}
+                        </div>
                         <input
                             placeholder="이메일"
                             className={style.loginInput}

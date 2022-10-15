@@ -22,7 +22,6 @@ export async function authByPassword(username, pw) {
 }
 
 export async function Change(hashed, username) {
-    const user = await User.findOne({ username: username });
     const filter = { username: username };
     const update = { password: hashed };
     await User.findOneAndUpdate(filter, update);

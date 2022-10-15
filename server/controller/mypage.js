@@ -17,13 +17,9 @@ export async function Auth(req, res) {
 }
 
 export async function Change(req, res) {
-    const { username, pw, new_pw } = req.body;
-    console.log(new_pw);
-    if (pw === new_pw) {
-        const hashed = await bcrypt.hash(pw, config.bcrypt.saltRounds);
-        await mypageRepository.Change(hashed, username);
-    } else {
-        console.log("비밀번호가 다릅니다.");
-        return res.status(201).json();
-    }
+    const { username, pw } = req.body;
+
+    const hashed = await bcrypt.hash(pw, config.bcrypt.saltRounds);
+    await mypageRepository.Change(hashed, username);
+    return res.status(201).json(username);
 }

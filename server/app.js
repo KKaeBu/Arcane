@@ -22,7 +22,6 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(morgan("tiny"));
-// app.use(history());
 
 // 회원가입 & 로그인 & 유저관련 디비 설정
 app.use("/auth", authRouter);
@@ -33,18 +32,12 @@ app.use("/post", postRouter);
 // 유저 전적 검색
 app.use("/api/summoners", summonersRouter);
 
-// app.use(express.static(path.join(__dirname, '../front/public')));
-
-// app.get('/*', function (req, res) {
-//     res.sendFile(path.join(__dirname, '../front/public', 'index.html'));
-// });
-
 // 내 정보
 app.use("/api/mypage", mypageRouter);
 
 // 위의 라우터 모두 충족하지 않을경우
 app.use((req, res, next) => {
-    res.sendStatus(404);    
+    res.sendStatus(404);
 });
 
 // 에러 발생시

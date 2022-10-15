@@ -33,6 +33,14 @@
     --animation-duration: 300ms;
 }
 
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .topbarContainer {
     position: absolute;
     height: 100px;
@@ -118,6 +126,7 @@
     transition: all var(--animation-duration) ease-in-out;
 }
 
+/* topbar의 오른쪽부분 */
 .topbarRight {
     flex: 3;
     display: flex;
@@ -127,26 +136,122 @@
     margin-right: 10px;
 }
 
-.toggleIcon {
-    font-size: 32px !important;
-    margin-left: 25px;
+/* myPageIcon,dropMenu를 감싸고있는 Div */
+.myPageDiv {
+    position: relative;
+    width: 100px;
+    transition: all ease 0.2s;
+}
+
+/* myPage아아콘 */
+.myPage {
+    font-size: 48px !important;
     cursor: pointer;
-    display: none !important;
+
+    color: var(--color-dark-white);
 }
 
-.myPage,
-.seperate {
-    font-size: 32px !important;
-    margin-left: 25px;
+.myPage:hover {
+    color: var(--color-white);
+}
+
+/* myPageIcon을 선택했을 때 하얀색으로 */
+.myPageActive {
+    color: var(--color-white);
+}
+
+/* myPageIcon을 클릭했을 때 나타나는 드롭메뉴*/
+.dropMenu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: "Community";
+
+    border-radius: 10px;
+    cursor: default;
+
+    opacity: 0;
+    color: white;
+
+    width: 100px;
+    height: 0px;
+    padding: 0px;
+    background: #000000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: #fbceb1 solid 1px;
+
+    transition: all ease 0.2s;
+    transform: translateX(-25%);
+}
+
+/* 드롭메뉴의 말풍선 모양 구현을 위함 */
+.dropMenu::after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #000000 transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -15px;
+    left: 35px;
+}
+
+/* 드롭메뉴의 말풍선 모양 구현을 위함 */
+.dropMenu::before {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #fbceb1 transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    top: -16px;
+    left: 35px;
+}
+
+/* 드롭메뉴를 구성하는 Div */
+.username {
+    margin: 10px 0 10px 0;
+    border-bottom: 1px solid #fbceb1;
+}
+.userInfo {
+    margin: 0px 0 10px 0;
+    border-bottom: 1px solid #fbceb1;
+}
+.login {
+    margin: 0px 0 10px 0;
+}
+
+.username:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.userInfo:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.login:hover {
+    text-decoration: underline;
     cursor: pointer;
 }
 
-/* 버튼을 누르면 보여짐 */
-.toggleIcon.active {
-    display: block !important;
+/* 안보이던 드롭메뉴를 보이도록 */
+.active {
+    height: 150px;
+    opacity: 1;
 }
 
-.seperate {
-    margin-bottom: 8px;
-    cursor: auto;
+/* myPageDiv 이동 */
+.move {
+    transform: translateX(-100%);
 }

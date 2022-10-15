@@ -1,7 +1,7 @@
 import Mongoose from "mongoose";
 
 const commentSchema = new Mongoose.Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: true }, //
     content: { type: String, required: true },
     postid: { type: String, required: true },
 });
@@ -11,7 +11,7 @@ const postSchema = new Mongoose.Schema({
     username: { type: String, required: true }, // 작성자
     content: { type: String, required: true }, // 글 내용
     Like: { type: Number, default: 0 }, // 추천 수
-    date: { type: Date, default: Date.now }, // 글 작성 일시
+    CreateDate: { type: Date, default: Date.now }, // 글 작성 일시
     view: { type: Number, required: true }, // 조회수
     comment: [commentSchema],
     // likeuser: [{ username: { type: String } }],
@@ -21,6 +21,7 @@ const userSchema = new Mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, require: true },
     email: { type: String, require: true },
+    date: { type: Date, default: Date.now }, // 회원가입 일시
     postlike: [postSchema],
     bookMark: [String],
 });

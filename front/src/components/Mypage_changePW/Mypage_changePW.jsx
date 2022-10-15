@@ -29,20 +29,25 @@ function ChangePassword() {
             .catch((e) => {
                 console.error(e);
             });
-
         if (isValid) {
-            await axios
-                .post("/api/mypage/change", {
-                    username: username,
-                    pw: input_newPW,
-                    new_pw: input_newPWComfirm,
-                })
-                .then((res) => {})
-                .catch((e) => {
-                    console.error(e);
-                });
+            if (input_newPW !== input_newPWComfirm) {
+                window.alert("입력한 새 비밀번호가 일치하지 않습니다.");
+            } else {
+                await axios
+                    .post("/api/mypage/change", {
+                        username: username,
+                        pw: input_newPW,
+                    })
+                    .then((res) => {
+                        window.alert("비밀번호가 성공적으로 변경되었습니다.");
+                        navigate("/");
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+            }
         } else {
-            window.alert("비밀번호 틀림");
+            window.alert("입력한 현재 비밀번호가 틀립니다.");
         }
     };
 

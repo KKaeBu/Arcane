@@ -1,0 +1,110 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
+.login {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginWrapper {
+    width: fit-content;
+    height: fit-content;
+}
+
+.loginTop,
+.loginBottom {
+}
+
+.loginBottom {
+    margin-bottom: 10vh;
+}
+
+.loginLogo {
+    font-family: "나눔고딕";
+    font-size: 24px;
+    text-align: center;
+    color: white;
+}
+
+.loginBoxID,
+.loginBoxPW {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.loginBoxPW {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-100px);
+    transition: all ease 0.3s;
+}
+
+.loginInputID,
+.loginInputPW {
+    height: 5vh;
+    border-radius: 3px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+.loginInputID:focus,
+.loginInputPW:focus {
+    outline: none;
+}
+
+.loginButton {
+}
+
+.accountDiv {
+    width: fit-content;
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.loginForgot {
+    text-align: center;
+    cursor: pointer;
+    color: #1775ee;
+}
+
+.loginRegister {
+    width: fit-content;
+    height: fit-content;
+
+    margin: auto;
+
+    border: none;
+    color: white;
+    font-size: 18px;
+
+    text-decoration: none;
+}
+
+.singupLink {
+    color: #1775ee;
+
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.visible {
+    height: 60px;
+    opacity: 1;
+    transform: translateY(-18px);
+}
