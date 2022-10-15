@@ -67,4 +67,6 @@ export default class DB {
             .then(res => console.log("ok?: " + res.data))
             .catch(err => console.log("saveSummonerInfo error: " + err));
     }
+
+    /** */
 }

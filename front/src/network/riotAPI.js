@@ -4,7 +4,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-e2b8c7e4-70fc-4d0e-9d11-d5b87abbed64";
+    #Riot_API_Key = "RGAPI-4e7912a8-72b3-420c-869f-018973f1a88b";
     #Language = "ko_KR";
     #Version = "12.19.1";
     #headers = {
@@ -267,7 +267,7 @@ async function getAPI(link) {
     await axios
         .get(link)
         .then(res => data=res.data)
-        .catch(err => console.log("getAPI error: " + err));
+        .catch(err => { throw err; });
 
     return data;
 }
