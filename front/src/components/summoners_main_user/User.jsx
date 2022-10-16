@@ -22,25 +22,10 @@ function User(props) {
     const summ = props.summonerData;
 
     const getSummonerInfo = async () => {
-        // 데베상에 현재 검색한 유저가 있다면
-        if (await db.isSummoner(summ.name)) {
-            const { summonerName, profileIconId, level } = await db.getSummonerInfo();
-            const profile = await riot.getSummonerProfileIcon(profileIconId);
-
-            setSummonerName(summonerName);
-            setProfileLink(profile);
-            setLevel(level);
-        } else {
-            // 데베에 검색한 유저가 없다면
-            const profile = await riot.getSummonerProfileIcon(summ.profileIconId);
-
-            await saveDB();
-
-            setSummonerName(summ.name);
-            setProfileLink(profile);
-            setLevel(summ.summonerLevel);
-            setSummoner(summ);
-        }
+        const profile = await riot.getSummonerProfileIcon(summ.profileIconId);
+        setSummonerName(summ.summonerName);
+        setProfileLink(profile);
+        setLevel(summ.level);
 
         // topbar를 통해 유저 검색시 남아있을 active 클래스를 지워주고
         // 로그인된 유저의 디비에서 북마크 정보를 가져와서 북마크에
@@ -57,15 +42,8 @@ function User(props) {
                 })
                 .catch((err) => console.log("user mark check error"));
         }
-    }
 
-    // 디비에 건색한 유저의 정보 저장
-    const saveDB = async () => {
-        await db.saveSummonerInfo(
-            summ.name,
-            summ.profileIconId,
-            summ.summonerLevel
-        );
+        setSummoner(summ);
     }
 
     const refresh = () => {

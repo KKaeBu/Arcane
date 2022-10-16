@@ -11,7 +11,6 @@ import DB from "../../db/db";
 
 
 function Summoners() {
-    // const { summoner } = useParams();
     const summoner = useLocation().state.summoner;
     localStorage.setItem("summoner", summoner);
     const [summonerData, setSummonerData] = useState({});
@@ -25,24 +24,28 @@ function Summoners() {
 
         try{
             const summonerJson = await riot.getSummoner(user);
-
-            if (await db.isSummoner(summ.name)) {
+            
+            if (summonerJson && await db.isSummoner(summonerJson.name)) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
-                const DB_summoner = await db.
+                const DB_summoner = await db.getSummonerInfo(summonerJson.name);
+                console.log("유저가 있군요!: ", DB_summoner);
+                setSummonerData(DB_summoner);
+                setIsDB(true);
             } else {
                 // 데베에 검색한 유저가 없다면 -> 해당 유저의 데이터를 디비에 저장함
-
+                // 즉, 처음 검색해보는 유저일 경우
+                const rankData = await riot.getSummonerLeague(summonerJson.id);
+                const DB_summoner = await db.saveSummonerInfo(summonerJson, await rankData);
+                console.log("첨 검색했군요!: ", DB_summoner);
+                setSummonerData(DB_summoner);
+                setIsDB(false);
             }
 
-            setSummonerData(summonerJson);
+            // setSummonerData(summonerJson);
         }catch(e){
             console.log("존재하지 않는 유저 입니다.");
             console.log("not found error: " + e);
         }
-
-    }
-
-    const saveSummonerDB = async () => {
 
     }
 
@@ -52,18 +55,17 @@ function Summoners() {
 
     useEffect(() => {
         findSummoner();
-        saveSummonerDB();
     }, [summoner]);
     
     return (
         <div className={style.summonersContainer}>
             <div className={style.summonersWrapper}>
                 <Topbar />
-                <User summonerData={summonerData} isRefresh={isRefresh}/>
-                <Rank summonerData={summonerData}/>
+                <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
+                <Rank summonerData={summonerData} isDB={isDB} />
                 {/* <Most summonerData={summonerData}/> */}
                 {/* {refresh ? <History summonerData={summonerData} isRefresh={isRefresh} /> : <History summonerData={summonerData}/> } */}
-                <History summonerData={summonerData} isRefresh={refresh}/>
+                {/* <History summonerData={summonerData} isRefresh={refresh}/> */}
             </div>
         </div>
     );

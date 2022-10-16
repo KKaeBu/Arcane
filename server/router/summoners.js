@@ -8,6 +8,8 @@ router.get("/", summonersController.getRiotApi);
 
 router.get("/isin", summonersController.isSummoner);
 
+router.get("/getinfo", summonersController.getSummonerInfo);
+
 router.post("/saveinfo", summonersController.saveSummonerInfo);
 
 export default router;

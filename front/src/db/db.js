@@ -40,6 +40,8 @@ export default class DB {
 
     /**데이터베이스에 해당 소환사의 정보가 있는지 여부를 반환 (return boolean) */
     async isSummoner(name) {
+        // 이름이 한글일 경우 type error가 발생해 이름을 인코딩 후 전달
+        // 이후 서버에서 디코딩 해서 사용
         const summonerName = encodeURIComponent(name);
         let result = await axios//
             .get("/api/summoners/isin", {
@@ -47,7 +49,10 @@ export default class DB {
                     summonername: summonerName,
                 }
             })
-            .then(res => res.data)
+            .then((res) => {
+                console.log("이미 디비에 있는 소환사임: " + res.data);
+                return res.data;
+            })
             .catch(err => console.log("isSummoner error: " + err));
 
         return await result;
@@ -57,16 +62,37 @@ export default class DB {
      * 해당 소환사의 정보를 데이터베이스에 추가
      * (return void)
      */
-    async saveSummonerInfo(summonerName, profileIconId, level) {
-        await axios//
+    async saveSummonerInfo(summoner, rankData) {
+        let data = await axios//
             .post("/api/summoners/saveinfo", {
-                summonerName: summonerName,
-                profileIconId: profileIconId,
-                level: level,
+                summoner: summoner,
+                rankData: rankData,
             })
-            .then(res => console.log("ok?: " + res.data))
+            .then((res) => {
+                console.log("검색한 소환사의 정보를 저장함: " + res.data);
+                return res.data;
+            })
             .catch(err => console.log("saveSummonerInfo error: " + err));
+        
+        return await data;
     }
 
-    /** */
+    /** 검색한 소환사의 데이터를 디비 상에서 가져옴*/
+    async getSummonerInfo(name) {
+        const summonerName = encodeURIComponent(name);
+
+        let result = await axios//
+            .get("/api/summoners/getinfo", {
+                headers: {
+                    summonername: summonerName,
+                }
+            })
+            .then((res) => {
+                console.log("소환사 정보 가져옴: " + res.data);
+                return res.data
+            })
+            .catch(err => console.log("getSummonerInfo func error"));
+        
+        return await result;
+    }
 }

@@ -1,35 +1,13 @@
 import { useState, useEffect } from "react";
-import Riot_API from "../../network/riotAPI";
 import style from "./rank.module.css";
 
 function Rank(props) {
-    const riot = new Riot_API();
-    const [soloRank, setSoloRank] = useState({});
-    const [flexRank, setFlexRank] = useState({});
+    const [summoner, setSummoner] = useState({});
 
     const summData = props.summonerData;
 
     const getLeague = async () => {
-        try {
-            setSoloRank({});
-            setFlexRank({});
-            if(summData)
-                await leagueReq();
-        } catch (error) {
-            
-        }
-    }
-
-    /**라이엇 api로 부터 특정 유저의 랭크 정보를 불러와주고 이를 랭크별로 저장함 (axios 사용) */
-    const leagueReq = async () => {
-        const rankData = await riot.getSummonerLeague(summData.id);
-        rankData.forEach(r => {
-            if (r.queueType === "RANKED_SOLO_5x5") {
-                setSoloRank(r);
-            } else {
-                setFlexRank(r);
-            }
-        });
+        setSummoner(summData);
     }
 
     useEffect(() => {
@@ -41,33 +19,33 @@ function Rank(props) {
             <div className={style.soloRankWrapper}>
                 <div className={style.soloLeft}>
                     <img
-                        src={findTierImg(tierCamelcase(soloRank.tier))}
+                        src={findTierImg(tierCamelcase(summoner.soloRankTier))}
                         className={style.TierImg}
                         alt="Tier img"
                     />
                     <span className={style.TierLabel}>
-                        {soloRank.tier ?
-                            tierCamelcase(soloRank.tier) + " " + rankConverter(soloRank.rank)
+                        {summoner.soloRankTier ?
+                            tierCamelcase(summoner.soloRankTier) + " " + rankConverter(summoner.soloRankRank)
                             :
                             "Unranked"
                         }
                     </span>
                 </div>
                 <div className={style.soloRight}>
-                    <span className={style.queueType}>{queueTypeConverter(soloRank.queueType)}</span>
+                    <span className={style.queueType}>{queueTypeConverter(summoner.soloRankQueueType)}</span>
                     <br />
                     <span className={style.leaguePoints}>
                         <b style={{ color: "gold" }}>
-                            {soloRank.leaguePoints ? soloRank.leaguePoints : "0"}
+                            {summoner.soloRankLP ? summoner.soloRankLP : "0"}
                         </b> LP
                     </span>
                     <span className={style.winRate}>승률&nbsp;
-                        <b style={{color: "blue"}}>{calcWinRate(soloRank.wins, soloRank.losses)}%</b>
+                        <b style={{color: "blue"}}>{calcWinRate(summoner.soloRankWinNum, summoner.soloRankLoseNum)}%</b>
                     </span>
                     <br />
                     <span className={style.totalMatch}>
-                        {soloRank.wins ?
-                            `(${soloRank.wins + soloRank.losses}전 ${soloRank.wins}승 ${soloRank.losses}패)`
+                        {summoner.soloRankWinNum ?
+                            `(${summoner.soloRankWinNum + summoner.soloRankLoseNum}전 ${summoner.soloRankWinNum}승 ${summoner.soloRankLoseNum}패)`
                             :
                             "(0전 0승 패)"
                         }
@@ -78,33 +56,33 @@ function Rank(props) {
             <div className={style.flexRankWrapper}>
                 <div className={style.flexLeft}>
                     <img
-                        src={findTierImg(tierCamelcase(flexRank.tier))}
+                        src={findTierImg(tierCamelcase(summoner.flexRankTier))}
                         className={style.TierImg}
                         alt="Tier img"
                     />
                     <span className={style.TierLabel}>
-                        {flexRank.tier ?
-                            tierCamelcase(flexRank.tier) + " " + rankConverter(flexRank.rank)
+                        {summoner.flexRankTier ?
+                            tierCamelcase(summoner.flexRankTier) + " " + rankConverter(summoner.flexRankRank)
                             :
                             "Unranked"
                         }
                     </span>
                 </div>
                 <div className={style.flexRight}>
-                    <span className={style.queueType}>{queueTypeConverter(flexRank.queueType)}</span>
+                    <span className={style.queueType}>{queueTypeConverter(summoner.flexRankQueueType)}</span>
                     <br />
                     <span className={style.leaguePoints}>
                         <b style={{ color: "gold" }}>
-                            {flexRank.leaguePoints ? flexRank.leaguePoints : "0"}
+                            {summoner.flexRankLP ? summoner.flexRankLP : "0"}
                         </b> LP
                     </span>
                     <span className={style.winRate}>승률&nbsp;
-                        <b style={{color: "blue"}}>{calcWinRate(flexRank.wins, flexRank.losses)}%</b>
+                        <b style={{color: "blue"}}>{calcWinRate(summoner.flexRankWinNum, summoner.flexRankLoseNum)}%</b>
                     </span>
                     <br />
                     <span className={style.totalMatch}>
-                        {flexRank.wins ?
-                            `(${flexRank.wins + flexRank.losses}전 ${flexRank.wins}승 ${flexRank.losses}패)`
+                        {summoner.flexRankWinNum ?
+                            `(${summoner.flexRankWinNum + summoner.flexRankLoseNum}전 ${summoner.flexRankWinNum}승 ${summoner.flexRankLoseNum}패)`
                             :
                             "(0전 0승 패)"
                         }
@@ -159,7 +137,7 @@ function tierCamelcase(tier) {
 
 /**해당 유저의 랭크를 로마숫자에서 기본 숫자로 변환해줌 */
 function rankConverter(rank) {
-    let convertedRank;
+    let convertedRank = "";
     switch (rank) {
         case "I":
             convertedRank = "1";

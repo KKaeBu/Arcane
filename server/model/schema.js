@@ -60,17 +60,17 @@ const summonerSchema = new Mongoose.Schema({
     
     soloRankQueueType: { type: String, required: true },
     soloRankTier: { type: String, required: true },
+    soloRankRank: { type: String },
     soloRankLP: { type: Number, required: true },
     soloRankWinNum: { type: Number, required: true },
     soloRankLoseNum: { type: Number, required: true },
-    soloRankTotalNum: { type: Number, required: true },
 
     flexRankQueueType: { type: String, required: true },
     flexRankTier: { type: String, required: true },
+    flexRankRank: { type: String }, 
     flexRankLP: { type: Number, required: true },
     flexRankWinNum: { type: Number, required: true },
     flexRankLoseNum: { type: Number, required: true },
-    flexRankTotalNum: { type: Number, required: true },
 
     matchList: [matchHistorySchema],
 });
