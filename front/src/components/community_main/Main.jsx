@@ -193,7 +193,9 @@ function Main() {
     const writePost = async (event) => {
         if (isLogin) {
             // props.propFunction("write");
-            navigate(`/community/write/${1}`);
+            navigate(`/community/write`, {
+                state: page_query.page,
+            });
         } else {
             alert("로그인이 필요한 기능입니다.");
         }

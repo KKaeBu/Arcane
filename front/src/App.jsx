@@ -36,7 +36,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/community/write/:id"
+                    path="/community/write"
                     element={
                         <Community main={false} write={true} correct={false} />
                     }

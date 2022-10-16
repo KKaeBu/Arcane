@@ -3,11 +3,12 @@ import { useState } from "react";
 import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { history } from "./../../history";
 
 function Posting(props) {
     const navigate = useNavigate();
+    const page = useLocation();
 
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
@@ -178,8 +179,7 @@ function Posting(props) {
         if (
             window.confirm("변경 사항이 저장되지 않습니다.\n진행하시겠습니까?")
         ) {
-            // props.propFunction(false);
-            navigate("/community");
+            navigate(`/community?page=${page.state}`);
         }
     };
     const submitPosting = async (e) => {
@@ -198,8 +198,7 @@ function Posting(props) {
                 .catch((error) => {
                     console.error(error);
                 });
-            // props.propFunction(false);
-            navigate("/community");
+            navigate(`/community?page=${page.state}`);
         } else {
             window.alert("로그인이 필요한 기능입니다.");
         }
@@ -235,7 +234,7 @@ function Posting(props) {
                     "변경 사항이 저장되지 않습니다.\n진행하시겠습니까?"
                 )
             ) {
-                navigate("/community");
+                navigate(`/community?page=${page.state}`);
             }
         };
         window.history.pushState(null, "", window.location.href);
