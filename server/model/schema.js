@@ -26,10 +26,11 @@ const userSchema = new Mongoose.Schema({
 });
 
 const matchHistorySchema = new Mongoose.Schema({
+    summonerName: { type: String, required: true },
     queueType: { type: String, required: true },
     result: { type: String, required: true },
     queueDate: { type: String, required: true },
-    championIconId: { type: Number, required: true },
+    champion: { type: String, required: true },
     championLevel: { type: Number, required: true },
     spell1: { type: String, required: true },
     spell2: { type: String, required: true },
@@ -45,11 +46,12 @@ const matchHistorySchema = new Mongoose.Schema({
     kills: { type: Number, reqired: true },
     deaths: { type: Number, reqired: true },
     assists: { type: Number, reqired: true },
+    kda: { type: String },
     cs: { type: Number, reqired: true },
     time: { type: String, reqired: true },
     participants: [{
         summonerName: String,
-        championIconId: String
+        championName: String
     }],
 });
 

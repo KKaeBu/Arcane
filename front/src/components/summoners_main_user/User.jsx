@@ -32,7 +32,7 @@ function User(props) {
         // active 추가 여부 결정
         bmTag.classList.remove(style.active);
         if (isLogin) {
-            const sn = summ.name;
+            const sn = summ.summonerName;
             const un = userName;
             await db.checkMarking(sn, un)
                 .then((res) => {

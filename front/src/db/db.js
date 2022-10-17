@@ -62,11 +62,12 @@ export default class DB {
      * 해당 소환사의 정보를 데이터베이스에 추가
      * (return void)
      */
-    async saveSummonerInfo(summoner, rankData) {
+    async saveSummonerInfo(summoner, rankData, matchHistoryList) {
         let data = await axios//
             .post("/api/summoners/saveinfo", {
                 summoner: summoner,
                 rankData: rankData,
+                matchHistoryList: matchHistoryList,
             })
             .then((res) => {
                 console.log("검색한 소환사의 정보를 저장함: " + res.data);
@@ -95,4 +96,19 @@ export default class DB {
         
         return await result;
     }
+
+    /**검색한 소환사의 가장 최근 첫번째 게임부터 100번째 게임 까지의 데이터를 디비에 저장함 */
+    // async saveMatchHistory(matchHistory) {
+    //     let data = await axios//
+    //         .post("/api/summoners/savehistory", {
+    //             matchHistory: matchHistory,
+    //         })
+    //         .then((res) => {
+    //             console.log("검색한 소환사의 전적정보를 저장함: " + res.data);
+    //             return res.data;
+    //         })
+    //         .catch(err => console.log("saveMatchHistory error: " + err));
+        
+    //     return await data;
+    // }
 }

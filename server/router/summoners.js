@@ -12,4 +12,6 @@ router.get("/getinfo", summonersController.getSummonerInfo);
 
 router.post("/saveinfo", summonersController.saveSummonerInfo);
 
+// router.post("/savehistory", summonersController.saveMatchHistroy);
+
 export default router;
