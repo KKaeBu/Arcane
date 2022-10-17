@@ -1,6 +1,6 @@
 import style from "./mypage_main.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 
 function MyPageMain() {

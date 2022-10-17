@@ -23,6 +23,12 @@
 .loginWrapper {
     width: fit-content;
     height: fit-content;
+    opacity: 0;
+    transition: all ease 0.8s;
+}
+
+.start {
+    opacity: 1;
 }
 
 .loginTop,
@@ -51,13 +57,21 @@
 .loginBoxPW {
     height: 0;
     opacity: 0;
-    transform: translateY(-100px);
+    transform: translateY(-7vh);
     transition: all ease 0.3s;
 }
 
-.loginInputID,
+.loginInputID {
+    height: 60px;
+    border-radius: 3px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 10px;
+}
+
 .loginInputPW {
-    height: 5vh;
+    display: none;
+    height: 0px;
     border-radius: 3px;
     border: 1px solid gray;
     font-size: 18px;
@@ -104,7 +118,8 @@
 }
 
 .visible {
+    display: flex;
     height: 60px;
     opacity: 1;
-    transform: translateY(-18px);
+    transform: translateY(0.5vh);
 }

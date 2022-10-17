@@ -63,7 +63,13 @@ function Topbar() {
     };
 
     const ClickMyPage = () => {
-        navigate("/mypage");
+        if (islogin) {
+            navigate("/mypage", {
+                state: username,
+            });
+        } else {
+            window.alert("로그인이 필요한 서비스입니다.");
+        }
     };
 
     const onChange = (event) => {

@@ -1,0 +1,166 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+
+.signup {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signupWrapper {
+    width: fit-content;
+    height: fit-content;
+    opacity: 0;
+
+    transition: all ease 0.8s;
+}
+
+.start {
+    opacity: 1;
+}
+
+.signupTop,
+.signupBottom {
+}
+
+.signupTop {
+    margin-bottom: 5%;
+}
+
+.signupLogo {
+    font-family: "나눔고딕";
+    font-size: 24px;
+    text-align: center;
+    color: white;
+}
+
+.signupDesc {
+    font-family: "Community";
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+    color: white;
+}
+
+.signupBox {
+    height: 400px;
+    padding: 20px;
+    background-color: black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.isPossible {
+    color: white;
+}
+
+.signupInput {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    background-color: white;
+}
+
+.signupInput:focus {
+    outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
+
+.signupInputDiv {
+    width: 80%;
+    height: 50px;
+    border: 0;
+    font-size: 18px;
+
+    background-color: transparent;
+}
+
+.signupInputDiv:focus {
+    outline: none;
+}
+
+.viewIcon {
+    align-items: center;
+}
+/* 
+.viewIcon:hover {
+    opacity: 0.5;
+} */
+
+#halfTransparent {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.signupButton {
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+
+    background-color: transparent;
+    transition: all ease 0.3s;
+}
+
+.signupButton:hover {
+    background-color: #1775ee;
+}
+
+.signupForgot {
+    text-align: center;
+    color: #1775ee;
+}
+
+.signupRegisterButton {
+    display: block;
+
+    width: 60%;
+
+    /* flex item중 특정 하나를 중앙정렬하기위해 align-self: center을 사용
+    (text-align: center을 해도됨) */
+    align-self: center;
+    text-align: center;
+
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: #42b72a;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+
+    text-decoration: none;
+}

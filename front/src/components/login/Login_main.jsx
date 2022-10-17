@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import style from "./login_main.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
@@ -11,6 +11,8 @@ function LoginMain() {
     const [inputPassword, setPassword] = useState("");
 
     const pw_box = useRef(null);
+    const pw_input = useRef(null);
+    const loginWrapper = useRef(null);
 
     const token = new TokenStorage();
 
@@ -31,6 +33,7 @@ function LoginMain() {
         } else {
             console.log("here");
             pw_box.current.classList.add(style.visible);
+            pw_input.current.classList.add(style.visible);
         }
     };
     const onSubmitPW = async (event) => {
@@ -63,9 +66,15 @@ function LoginMain() {
     const toSignUp = () => {
         navigate("/signup");
     };
+
+    useEffect(() => {
+        setTimeout(() => {
+            loginWrapper.current.classList.add(style.start);
+        }, 1);
+    }, []);
     return (
         <div className={style.login}>
-            <div className={style.loginWrapper}>
+            <div className={style.loginWrapper} ref={loginWrapper}>
                 <div className={style.loginTop}>
                     <h3 className={style.loginLogo}>Arcane에 로그인하세요</h3>
                 </div>
@@ -89,6 +98,7 @@ function LoginMain() {
                             className={style.loginInputPW}
                             onChange={changePassword}
                             id="password"
+                            ref={pw_input}
                         />
                     </form>
                 </div>
