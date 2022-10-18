@@ -21,19 +21,10 @@ function History(props) {
         if (matchHistory) {
             removeAllchild(matchHistory);
         }
-        const puuid = summData.puuid;
-        if (!puuid)
-            return;
-        
-        const matchIdListData = await riot.getMatchIdList(puuid, 0, 3);
-        queueTypeJson = await riot.getQueueType();
-        spellJson = await riot.getAllSpell();
-        runesJson = await riot.getAllRunes();
 
-        if (matchIdListData) {
-            matchIdListData.forEach(async (m) => {
-                const matchInfo = await riot.getMatchInfo(m);
-                createMatchBox(matchInfo);
+        if (summData) {
+            summData.matchList.forEach(async (m) => {
+                createMatchBox(m);
             })
         }
             
@@ -41,201 +32,29 @@ function History(props) {
     
     const createMatchBox = async (data) => {
         const li = document.createElement("li");
-        const participants = data.info.participants; // 게임에 참여한 10명의 해당 게임내의 정보 배열
-        const queueId = data.info.queueId; // 해당게임의 큐 타입 아이디값
-        const queueDate = Unix_timestamp(data.info.gameCreation); // 해당 게임이 진행된 날짜
-        const time = calcPlayedTime(data.info.gameStartTimestamp, data.info.gameEndTimestamp); // 해당 게임의 플레이 시간
-
-        let myTeam; // 해당 게임에서 내가 속한 팀의 번호 (100: blue, 200: red)
-        let win = "패배"; // 해당 게임에서 승리 여부
-        let champion; // 해당 게임에서 내가 플레이한 챔피언
-        let champLevel; //해당 게임에서 내가 플레이한 챔피언의 최종 레벨
-        let spells; //해당 게임에서 내가 사용한 소환사 스펠 정보 (2개: D, F), Array
-        let runes; // 해당 게임에서 내가 사용한 룬 정보 (3개: 메인룬, 메인룬의 세부룬, 서브의메인룬), Array
-        let items; // 해당 게임에서 내가 최종적으로 사용한 아이템6개 + 토템(와드, 렌즈, 망원형), Array
-        let kills; // 해당 게임에서 내가 한 kill 스코어
-        let deaths; // 해당 게임에서 내가 한 death 스코어
-        let assists; // 해당 게임에서 내가 한 assist 스코어
-        let kda; // 해당 게임에서 내가 기록한 kda
-        let cs; // 해당 게임에서 내가 기록 한 cs 개수 (neutralMinionsKilled: 몬스터 + totalMinionsKilled: 미니언)
-        let summoners = new Array(); // 해당 게임에 참가한 모든 참가자들의 간략한 정보(이름, 챔피언 아이콘, 나중에 상세정보 추가한다면 여기에 정보 추가)
-        let queueType; //해당 게임의 큐타입
-
-        // 게임 큐 타입 확인하기
-        for (const k in queueTypeJson) {
-            if (queueTypeJson[k].queueId === queueId) {
-                queueType = queueTypeConverter(queueTypeJson[k].description);
-                break;
-            }
-        }
-
-        // 내가 속한 팀의 번호 확인
-        // 내가 플레이한 챔프 확인
-        // 내가 플레이한 챔프 레벨 확인
-        // 내가 사용한 스펠 정보 확인
-        // 내가 사용한 룬 정보 확인
-        // 내가 기록한 K/D/A확인
-        // 같이 플레이한 소환사들의 정보
-        // 승리 여부 확인
-        for (const p in participants) { 
-            summoners.push(summonersInfo(participants[p]));
-            if (participants[p].summonerId === summData.id) {
-                myTeam = participants[p].teamId;
-                champion = participants[p].championName;
-                champLevel = participants[p].champLevel;
-                spells = checkSpell(participants[p].summoner1Id.toString(), participants[p].summoner2Id.toString());
-                runes = checkRune(
-                    participants[p].perks.styles[0].style,
-                    participants[p].perks.styles[0].selections[0].perk,
-                    participants[p].perks.styles[1].style
-                );
-                items = [
-                    participants[p].item0,
-                    participants[p].item1,
-                    participants[p].item2,
-                    participants[p].item3,
-                    participants[p].item4,
-                    participants[p].item5,
-                    participants[p].item6
-                ];
-                kills = participants[p].kills;
-                deaths = participants[p].deaths
-                assists = participants[p].assists;
-                if (participants[p].challenges)
-                    kda = participants[p].challenges.kda;
-                else
-                    kda = (kills + assists) / deaths;
-                cs = participants[p].neutralMinionsKilled + participants[p].totalMinionsKilled;
-                if (participants[p].win)
-                    win = "승리";
-            }
-        }
-
 
         li.setAttribute("class", style.matchInfoBox);
-        if (win === "승리")
+        if (data.result === "승리")
             li.style.backgroundColor = "#28344E";
-        li.dataset.queue = queueType;
+        li.dataset.queue = data.queueType;
 
-        const boxLeft = await createBoxLeft(li, queueType, win, queueDate);
-        const boxLeftToMiddle = await createBoxLeftToMiddle(li, champion, champLevel, spells, runes);
-        const boxMiddle1 = await createBoxMiddle1(li, items);
-        const boxMiddle2 = await createBoxMiddle2(li, kills, deaths, assists, kda, cs);
-        const boxMiddleToRight = await createBoxMiddleToRight(time);
-        const boxRight = await createBoxRight(summoners);
+        const boxLeft = createBoxLeft(data);
+        const boxLeftToMiddle = createBoxLeftToMiddle(data);
+        const boxMiddle1 = createBoxMiddle1(data);
+        const boxMiddle2 = createBoxMiddle2(data);
+        const boxMiddleToRight = createBoxMiddleToRight(data);
+        const boxRight = createBoxRight(data);
 
-        li.appendChild(boxLeft);
-        li.appendChild(boxLeftToMiddle);
-        li.appendChild(boxMiddle1);
-        li.appendChild(boxMiddle2);
-        li.appendChild(boxMiddleToRight);
-        li.appendChild(boxRight);
+        const boxs = [boxLeft, boxLeftToMiddle, boxMiddle1, boxMiddle2, boxMiddleToRight, boxRight];
+
+        boxs.forEach(b => {
+            li.appendChild(b);
+        });
 
         matchHistory.appendChild(li);
     }
 
-    const checkSpell = (spell1, spell2) => {
-        let spells = new Array(2);
-        for (const s in spellJson.data) {
-            switch (spellJson.data[s].key) {
-                case spell1:
-                    spells[0] = spellJson.data[s].image.full;
-                    break;
-                
-                case spell2:
-                    spells[1] = spellJson.data[s].image.full;
-                    break;
-            }
-        }
-
-        return spells;
-    }
-
-    const checkRune = (mainRuneId, mainRuneDetailId ,subRuneId) => {
-        let runes = new Array(3);
-        for (const r in runesJson) {
-            switch (runesJson[r].id) {
-                case mainRuneId:
-                    runes[0] = runesJson[r].key;
-                    for (const sr in runesJson[r].slots[0].runes) {
-                        if (runesJson[r].slots[0].runes[sr].id === mainRuneDetailId) {
-                            runes[1] = runesJson[r].slots[0].runes[sr].key;
-                            break;
-                        }
-                    }
-                    break;
-                
-                case subRuneId:
-                    runes[2] = runesJson[r].key;
-                    break;
-            }
-        }
-
-        return runes;
-    }
-
-    /**gStartTime: ms, gCreateTime: ms, gDurationTime: s */
-    const calcPlayedTime = (gStartTime, gEndTime) => {
-        const gst = new Date(gStartTime);
-        const get = new Date(gEndTime);
-
-        // 플레이시간 중 초 구하기
-        const pSeconds = get.getSeconds() - gst.getSeconds();
-        // 플레이 시간중 분 구하기
-        const pMinutes = get.getMinutes() - gst.getMinutes();
-        // 플레이 시간중 시 구하기
-        const pHours = get.getHours() - gst.getHours();
-        // 게임 시작 날짜 중 일
-        const gsDays = gst.getDay();
-        // 게임 종료 날짜 중 일
-        const geDays = get.getDay();
-
-        let resultSeconds;
-        let resultMinutes;
-        let resultHours;
-
-        resultHours = pHours;
-        if (pHours < 0)
-            resultHours = pHours + 12;
-        resultMinutes = pMinutes;
-        resultSeconds = pSeconds;
-
-        if (pMinutes < 0) {
-            resultHours -= 1;
-            resultMinutes += 60;
-        }
-
-        if (pSeconds < 0) {
-            resultMinutes -= 1;
-            if (resultMinutes < 0) {
-                resultHours -= 1;
-                resultMinutes += 60;
-            }
-            resultSeconds += 60;
-        }
-        
-        let resultTime = "";
-        if (resultHours !== 0) {
-            resultTime = resultHours.toString();
-            if (resultHours < 10)
-                resultTime = "0" + resultHours.toString() + "시간 ";
-        }
-
-        resultTime += resultMinutes.toString() + "분 " + resultSeconds.toString() + "초";
-
-        return resultTime;
-    }
-
-    const summonersInfo = (participant) => {
-        const pInfo = {
-            "pName": participant.summonerName,
-            "pChampion": participant.championName,
-        };
-
-        return pInfo
-    }
-
-    const createBoxLeft = async (li, qType, win, qDate) => {
+    const createBoxLeft = (data) => {
         // 요소 생성
         const div = document.createElement("div");
         const spanQueue = document.createElement("span");
@@ -245,15 +64,15 @@ function History(props) {
         // 속성 부여
         div.setAttribute("class", style.infoLeft);
         spanQueue.setAttribute("class", style.spanQueue)
-        if (win === "승리")
+        if (data.result === "승리")
             spanWin.style.color = "#4444CC";
         else
             spanWin.style.color = "#CC5867";
 
         // 값 설정
-        spanQueue.innerText = qType;
-        spanWin.innerText = win;
-        spanDate.innerText = qDate;
+        spanQueue.innerText = data.queueType;
+        spanWin.innerText = data.result;
+        spanDate.innerText = data.queueDate;
 
         // 부모 자식 설정
         div.appendChild(spanQueue);
@@ -263,7 +82,7 @@ function History(props) {
         return div;
     }
 
-    const createBoxLeftToMiddle = async (li, champion, champLevel, spells, runes) => {
+    const createBoxLeftToMiddle = (data) => {
         // 요소 생성
         const infoLeftToMiddle = document.createElement("div");
         const championIcon = document.createElement("div");
@@ -282,13 +101,6 @@ function History(props) {
         const subRuneWrapper = document.createElement("div");
         const mainRune = document.createElement("img");
         const subRune = document.createElement("img");
-
-        // 필요한 이미지 링크 불러오기
-        const championImgLink = await riot.getChampionSquareAssetsLink(champion);
-        const spell1Link = await riot.getSpellImgLink(spells[0]);
-        const spell2Link = await riot.getSpellImgLink(spells[1]);
-        const mainRuneLink = await riot.getMainRuneImgLink(runes[0], runes[1]);
-        const subRuneLink = await riot.getSubRuneImgLink(runes[2], runes[2]);
 
         // 요소에 속성 부여
         infoLeftToMiddle.setAttribute("class", style.infoLeftToMiddle);
@@ -310,18 +122,18 @@ function History(props) {
         subRune.setAttribute("class", style.subRune);
 
         // 이미지 테그들에 src, alt 속성 부여
-        championImg.setAttribute("src", championImgLink);
+        championImg.setAttribute("src", data.champion);
         championImg.setAttribute("alt", "champion square image");
-        spellD.setAttribute("src", spell1Link);
+        spellD.setAttribute("src", data.spell1);
         spellD.setAttribute("alt", "summoner spell1 image");
-        spellF.setAttribute("src", spell2Link);
+        spellF.setAttribute("src", data.spell2);
         spellF.setAttribute("alt", "summoner spell2 image");
-        mainRune.setAttribute("src", mainRuneLink);
+        mainRune.setAttribute("src", data.mainRune);
         mainRune.setAttribute("alt", "main rune image");
-        subRune.setAttribute("src", subRuneLink);
+        subRune.setAttribute("src", data.subRune);
         subRune.setAttribute("alt", "sub rune image");
 
-        championLevel.innerText = champLevel;
+        championLevel.innerText = data.championLevel;
 
         // 각 테그들의 부모자식 관계 설정
         levelWrapper.appendChild(championLevel);
@@ -348,35 +160,42 @@ function History(props) {
         return infoLeftToMiddle;
     }
 
-    const createBoxMiddle1 = async (li, items) => {
+    const createBoxMiddle1 = (data) => {
         // 요소 생성
         const infoMiddle1 = document.createElement("div");
         const itemBuild = document.createElement("ul");
         const wardItem = document.createElement("img");
+        const itemIds = [
+            data.item0,
+            data.item1,
+            data.item2,
+            data.item3,
+            data.item4,
+            data.item5,
+            data.item6,
+        ];
 
         // 속성 부여
         infoMiddle1.setAttribute("class", style.infoMiddle1);
         itemBuild.setAttribute("class", style.itemBuild);
         wardItem.setAttribute("class", `${style.item} ${style.wardItem}`);
 
-        for (const i in items) {
+        for (let i = 0; i < itemIds.length; i++){
             const item = document.createElement("li");
             const itemImg = document.createElement("img");
-            let link = "";
-            if (items[i] !== 0)
-                link = await riot.getItemImgLink(items[i]);
-
-            if (parseInt(i) === items.length - 1) {
+            const link = itemIds[i];
+            
+            if (i === itemIds.length - 1) {
                 wardItem.setAttribute("src", link);
                 break;
             }
-
+            
             item.setAttribute("class", style.item);
             itemImg.setAttribute("class", style.itemImg);
             itemImg.setAttribute("alt", "item Img");
             itemImg.setAttribute("src", link);
-            
-            if (items[i] === 0) {
+
+            if (itemIds[i] === "") {
                 const emptyItemImg = document.createElement("img");
                 item.appendChild(emptyItemImg);
             } else
@@ -391,20 +210,21 @@ function History(props) {
         return infoMiddle1;
     }
 
-    const createBoxMiddle2 = async (li, kills, deaths, assists, kda, cs) => {
+    const createBoxMiddle2 = (data) => {
         // 요소 생성
         const infoMiddle2 = document.createElement("div");
         const kdaLabel = document.createElement("span");
         const kdaScoreLabel = document.createElement("span");
         const csLabel = document.createElement("span");
 
+        const kda = parseInt(data.kda);
         // 값 조정
         const calcKDA = Math.round((kda + Number.EPSILON) * 100) / 100;
 
         // 속성 부여
         infoMiddle2.setAttribute("class", style.infoMiddle2);
         kdaLabel.setAttribute("class", style.kdaLabel);
-        kdaLabel.innerHTML = `${kills} / <span style="color: red; font-weight: bold">${deaths}</span> / ${assists}`;
+        kdaLabel.innerHTML = `${data.kills} / <span style="color: red; font-weight: bold">${data.deaths}</span> / ${data.assists}`;
         if (calcKDA >= 3 && calcKDA < 4)
             kdaScoreLabel.innerHTML = `평점: <span style="color: #4444CC; font-weight: bold">${calcKDA}</span>`;
         else if (calcKDA >= 4)
@@ -412,7 +232,7 @@ function History(props) {
         else
             kdaScoreLabel.innerText = `평점: ${calcKDA}`;
 
-        csLabel.innerText = `CS: ${cs}`;
+        csLabel.innerText = `CS: ${data.cs}`;
 
         infoMiddle2.appendChild(kdaLabel);
         infoMiddle2.appendChild(kdaScoreLabel);
@@ -421,14 +241,14 @@ function History(props) {
         return infoMiddle2;
     }
 
-    const createBoxMiddleToRight = async (time) => {
+    const createBoxMiddleToRight = (data) => {
         // 요소 생성
         const infoMiddleToRight = document.createElement("div");
         const span = document.createElement("span");
 
         // 속성 부여
         infoMiddleToRight.setAttribute("class", style.infoMiddleToRight);
-        span.innerText = time;
+        span.innerText = data.time;
 
         // 부모 자식 설정
         infoMiddleToRight.appendChild(span);
@@ -436,7 +256,7 @@ function History(props) {
         return infoMiddleToRight;
     }
 
-    const createBoxRight = async (summoners) => {
+    const createBoxRight = (data) => {
         // 요소 생성
         const infoRight = document.createElement("div");
         const blueTeams = document.createElement("ul");
@@ -446,33 +266,30 @@ function History(props) {
         blueTeams.setAttribute("class", style.blueTeams);
         redTeams.setAttribute("class", style.redTeams);
 
-        for (const s in summoners) {
+        data.participants.forEach((p, i) => {
             const summoner = document.createElement("li");
             const playedChampionImg = document.createElement("img");
             const summonerName = document.createElement("span");
-
-            const champImgLink = riot.getChampionIcon(summoners[s].pChampion);
             
             summoner.setAttribute("class", style.summoner);
             playedChampionImg.setAttribute("class", style.playedChampionImg);
-            playedChampionImg.setAttribute("src", champImgLink);
+            playedChampionImg.setAttribute("src", p.champion);
             playedChampionImg.setAttribute("alt", "summoner's played champ");
             summonerName.setAttribute("class", style.summonerName);
 
-            summonerName.innerText = summoners[s].pName;
-            summonerName.onclick = function() { summonerNavigate(summoners[s].pName) };
-            // summonerName.setAttribute("onClick", "summonerNavigate()");
+            summonerName.innerText = p.summonerName;
+            summonerName.onclick = function () { summonerNavigate(p.summonerName); };
 
             summoner.appendChild(playedChampionImg);
             summoner.appendChild(summonerName);
             
 
-            if (s < 5)
+            if (i < 5)
                 blueTeams.appendChild(summoner);
             else
                 redTeams.appendChild(summoner);
 
-        }
+        });
 
         infoRight.appendChild(blueTeams);
         infoRight.appendChild(redTeams);
@@ -522,6 +339,10 @@ function History(props) {
         })
     }
 
+    const moreMatch = () => {
+        props.isMoreMatch();
+    }
+
     useEffect(() => {
         getMatchHistory();
     }, [summData, isRefresh]);
@@ -535,6 +356,7 @@ function History(props) {
             </div>
             <ul className={style.matchHistory}>
             </ul>
+            <button className={style.matchMoreBtn} onSubmit={moreMatch}>+ 더 불러오기</button>
         </div>
     );
 }

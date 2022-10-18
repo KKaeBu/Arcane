@@ -232,7 +232,10 @@ class Riot_API {
 
     // ddragon에서 해당 아이템에 대한 img 링크 반환
     async getItemImgLink(item) {
-        const link = `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/item/${item}.png`;
+        let link = "";
+        if (item !== 0)
+            link = `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/item/${item}.png`;
+        
         return link;
     }
 

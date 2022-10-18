@@ -23,15 +23,7 @@ export async function isSummoner(req, res, next) {
 
 /**처음 검색한 소환사의 정보를 디비에 저장해줌 (return json) */
 export async function saveSummonerInfo(req, res, next) {
-    const { matchHistoryList, summoner, rankData } = req.body;
-    console.dir(req);
-    console.log(matchHistoryList);
-    for (const m in matchHistoryList) {
-        matchHistoryList[m]
-            .then(async (data) => {
-                console.log("mdata: " + data);
-            });
-    };
+    const { summoner, rankData, matchHistoryList } = req.body;
 
     let soloRank = {
         queueType: "Unranked",
@@ -58,7 +50,6 @@ export async function saveSummonerInfo(req, res, next) {
     }
 
     const mList = await saveMatchHistroy(matchHistoryList);
-    console.log("mList: ", mList);
 
     const summId = await userRepository.createSummoner({
         summonerName: summoner.name,
@@ -84,8 +75,6 @@ export async function saveSummonerInfo(req, res, next) {
 
     const summ = await userRepository.findById(summId);  
 
-    console.log("summ: ", summ);
-
     return res.status(201).json(summ);
 }
 
@@ -98,7 +87,7 @@ export async function getSummonerInfo(req, res, next) {
     return res.status(200).json(summoner);
 }
 
-async function saveMatchHistroy(summoner, matchHistoryList) {
+async function saveMatchHistroy(matchHistoryList) {
     let matchList = [];
     for (const m in matchHistoryList) {
         const matchId = await userRepository.createMatchHistory(matchHistoryList[m]);

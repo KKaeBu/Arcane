@@ -36,13 +36,13 @@ const matchHistorySchema = new Mongoose.Schema({
     spell2: { type: String, required: true },
     mainRune: { type: String, required: true },
     subRune: { type: String, required: true },
-    item0: { type: String, reqired: true },
-    item1: { type: String, reqired: true },
-    item2: { type: String, reqired: true },
-    item3: { type: String, reqired: true },
-    item4: { type: String, reqired: true },
-    item5: { type: String, reqired: true },
-    item6: { type: String, reqired: true },
+    item0: { type: String },
+    item1: { type: String },
+    item2: { type: String },
+    item3: { type: String },
+    item4: { type: String },
+    item5: { type: String },
+    item6: { type: String },
     kills: { type: Number, reqired: true },
     deaths: { type: Number, reqired: true },
     assists: { type: Number, reqired: true },
@@ -51,7 +51,7 @@ const matchHistorySchema = new Mongoose.Schema({
     time: { type: String, reqired: true },
     participants: [{
         summonerName: String,
-        championName: String
+        champion: String
     }],
 });
 

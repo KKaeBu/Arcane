@@ -1,5 +1,6 @@
 .historyContainer {
     background-color: #282626;
+    width: 100%;
 }
 
 /* Topbar */
@@ -262,5 +263,24 @@
 }
 
 .summonerName:hover {
-    color: purple;
+    color: white;
+}
+
+/* match more btn */
+.matchMoreBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 12px);
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(188, 185, 185);
+    opacity: 1;
+    cursor: pointer;
+    margin: 8px 6px;
+}
+
+.matchMoreBtn:hover {
+    opacity: 0.54;
 }

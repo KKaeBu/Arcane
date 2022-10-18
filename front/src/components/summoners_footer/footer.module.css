@@ -1,0 +1,68 @@
+.footerContainer {
+    width: 100%;
+    height: 132px;
+
+    margin-top: 100px;
+    border: 0;
+    /* 하단고정 */
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: black;
+}
+
+.footerLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    font-size: 12px;
+    color: rgb(188, 185, 185);;
+
+    padding: 0 10px;
+
+    flex: 5;
+}
+
+.footerLeft p {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.footerLeft p:last-child {
+    margin-bottom: 0;
+}
+
+.footerCenter {
+    flex: 3;
+}
+
+.footerRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.github {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+    text-decoration: none;
+    border: none;
+    color: rgb(188, 185, 185);;
+
+    cursor: pointer;
+}
+
+.github:hover {
+    color: blue;
+}

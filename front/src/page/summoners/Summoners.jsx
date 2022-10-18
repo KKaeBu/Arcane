@@ -6,6 +6,7 @@ import User from "../../components/summoners_main_user/User.jsx";
 import Rank from "../../components/summoners_main_rank/Rank.jsx";
 import Most from "../../components/summoners_main_most/Most";
 import History from "../../components/summoners_main_history/History.jsx";
+import Footer from "../../components/summoners_footer/Footer.jsx";
 import Riot_API from "../../network/riotAPI";
 import DB from "../../db/db";
 
@@ -16,7 +17,8 @@ function Summoners() {
     const [summonerData, setSummonerData] = useState({});
     const [refresh, setRefresh] = useState(false);
     const [isDB, setIsDB] = useState(false);
-    const historyNum = 3;
+    const [matchStart, setMatchStart] = useState(0);
+    const [matchCount, setMatchCount] = useState(2);
 
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
@@ -45,39 +47,13 @@ function Summoners() {
                 // 즉, 처음 검색해보는 유저일 경우
                 const rankData = await riot.getSummonerLeague(summonerJson.id);
                 console.log(rankData);
-                const matchIdListData = await riot.getMatchIdList(summonerJson.puuid, 0, historyNum);                
+                const matchIdListData = await riot.getMatchIdList(summonerJson.puuid, matchStart, matchCount);                
 
-
-                const matchData = matchIdListData.map(async (m) => {
-                    await getMatchInfo(m, summonerJson)
-                        .then((data) => {
-                            console.log("ss: ", data);
-                            return data;
-                        })
-                });
-                console.log("zz: ", await matchData);
-
-                // ************************ 여기야 여기 시잇팔~~~~*********************
-
-                // let zz = [];
-                // matchIdListData.forEach(async (m) => {
-                //     await getMatchInfo(m, summonerJson)
-                //         .then((t) => {
-                //             console.log(t);
-                //             zz.push(t);
-                //         });
-                // });
-                // console.log("zz: ", zz);
-
-
-                // console.log(matchData);
-                const matchHistoryList = new Array(historyNum);
-                for (const m in matchData) {
-                    matchData[m]
-                        .then(async (data) => {
-                            matchHistoryList.push(await data);
-                        });
-                };
+                const matchHistoryList = await Promise.all(
+                    matchIdListData.map(m => {
+                        return getMatchInfo(m, summonerJson);
+                    })
+                )
 
                 console.log(matchHistoryList);
 
@@ -143,13 +119,13 @@ function Summoners() {
                 );
                 data.mainRune = await riot.getMainRuneImgLink(runes[0], runes[1]);
                 data.subRune = await riot.getSubRuneImgLink(runes[2], runes[2]);
-                data.item0 = participants[p].item0;
-                data.item1 = participants[p].item1;
-                data.item2 = participants[p].item2;
-                data.item3 = participants[p].item3;
-                data.item4 = participants[p].item4;
-                data.item5 = participants[p].item5;
-                data.item6 = participants[p].item6;
+                data.item0 = await riot.getItemImgLink(participants[p].item0);
+                data.item1 = await riot.getItemImgLink(participants[p].item1);
+                data.item2 = await riot.getItemImgLink(participants[p].item2);
+                data.item3 = await riot.getItemImgLink(participants[p].item3);
+                data.item4 = await riot.getItemImgLink(participants[p].item4);
+                data.item5 = await riot.getItemImgLink(participants[p].item5);
+                data.item6 = await riot.getItemImgLink(participants[p].item6);
                 data.kills = participants[p].kills;
                 data.deaths = participants[p].deaths;
                 data.assists = participants[p].assists;
@@ -171,9 +147,10 @@ function Summoners() {
     }
 
     const summonersInfo = (participant) => {
+        const championLink = riot.getChampionIcon(participant.championName)
         const pInfo = {
             "summonerName": participant.summonerName,
-            "championName": participant.championName,
+            "champion": championLink,
         };
 
         return pInfo
@@ -223,6 +200,22 @@ function Summoners() {
         setRefresh(!refresh);
     }
 
+    const isMoreMatch = () => {
+        setMatchStart(matchStart + matchCount);
+        // 여기부터임
+        // 더 불러오기 버튼 눌렀을때, 우선 디비에 데이터 있는지 확인후 있다면 디비에서 불러와서
+        // 히스토리 컴포넌트를 현재 상태는 유지한채 불러온 데이터만 추가
+        // 디비에 데이터가 없다면 새롭게 라이엇에서 불러와서
+        // 디비에 저장 후 해당 데이터를 위와 동일하게 컴포넌트에 전달하여 추가
+
+        // 이거 끝나면 전적 갱신도 해야댐
+        // 전적 갱신 버튼은 클릭시 기존 전적은 그대로 두되
+        // 새롭게 추가되는 데이터가 있다면 해당 데이터를 가장 위에다 추가
+        // 단, 이때 데이터가 2개 이상이라면 역순으로 추가 해줘야함
+        // 받아온 데이터는 [1, 2, 3] 순으로 되있으면 원래 1 넣고 -> 2넣고 -> 3넣고 하는 순선데
+        // 이를 역순으로 3, 2, 1 순으로 집어 넣어줘야 가장 최근게 위로 가게됨
+    }
+
     useEffect(() => {
         findSummoner();
     }, [summoner]);
@@ -234,8 +227,9 @@ function Summoners() {
                 <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
                 <Rank summonerData={summonerData} isDB={isDB} />
                 {/* <Most summonerData={summonerData}/> */}
-                <History summonerData={summonerData} isRefresh={refresh} isDB={isDB} />
+                <History summonerData={summonerData} isRefresh={refresh} isDB={isDB} isMoreMatch={isMoreMatch} />
             </div>
+            <Footer className={style.summonerFooter} />
         </div>
     );
 }
