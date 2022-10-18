@@ -48,35 +48,36 @@ function Summoners() {
                 const matchIdListData = await riot.getMatchIdList(summonerJson.puuid, 0, historyNum);                
 
 
-                // const matchData = matchIdListData.map(async (m) => {
-                //     await getMatchInfo(m, summonerJson)
-                //         .then((data) => {
-                //             console.log(data);
-                //             return data;
-                //         })
-                // });
+                const matchData = matchIdListData.map(async (m) => {
+                    await getMatchInfo(m, summonerJson)
+                        .then((data) => {
+                            console.log("ss: ", data);
+                            return data;
+                        })
+                });
+                console.log("zz: ", await matchData);
 
                 // ************************ 여기야 여기 시잇팔~~~~*********************
 
-                let zz = [];
-                matchIdListData.forEach(async (m) => {
-                    await getMatchInfo(m, summonerJson)
-                        .then((t) => {
-                            console.log(t);
-                            zz.push(t);
-                        });
-                });
-                console.log("zz: ", zz);
+                // let zz = [];
+                // matchIdListData.forEach(async (m) => {
+                //     await getMatchInfo(m, summonerJson)
+                //         .then((t) => {
+                //             console.log(t);
+                //             zz.push(t);
+                //         });
+                // });
+                // console.log("zz: ", zz);
 
 
                 // console.log(matchData);
                 const matchHistoryList = new Array(historyNum);
-                // for (const m in matchData) {
-                //     matchData[m]
-                //         .then(async (data) => {
-                //             matchHistoryList.push(await data);
-                //         });
-                // };
+                for (const m in matchData) {
+                    matchData[m]
+                        .then(async (data) => {
+                            matchHistoryList.push(await data);
+                        });
+                };
 
                 console.log(matchHistoryList);
 
