@@ -281,8 +281,10 @@ async function getAPI(link) {
     let data;
     await axios
         .get(link)
-        .then(res => data=res.data)
-        .catch(err => { throw err; });
+        .then((res) => (data = res.data))
+        .catch((err) => {
+            throw err;
+        });
 
     return data;
 }

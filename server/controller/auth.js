@@ -3,16 +3,34 @@ import bcrypt from "bcrypt";
 import { config } from "../config.js";
 import * as userRepository from "../data/auth.js";
 
+export async function IsExist(username) {
+    // 이미 가입한 사용자인지 판단 > 서버에서 사용하는 함수
+    const exist = await userRepository.findByUsername(username);
+    return exist;
+}
+
+export async function IsExistFromClient(req, res) {
+    // 이미 가입한 사용자인지 판단 > client에서 사용하는 함수
+    const { username } = req.headers;
+    const exist = await userRepository.findByUsername(username);
+    if (exist) {
+        return res.status(201).json({ data: true });
+    } else {
+        return res.status(201).json({ data: false });
+    }
+}
+
 export async function signup(req, res) {
     // req.body의 사용할 데이터를 가져오기
     const { username, password, email } = req.body;
 
-    // 이미 가입한 사용자인지 판단
-    const exist = await userRepository.findByUsername(username);
+    const exist = await IsExist(username);
     if (exist) {
         // 이미 존재하면 409를 보냄
         // 409 : conflict / 클라이언트가 만들고자하는 리소스가 이미 존재하거나 충돌했을때
-        return res.status(409).json({ message: `${username} already exists` });
+        return res
+            .status(409)
+            .json({ message: `${username}가 이미 존재합니다.` });
     }
 
     // 새로운 사용자라면 비밀번호르 해슁 (암호화)
@@ -79,11 +97,9 @@ export async function bookMarking(req, res, next) {
     const user = await userRepository.findByUsername(userName);
 
     const pos = user.bookMark.indexOf(markingUser);
-    if (pos != -1)
-        user.bookMark.splice(pos, 1);
-    else
-        user.bookMark.push(markingUser);
-    
+    if (pos != -1) user.bookMark.splice(pos, 1);
+    else user.bookMark.push(markingUser);
+
     console.log("현재 북마크 목록: " + user.bookMark);
 
     user.save();
@@ -104,16 +120,9 @@ export async function checkMarking(req, res, next) {
         user.bookMark = user.bookMark.splice(pos, 1);
         result = true;
     }
-    
+
     return res.status(200).json(result);
-
 }
-
-
-
-
-
-
 
 // jwt 토큰 생성
 function createJwtToken(id) {

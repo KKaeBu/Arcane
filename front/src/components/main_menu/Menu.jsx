@@ -19,11 +19,6 @@ function Menu() {
     const socket = io.connect("http://localhost:5000");
 
     const onClick = (e) => {
-        // console.log(e.target);
-        // const dd = document.querySelector("." + style["menuContainer"]);
-        // console.log(dd);
-        // console.log(style);
-        // console.log(style["menuContainer"]);
         if (isLogin) {
             e.preventDefault();
             const token = new TokenStorage();
