@@ -1,14 +1,114 @@
 import axios from "axios";
 
 export default class DB {
-    async bookMarkingDB(name) {
-        await axios//
-            .post("/auth/mark", {
-                summonerName: name,
+    /**서버를 통해 북마크를 on/off 해줌 (return boolean)*/
+    async bookMarkingDB(markingUser, userName) {
+        let result = await axios//
+            .post("/auth/marking", {
+                markingUser: markingUser,
+                userName: userName,
             })
             .then((res) => {
-            
+                return res.data;
             })
             .catch((err) => console.log("db bookMark error: " + err));
+        
+        return await result;
     }
+
+    /**서버를 통해 해당 유저가 검색한 소환사를 북마크 했는지 여부를 반환 (return boolean) */
+    async checkMarking(markingUser, userName) {
+        const mUser = encodeURIComponent(markingUser);
+        let result = await axios//
+            .get("/auth/check", {
+                headers: {
+                    muser: mUser,
+                    username: userName,
+                }
+            })
+            .then((res) => {
+                console.log("bookMarking되어있음: " + res.data);
+                return res.data;
+            })
+            .catch((err) => {
+                console.log("db checkMark error: " + err);
+                return false;
+            });
+        
+        return await result;
+    }
+
+    /**데이터베이스에 해당 소환사의 정보가 있는지 여부를 반환 (return boolean) */
+    async isSummoner(name) {
+        // 이름이 한글일 경우 type error가 발생해 이름을 인코딩 후 전달
+        // 이후 서버에서 디코딩 해서 사용
+        const summonerName = encodeURIComponent(name);
+        let result = await axios//
+            .get("/api/summoners/isin", {
+                headers: {
+                    summonername: summonerName,
+                }
+            })
+            .then((res) => {
+                console.log("이미 디비에 있는 소환사임: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("isSummoner error: " + err));
+
+        return await result;
+    }
+
+    /**검색한 소환사의 정보가 데이터베이스에 없을경우
+     * 해당 소환사의 정보를 데이터베이스에 추가
+     * (return void)
+     */
+    async saveSummonerInfo(summoner, rankData, matchHistoryList) {
+        let data = await axios//
+            .post("/api/summoners/saveinfo", {
+                summoner: summoner,
+                rankData: rankData,
+                matchHistoryList: matchHistoryList,
+            })
+            .then((res) => {
+                console.log("검색한 소환사의 정보를 저장함: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("saveSummonerInfo error: " + err));
+        
+        return await data;
+    }
+
+    /** 검색한 소환사의 데이터를 디비 상에서 가져옴*/
+    async getSummonerInfo(name) {
+        const summonerName = encodeURIComponent(name);
+
+        let result = await axios//
+            .get("/api/summoners/getinfo", {
+                headers: {
+                    summonername: summonerName,
+                }
+            })
+            .then((res) => {
+                console.log("소환사 정보 가져옴: " + res.data);
+                return res.data
+            })
+            .catch(err => console.log("getSummonerInfo func error"));
+        
+        return await result;
+    }
+
+    /**검색한 소환사의 가장 최근 첫번째 게임부터 100번째 게임 까지의 데이터를 디비에 저장함 */
+    // async saveMatchHistory(matchHistory) {
+    //     let data = await axios//
+    //         .post("/api/summoners/savehistory", {
+    //             matchHistory: matchHistory,
+    //         })
+    //         .then((res) => {
+    //             console.log("검색한 소환사의 전적정보를 저장함: " + res.data);
+    //             return res.data;
+    //         })
+    //         .catch(err => console.log("saveMatchHistory error: " + err));
+        
+    //     return await data;
+    // }
 }

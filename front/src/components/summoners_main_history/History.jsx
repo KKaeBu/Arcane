@@ -3,9 +3,11 @@ import style from "./history.module.css";
 import Riot_API from "../../network/riotAPI";
 import { createElement } from "react";
 import { useNavigate } from "react-router-dom";
+import DB from "../../db/db";
 
 function History(props) {
     const riot = new Riot_API();
+    const db = new DB();
     const navigate = useNavigate();
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
@@ -23,7 +25,7 @@ function History(props) {
         if (!puuid)
             return;
         
-        const matchIdListData = await riot.getMatchIdList(puuid, 0, 10);
+        const matchIdListData = await riot.getMatchIdList(puuid, 0, 3);
         queueTypeJson = await riot.getQueueType();
         spellJson = await riot.getAllSpell();
         runesJson = await riot.getAllRunes();

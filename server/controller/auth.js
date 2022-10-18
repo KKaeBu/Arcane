@@ -59,10 +59,6 @@ export async function login(req, res) {
     res.status(201).json({ token, username });
 }
 
-export async function bookMarking(req, res, next) {
-    
-}
-
 export async function me(req, res, next) {
     const { token } = req.headers;
     const decoded = jwt.verify(token, config.jwt.secretKey);
@@ -73,6 +69,51 @@ export async function me(req, res, next) {
     const user = await userRepository.findById(decoded.id);
     res.status(201).json({ username: user.username, postlike: user.postlike });
 }
+
+// 전적 검색 관련 데이터베이스 실행 메소드
+
+/** 로그인한 유저의 북마크 목록에 해당 유저를 추가 및 삭제 해줌 */
+export async function bookMarking(req, res, next) {
+    const { markingUser, userName } = req.body;
+
+    const user = await userRepository.findByUsername(userName);
+
+    const pos = user.bookMark.indexOf(markingUser);
+    if (pos != -1)
+        user.bookMark.splice(pos, 1);
+    else
+        user.bookMark.push(markingUser);
+    
+    console.log("현재 북마크 목록: " + user.bookMark);
+
+    user.save();
+
+    return res.status(201).json(true);
+}
+
+/** 해당 유저가 로그인한 유저의 북마크 목록에 있는지 여부를 확인 */
+export async function checkMarking(req, res, next) {
+    const mUser = decodeURIComponent(req.headers.muser);
+    const username = req.headers.username;
+    let result = false;
+
+    const user = await userRepository.findByUsername(username);
+
+    const pos = user.bookMark.indexOf(mUser);
+    if (pos != -1) {
+        user.bookMark = user.bookMark.splice(pos, 1);
+        result = true;
+    }
+    
+    return res.status(200).json(result);
+
+}
+
+
+
+
+
+
 
 // jwt 토큰 생성
 function createJwtToken(id) {
