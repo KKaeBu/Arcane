@@ -1,7 +1,22 @@
-.changePW {
-    margin: 10%;
+.mainContainer {
+    width: 60%;
+    margin: auto;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.deleteAccount {
-    margin: 10%;
+.leftMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.userName {
+}
+
+.changePW {
+    display: flex;
+    flex-direction: column;
 }

@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/", authController.me);
 
+router.get("/info", authController.IsExist);
+
 router.get("/login", authController.login);
 
 router.get("/check", authController.checkMarking);

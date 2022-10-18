@@ -3,10 +3,11 @@ import bcrypt from "bcrypt";
 import { config } from "../config.js";
 import * as userRepository from "../data/auth.js";
 
-export async function IsExist(username) {
+export async function IsExist(req, res) {
     // 이미 가입한 사용자인지 판단 > 서버에서 사용하는 함수
-    const exist = await userRepository.findByUsername(username);
-    return exist;
+    console.log(req.headers.username);
+    const exist = await userRepository.findByUsername(req.headers.username);
+    return res.status(200).json(exist);
 }
 
 export async function IsExistFromClient(req, res) {
