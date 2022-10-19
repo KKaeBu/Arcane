@@ -103,13 +103,16 @@ function Main() {
             td_date.setAttribute("class", style.date);
 
             if (
-                moment(data[i].date).format("YYYY-MM-DD") ===
+                moment(data[i].createDate).format("YYYY-MM-DD") ===
                 moment().format("YYYY-MM-DD")
             ) {
-                td_date.innerText = moment(data[i].date).format("HH:mm");
+                td_date.innerText = moment(data[i].createDate).format("HH:mm");
             } else {
-                td_date.innerText = moment(data[i].date).format("YYYY-MM-DD");
+                td_date.innerText = moment(data[i].createDate).format(
+                    "YYYY-MM-DD"
+                );
             }
+            console.log(data[0]);
 
             const td_view = document.createElement("td");
             td_view.setAttribute("class", style.view);

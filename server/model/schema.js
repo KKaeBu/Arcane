@@ -11,7 +11,7 @@ const postSchema = new Mongoose.Schema({
     username: { type: String, required: true }, // 작성자
     content: { type: String, required: true }, // 글 내용
     Like: { type: Number, default: 0 }, // 추천 수
-    CreateDate: { type: Date, default: Date.now }, // 글 작성 일시
+    createDate: { type: Date, default: Date.now }, // 글 작성 일시
     view: { type: Number, required: true }, // 조회수
     comment: [commentSchema],
     // likeuser: [{ username: { type: String } }],
@@ -21,7 +21,7 @@ const userSchema = new Mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, require: true },
     email: { type: String, require: true },
-    date: { type: Date, default: Date.now }, // 회원가입 일시
+    signupDate: { type: Date, default: Date.now }, // 회원가입 일시
     postlike: [postSchema],
     bookMark: [],
 });
@@ -50,17 +50,19 @@ const matchHistorySchema = new Mongoose.Schema({
     kda: { type: String },
     cs: { type: Number, reqired: true },
     time: { type: String, reqired: true },
-    participants: [{
-        summonerName: String,
-        championName: String
-    }],
+    participants: [
+        {
+            summonerName: String,
+            championName: String,
+        },
+    ],
 });
 
 const summonerSchema = new Mongoose.Schema({
     summonerName: { type: String, required: true },
     profileIconId: { type: Number, required: true },
     level: { type: Number, required: true },
-    
+
     soloRankQueueType: { type: String, required: true },
     soloRankTier: { type: String, required: true },
     soloRankRank: { type: String },
@@ -70,14 +72,13 @@ const summonerSchema = new Mongoose.Schema({
 
     flexRankQueueType: { type: String, required: true },
     flexRankTier: { type: String, required: true },
-    flexRankRank: { type: String }, 
+    flexRankRank: { type: String },
     flexRankLP: { type: Number, required: true },
     flexRankWinNum: { type: Number, required: true },
     flexRankLoseNum: { type: Number, required: true },
 
     matchList: [matchHistorySchema],
 });
-
 
 export const User = Mongoose.model("User", userSchema);
 export const Post = Mongoose.model("Post", postSchema);

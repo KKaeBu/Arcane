@@ -151,7 +151,7 @@ function Read(props) {
                     },
                 })
                 .then((res) => {
-                    window.location.replace(`http://localhost:3000/community`);
+                    navigate(`/community?page=${localStorage.getItem("page")}`);
                 })
                 .catch((e) => {
                     console.error(e);

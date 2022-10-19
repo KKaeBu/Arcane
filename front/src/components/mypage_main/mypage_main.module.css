@@ -1,22 +1,108 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+@font-face {
+    font-family: "diary";
+    src: url(../../../assets/fonts/EF_Diary.ttf) format("truetype");
+}
+
 .mainContainer {
-    width: 60%;
+    width: 65%;
     margin: auto;
     color: white;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
 
+    font-family: "Community";
+}
+.title {
+    width: 70%;
+    margin: auto;
+    margin-bottom: 5vh;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid gray;
+
+    color: white;
+    font-family: "Community";
+    font-size: 32px;
+}
 .leftMenu {
+    width: 30%;
     display: flex;
     flex-direction: column;
 }
 
+.info {
+    margin-bottom: 10vh;
+    padding: 3vh 1vw 3vh 1vw;
+    border-radius: 10px;
+
+    width: 20vh;
+
+    background-color: rgba(255, 255, 255, 0.9);
+    /* background-color: white; */
+    font-family: "diary";
+}
+
 .userName {
+    margin-left: 1vw;
+    margin-bottom: 1vh;
+    font-weight: bolder;
+
+    color: black;
+}
+
+.userEmail {
+    margin-left: 1vw;
+    margin-bottom: 1vh;
+
+    color: black;
+    font-size: 12px;
+}
+
+.signupDate {
+    margin-left: 1vw;
+    color: black;
+    font-size: 12px;
+}
+
+.userLiked {
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+.userLiked:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.userLikedLink {
+    display: block;
 }
 
 .changePW {
     display: flex;
     flex-direction: column;
+    width: fit-content;
+}
+
+.changePW:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.rightMenu {
+}
+
+.likelist {
 }
