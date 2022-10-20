@@ -73,7 +73,7 @@ function Summoners() {
                         return getMatchInfo(m, summonerJson);
                     })
                 )
-
+ 
                 const DB_summoner = await db.saveSummonerInfo(summonerJson, await rankData, matchHistoryList);
                 console.log("첨 검색했군요!: ", DB_summoner);
                 setSummonerData(DB_summoner);
