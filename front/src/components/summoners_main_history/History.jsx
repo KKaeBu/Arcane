@@ -1,36 +1,37 @@
+import { ErrorOutline, Loop } from "@mui/icons-material"
 import { useState, useEffect } from "react";
 import style from "./history.module.css";
-import Riot_API from "../../network/riotAPI";
-import { createElement } from "react";
 import { useNavigate } from "react-router-dom";
-import DB from "../../db/db";
 
 function History(props) {
-    const riot = new Riot_API();
-    const db = new DB();
     const navigate = useNavigate();
-    let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
-    let spellJson; // ddragon에서 가져온 모든 스펠 정보
-    let runesJson; // ddragon에서 가져온 모든 룬 정보
-    const matchHistory = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
+    const matchHistoryUl = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
 
     const summData = props.summonerData;
-    const isRefresh = props.isRefresh;
+    const count = props.count;
+    const newMatchList = props.isRefresh;
 
     const getMatchHistory = async () => {
-        if (matchHistory) {
-            removeAllchild(matchHistory);
+        if (matchHistoryUl) {
+            removeAllchild(matchHistoryUl);
         }
 
-        if (summData) {
-            summData.matchList.forEach(async (m) => {
-                createMatchBox(m);
+        if (summData && count) {
+            const sliceMatchList = summData.matchList.slice(0, count);
+            sliceMatchList.forEach((m) => {
+                createMatchBox(m, false);
             })
         }
             
+        if (newMatchList.length !== 0) {
+            newMatchList.forEach(m => {
+                createMatchBox(m, true);
+            })
+        }
     }
     
-    const createMatchBox = async (data) => {
+    const createMatchBox = (data, isNew) => {
+        const matchHistory = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
         const li = document.createElement("li");
 
         li.setAttribute("class", style.matchInfoBox);
@@ -50,6 +51,11 @@ function History(props) {
         boxs.forEach(b => {
             li.appendChild(b);
         });
+
+        if (isNew) {
+            matchHistory.insertBefore(li, matchHistory.firstChild);
+            return;
+        }
 
         matchHistory.appendChild(li);
     }
@@ -299,6 +305,7 @@ function History(props) {
 
     // 정렬 아이템 클릭시 실행 함수
     const sortClick = (e) => {
+        const matchHistory = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
         let clickedSortItem = e.target;
         if (e.target.parentNode.classList[0] === style.sortBtn)
             clickedSortItem = e.target.parentNode;
@@ -339,13 +346,38 @@ function History(props) {
         })
     }
 
-    const moreMatch = () => {
-        props.isMoreMatch();
+    const moreMatch = async () => {
+        const moreBtn = document.querySelector("." + style["matchMoreBtn"]);
+        const loadingCircle = document.querySelector("." + style["loadingCircle"]);
+        const matchMoreLabel = document.querySelector("." + style["matchMoreLabel"]);
+        
+        loadingCircle.style.display = "flex";
+        matchMoreLabel.style.display = "none";
+
+        const moreMatchList = await props.isMoreMatch();
+        // console.log("moreMatchList: ", moreMatchList);
+
+        if (!moreMatchList) {
+            console.log("더이상 불러올 전적이 없습니다.");
+            const notMatchDiv = document.querySelector("." + style["notMatchList"]);
+
+            moreBtn.style.display = "none";
+            notMatchDiv.style.display = "flex";
+
+            return;
+        } else {
+            moreMatchList.forEach(m => {
+                createMatchBox(m, false);
+            })
+
+            loadingCircle.style.display = "none";
+            matchMoreLabel.style.display = "block";
+        }
     }
 
     useEffect(() => {
         getMatchHistory();
-    }, [summData, isRefresh]);
+    }, [summData, newMatchList]);
     
     return (
         <div className={style.historyContainer}>
@@ -354,53 +386,23 @@ function History(props) {
                 <div id="soloHistory" className={`${style.sortBtn}`} onClick={sortClick}><span>솔로랭크</span></div>
                 <div id="flexHistory" className={`${style.sortBtn}`} onClick={sortClick}><span>자유랭크</span></div>
             </div>
+            
             <ul className={style.matchHistory}>
             </ul>
-            <button className={style.matchMoreBtn} onSubmit={moreMatch}>+ 더 불러오기</button>
+            <button className={style.matchMoreBtn} onClick={moreMatch}>
+                <div className={style.loadingCircle} style={{ display: "none" }}>
+                    <div className={style.innerLoadingCircle}></div>
+                </div>
+                <span className={style.matchMoreLabel}>+ 더 불러오기</span>
+            </button>           
+            <div className={style.notMatchList} style={{ display: "none" }}>
+                <div className={style.notMatchError}>
+                    <ErrorOutline className={style.errorIcon} />
+                    <span>더이상 불러올 전적이 없습니다.</span>
+                </div>
+            </div>
         </div>
     );
-}
-
-// 타임스탬프 값을 년월일로 변환
-function Unix_timestamp(t) {
-    const date = new Date(t);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
-
-    return (year + "-" + month + "-" + day);
-}
-
-/**해당 유저의 큐 타입명을 한글로 변환해줌 */
-function queueTypeConverter(queue) {
-    let convertedQueue; 
-    switch (queue) {
-        case "5v5 Ranked Flex games":
-            convertedQueue = "자유랭크";
-            break;
-        case "5v5 Ranked Solo games":
-            convertedQueue = "솔로랭크";
-            break;
-        case "5v5 ARAM games":
-            convertedQueue = "무작위 총력전";
-            break;
-        case "Ultimate Spellbook games":
-            convertedQueue = "궁국기 주문서";
-            break;
-        
-        case "Pick URF games":
-            convertedQueue = "U.R.F.";
-            break;
-        
-        default:
-            convertedQueue = "일반";
-            break;
-    }
-    
-    return convertedQueue;
 }
 
 export default History;

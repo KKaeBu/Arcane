@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Loop } from "@mui/icons-material";
 import style from "./summoners.module.css";
 import Topbar from "../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
@@ -14,11 +15,18 @@ import DB from "../../db/db";
 function Summoners() {
     const summoner = useLocation().state.summoner;
     localStorage.setItem("summoner", summoner);
-    const [summonerData, setSummonerData] = useState({});
-    const [refresh, setRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [summonerJsonData, setSummonerJsonData] = useState({}); // riot에서 가져온 소환사 기본 정보
+    const [summonerData, setSummonerData] = useState({}); // summonerJson에서 필요한 정보만 뽑아서 모은 정보
+    const [newMatchData, setNewMatchData] = useState([]);
     const [isDB, setIsDB] = useState(false);
-    const [matchStart, setMatchStart] = useState(0);
-    const [matchCount, setMatchCount] = useState(2);
+    const [lastestMatch, setLastestMatch] = useState("");
+    const [matchStart, setMatchStart] = useState(0); // 불러올 전적의 시작 index (default: 0)
+    const [matchCount, setMatchCount] = useState(20); // 불러올 전적의 개수
+    const [currentMatchNum, setCurrentMatchNum] = useState(0); // 현재까지 불러온 전적리스트 개수
+    const [queueTypeJsonData, setQueueTypeJsontData] = useState({});
+    const [spellJsonData, setSpellJsonData] = useState({});
+    const [runesJsonData, setRunesJsonData] = useState({});
 
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
@@ -33,21 +41,33 @@ function Summoners() {
         spellJson = await riot.getAllSpell();
         runesJson = await riot.getAllRunes();
 
+        setQueueTypeJsontData(queueTypeJson);
+        setSpellJsonData(spellJson);
+        setRunesJsonData(runesJson);
+
         try{
             const summonerJson = await riot.getSummoner(user);
+            setSummonerJsonData(summonerJson);
             
             if (summonerJson && await db.isSummoner(summonerJson.name)) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
                 const DB_summoner = await db.getSummonerInfo(summonerJson.name);
                 console.log("유저가 있군요!: ", DB_summoner);
+                if (DB_summoner.matchList.length <= matchCount) {
+                    setCurrentMatchNum(currentMatchNum + DB_summoner.matchList.length);
+                }
                 setSummonerData(DB_summoner);
+                setCurrentMatchNum(currentMatchNum + matchCount);
+                setLastestMatch(DB_summoner.matchList[0].matchId);
                 setIsDB(true);
             } else {
                 // 데베에 검색한 유저가 없다면 -> 해당 유저의 데이터를 디비에 저장함
                 // 즉, 처음 검색해보는 유저일 경우
                 const rankData = await riot.getSummonerLeague(summonerJson.id);
-                console.log(rankData);
                 const matchIdListData = await riot.getMatchIdList(summonerJson.puuid, matchStart, matchCount);                
+
+                if (matchIdListData.length != 0)
+                    setLastestMatch(matchIdListData[0]);
 
                 const matchHistoryList = await Promise.all(
                     matchIdListData.map(m => {
@@ -55,15 +75,14 @@ function Summoners() {
                     })
                 )
 
-                console.log(matchHistoryList);
-
-                // const DB_saveHistory = db.saveMatchHistory(summonerJson.summonerName, await matchHistoryList);
                 const DB_summoner = await db.saveSummonerInfo(summonerJson, await rankData, matchHistoryList);
                 console.log("첨 검색했군요!: ", DB_summoner);
                 setSummonerData(DB_summoner);
+                setCurrentMatchNum(currentMatchNum + matchIdListData.length);
                 setIsDB(false);
             }
 
+            setIsLoading(true);
             // setSummonerData(summonerJson);
         }catch(e){
             console.log("존재하지 않는 유저 입니다.");
@@ -74,6 +93,7 @@ function Summoners() {
 
     const getMatchInfo = async (m, summ) => {
         const data = {
+            matchId: m,
             summonerName: summ.name,
             participants: [],
         };      
@@ -88,10 +108,14 @@ function Summoners() {
         let spells; //해당 게임에서 내가 사용한 소환사 스펠 정보 (2개: D, F), Array
         let runes; // 해당 게임에서 내가 사용한 룬 정보 (3개: 메인룬, 메인룬의 세부룬, 서브의메인룬), Array
 
+        let queueTypeData = queueTypeJsonData;
+        if (Object.keys(queueTypeJsonData).length === 0)
+            queueTypeData = queueTypeJson;
+
         // 게임 큐 타입 확인하기
-        for (const k in queueTypeJson) {
-            if (queueTypeJson[k].queueId === queueId) {
-                data.queueType = queueTypeConverter(queueTypeJson[k].description);
+        for (const k in queueTypeData) {
+            if (queueTypeData[k].queueId === queueId) {
+                data.queueType = queueTypeConverter(queueTypeData[k].description);
                 break;
             }
         }
@@ -157,15 +181,19 @@ function Summoners() {
     }
 
     const checkSpell = (spell1, spell2) => {
+        let spellTypeData = spellJsonData;
+        if (Object.keys(spellJsonData).length === 0)
+            spellTypeData = spellJson;
+
         let spells = new Array(2);
-        for (const s in spellJson.data) {
-            switch (spellJson.data[s].key) {
+        for (const s in spellTypeData.data) {
+            switch (spellTypeData.data[s].key) {
                 case spell1:
-                    spells[0] = spellJson.data[s].image.full;
+                    spells[0] = spellTypeData.data[s].image.full;
                     break;
                 
                 case spell2:
-                    spells[1] = spellJson.data[s].image.full;
+                    spells[1] = spellTypeData.data[s].image.full;
                     break;
             }
         }
@@ -173,22 +201,26 @@ function Summoners() {
         return spells;
     }
 
-    const checkRune = (mainRuneId, mainRuneDetailId ,subRuneId) => {
+    const checkRune = (mainRuneId, mainRuneDetailId, subRuneId) => {
+        let runesTypeData = runesJsonData;
+        if (Object.keys(runesJsonData).length === 0)
+            runesTypeData = runesJson;
+
         let runes = new Array(3);
-        for (const r in runesJson) {
-            switch (runesJson[r].id) {
+        for (const r in runesTypeData) {
+            switch (runesTypeData[r].id) {
                 case mainRuneId:
-                    runes[0] = runesJson[r].key;
-                    for (const sr in runesJson[r].slots[0].runes) {
-                        if (runesJson[r].slots[0].runes[sr].id === mainRuneDetailId) {
-                            runes[1] = runesJson[r].slots[0].runes[sr].key;
+                    runes[0] = runesTypeData[r].key;
+                    for (const sr in runesTypeData[r].slots[0].runes) {
+                        if (runesTypeData[r].slots[0].runes[sr].id === mainRuneDetailId) {
+                            runes[1] = runesTypeData[r].slots[0].runes[sr].key;
                             break;
                         }
                     }
                     break;
                 
                 case subRuneId:
-                    runes[2] = runesJson[r].key;
+                    runes[2] = runesTypeData[r].key;
                     break;
             }
         }
@@ -196,24 +228,91 @@ function Summoners() {
         return runes;
     }
 
-    const isRefresh = (r) => {
-        setRefresh(!refresh);
-    }
-
-    const isMoreMatch = () => {
-        setMatchStart(matchStart + matchCount);
-        // 여기부터임
-        // 더 불러오기 버튼 눌렀을때, 우선 디비에 데이터 있는지 확인후 있다면 디비에서 불러와서
-        // 히스토리 컴포넌트를 현재 상태는 유지한채 불러온 데이터만 추가
-        // 디비에 데이터가 없다면 새롭게 라이엇에서 불러와서
-        // 디비에 저장 후 해당 데이터를 위와 동일하게 컴포넌트에 전달하여 추가
-
+    const isRefresh = async (r) => {
         // 이거 끝나면 전적 갱신도 해야댐
         // 전적 갱신 버튼은 클릭시 기존 전적은 그대로 두되
         // 새롭게 추가되는 데이터가 있다면 해당 데이터를 가장 위에다 추가
         // 단, 이때 데이터가 2개 이상이라면 역순으로 추가 해줘야함
         // 받아온 데이터는 [1, 2, 3] 순으로 되있으면 원래 1 넣고 -> 2넣고 -> 3넣고 하는 순선데
         // 이를 역순으로 3, 2, 1 순으로 집어 넣어줘야 가장 최근게 위로 가게됨
+        let matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchStart, matchCount);
+
+        let pos = matchIdListData.indexOf(lastestMatch);
+        if (pos != -1) {
+            // 불러온 전적중에 디비에 있는 가장 최근 전적이 있을경우
+            const newMatchIdList = matchIdListData.slice(0, pos + 1);
+            if (newMatchIdList.length === 1) {
+                setNewMatchData([]);
+                return;
+            }
+        
+            newMatchIdList.reverse();
+
+            const matchHistoryList = await Promise.all(
+                newMatchIdList.map(m => {
+                    return getMatchInfo(m, summonerJsonData);
+                })
+            );
+
+            const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
+
+            setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
+            setNewMatchData(newMatchList);
+        } else {
+            // 불러온 전적중에 디비에 있는 가장 최근 전적이 없을경우
+            let checkNum = 1;
+            for (let i = 1; i <= 4; i++){
+                matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchCount * i, matchCount);
+                pos = matchIdListData.indexOf(lastestMatch);
+                if (pos != -1) {
+                    checkNum += matchCount * i + pos;
+                    break;
+                }
+            }
+
+            matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchStart, checkNum);
+        
+            matchIdListData.reverse();
+
+            const matchHistoryList = await Promise.all(
+                matchIdListData.map(m => {
+                    return getMatchInfo(m, summonerJsonData);
+                })
+            );
+
+            const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
+
+            setCurrentMatchNum(currentMatchNum + matchIdListData.length);
+            setNewMatchData(newMatchList);
+
+        }
+    }
+
+    const isMoreMatch = async () => {
+        // 데이터베이스에 추가 전적이 있을 경우
+        const DB_matchHistory = await db.checkDBHistory(summonerJsonData.name, currentMatchNum, matchCount);
+        if (DB_matchHistory.length !== 0) {
+            setCurrentMatchNum(currentMatchNum + DB_matchHistory.length);
+            return DB_matchHistory;
+        }
+
+        // 데이터베이스에 추가 전적이 없을 경우
+        const matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, currentMatchNum, matchCount);
+        if (matchIdListData.length === 0) {
+            // 라이엇에서도 추가 전적이 없을 경우
+            return false;
+        }
+
+        // 라이엇에서 불러온 추가 전적을 디비에 추가하고 화면상에 추가함
+        const matchHistoryList = await Promise.all(
+            matchIdListData.map(m => {
+                return getMatchInfo(m, summonerJsonData);
+            })
+        )
+        const moreMatchList = await db.addMatchHistory(summonerJsonData.name, matchHistoryList);
+
+        setCurrentMatchNum(currentMatchNum + matchIdListData.length);
+        return moreMatchList;
     }
 
     useEffect(() => {
@@ -222,14 +321,27 @@ function Summoners() {
     
     return (
         <div className={style.summonersContainer}>
-            <div className={style.summonersWrapper}>
-                <Topbar />
-                <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
-                <Rank summonerData={summonerData} isDB={isDB} />
-                {/* <Most summonerData={summonerData}/> */}
-                <History summonerData={summonerData} isRefresh={refresh} isDB={isDB} isMoreMatch={isMoreMatch} />
-            </div>
-            <Footer className={style.summonerFooter} />
+            {isLoading ?
+                <div className={style.summonersWrapper}>
+                    <Topbar />
+                    <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
+                    <Rank summonerData={summonerData} isDB={isDB} />
+                    <History
+                        summonerData={summonerData}
+                        count={matchCount}
+                        isRefresh={newMatchData}
+                        isDB={isDB}
+                        isMoreMatch={isMoreMatch}
+                    />
+                </div>
+                :
+                <div className={style.loadingBox}>
+                    <Topbar />
+                    <Loop className={style.loadingIcon} />
+                    <span>새로운 소환사 정보를 불러오는 중입니다...</span>
+                </div>
+            }
+            <Footer />
         </div>
     );
 }

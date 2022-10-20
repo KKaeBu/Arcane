@@ -87,6 +87,48 @@ export async function getSummonerInfo(req, res, next) {
     return res.status(200).json(summoner);
 }
 
+export async function checkMatchHistory(req, res, next) {
+    const { name, start, count } = req.headers;
+    const summonerName = decodeURIComponent(name);
+    const summoner = await userRepository.findBySummonerName(summonerName);
+
+    const matchList = summoner.matchList;
+
+    const sliceMatchList = matchList.slice(start, (parseInt(start) + parseInt(count)));
+
+    return res.status(200).json(sliceMatchList);
+}
+
+export async function addMatchHistory(req, res, next) {
+    const { summonerName, matchHistoryList } = req.body;
+
+    const mList = await saveMatchHistroy(matchHistoryList);
+
+    const summoner = await userRepository.findBySummonerName(summonerName);
+
+    summoner.matchList = summoner.matchList.concat(mList);
+
+    summoner.save();
+
+    return res.status(201).json(mList);
+}
+
+export async function addNewMatchHistory(req, res, next) {
+    const { summonerName, matchHistoryList } = req.body;
+
+    const mList = await saveMatchHistroy(matchHistoryList);
+
+    const summoner = await userRepository.findBySummonerName(summonerName);
+
+    mList.reverse();
+    summoner.matchList = mList.concat(summoner.matchList);
+
+    summoner.save();
+    mList.reverse();
+
+    return res.status(201).json(mList);
+}
+
 async function saveMatchHistroy(matchHistoryList) {
     let matchList = [];
     for (const m in matchHistoryList) {

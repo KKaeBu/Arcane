@@ -284,3 +284,61 @@
 .matchMoreBtn:hover {
     opacity: 0.54;
 }
+
+.loadingCircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-color: rgb(188, 185, 185);
+    margin-right: 6px;
+}
+
+.innerLoadingCircle {
+    width: 23px;
+    height: 23px;
+    border-radius: 25%;
+    background-color: rgb(188, 185, 185);
+}
+
+.loadingCircle {
+    animation: rotate_image 2s linear infinite;
+}
+
+.notMatchList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 12px);
+    height: 150px;
+    border: none;
+    border-radius: 5px;
+    background-color: #302E2E;
+    opacity: 1;
+    margin: 8px 6px;
+}
+
+.notMatchError {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    font-size: 22px;
+    color: rgb(188, 185, 185);
+}
+
+.errorIcon {
+    font-size: 78px !important;
+    margin-bottom: 15px;
+}
+
+@keyframes rotate_image {
+    100% {
+        transform: rotate(180deg);
+    }
+}

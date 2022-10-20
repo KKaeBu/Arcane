@@ -10,8 +10,13 @@ router.get("/isin", summonersController.isSummoner);
 
 router.get("/getinfo", summonersController.getSummonerInfo);
 
+router.get("/checkhistory", summonersController.checkMatchHistory);
+
 router.post("/saveinfo", summonersController.saveSummonerInfo);
 
-// router.post("/savehistory", summonersController.saveMatchHistroy);
+router.post("/addhistory", summonersController.addMatchHistory);
+
+router.post("/addnewhistory", summonersController.addNewMatchHistory);
+
 
 export default router;

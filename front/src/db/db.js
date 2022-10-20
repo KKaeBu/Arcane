@@ -97,18 +97,57 @@ export default class DB {
         return await result;
     }
 
-    /**검색한 소환사의 가장 최근 첫번째 게임부터 100번째 게임 까지의 데이터를 디비에 저장함 */
-    // async saveMatchHistory(matchHistory) {
-    //     let data = await axios//
-    //         .post("/api/summoners/savehistory", {
-    //             matchHistory: matchHistory,
-    //         })
-    //         .then((res) => {
-    //             console.log("검색한 소환사의 전적정보를 저장함: " + res.data);
-    //             return res.data;
-    //         })
-    //         .catch(err => console.log("saveMatchHistory error: " + err));
+    /**시작 인덱스부터 count개수만큼의 전적리스트가 디비에 있는지 확인하고 있다면 해당 데이터 리스트를 반환해줌 */
+    async checkDBHistory(name, startIndex, count) {
+        const summonerName = encodeURIComponent(name);
+
+        let data = await axios//
+            .get("/api/summoners/checkhistory", {
+                headers: {
+                    name: summonerName,
+                    start: startIndex,
+                    count: count,   
+                }
+            })
+            .then((res) => {
+                console.log("받아온 전적 데이터: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("checkDBHistory error: " + err));
         
-    //     return await data;
-    // }
+        return await data;
+    }
+
+    /**새롭게 불러온 전적 리스트 (최근 전적이 아닌 옛날 전적들)를 디비에 추가 */
+    async addMatchHistory(name, matchHistoryList) {
+        let data = await axios//
+            .post("/api/summoners/addhistory", {
+                summonerName: name,
+                matchHistoryList: matchHistoryList,
+            })
+            .then((res) => {
+                console.log("새롭게 불러온 기존 전적들을 추가함: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("addMatchHistory error: " + err));
+        
+        return await data;
+    }
+
+    /**새롭게 불러온 전적 리스트 (가장 최근 전적들)를 디비에 추가 */
+    async addNewMatchHistory(name, matchHistoryList) {
+        let data = await axios//
+            .post("/api/summoners/addnewhistory", {
+                summonerName: name,
+                matchHistoryList: matchHistoryList,
+            })
+            .then((res) => {
+                console.log("새롭게 불러온 뉴 전적들을 추가함: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("addMatchHistory error: " + err));
+        
+        return await data;
+    }
+
 }

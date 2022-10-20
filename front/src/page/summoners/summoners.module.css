@@ -20,3 +20,29 @@
     display: flex;
     flex-direction: column;
 }
+
+.loadingBox {
+    width: 100%;
+    min-height: inherit;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(188, 185, 185);
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.loadingIcon {
+    color: rgb(188, 185, 185);
+    font-size: 242px !important;
+    margin-bottom: 50px;
+    animation: rotate_image 2s linear infinite;
+}
+
+@keyframes rotate_image {
+    100% {
+        transform: rotate(-180deg);
+    }
+}

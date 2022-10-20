@@ -5,6 +5,7 @@ import Menu from "../../components/main_menu/Menu";
 import style from "./main.module.css";
 import TokenStorage from "../../db/token.js";
 
+
 function MainDisplay() {
     // const userName = "승수몬";
     const riot = new Riot();

@@ -26,6 +26,7 @@ const userSchema = new Mongoose.Schema({
 });
 
 const matchHistorySchema = new Mongoose.Schema({
+    matchId: { type: String, required: true },
     summonerName: { type: String, required: true },
     queueType: { type: String, required: true },
     result: { type: String, required: true },
