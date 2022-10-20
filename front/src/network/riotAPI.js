@@ -3,7 +3,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-b440b82c-b219-4ff4-9892-466a6cbd9767";
+    #Riot_API_Key = "RGAPI-1549fa62-5341-4082-a46a-c995447ff74b";
     #Language = "ko_KR";
     #Version = "12.19.1";
     #headers = {

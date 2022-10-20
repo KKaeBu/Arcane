@@ -112,7 +112,6 @@ function Main() {
                     "YYYY-MM-DD"
                 );
             }
-            console.log(data[0]);
 
             const td_view = document.createElement("td");
             td_view.setAttribute("class", style.view);
@@ -226,7 +225,7 @@ function Main() {
                 setuserName(res.data.username);
                 setLogin(true);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     };
 
     const onLeftClick = async () => {

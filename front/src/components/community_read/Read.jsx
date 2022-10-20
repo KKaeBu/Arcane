@@ -233,6 +233,7 @@ function Read(props) {
         for (let i = 0; i < login_user_likedpost.length; i++) {
             if (login_user_likedpost[i]._id === id.state) {
                 setisLiked(true);
+                break;
             } else {
                 setisLiked(false);
             }

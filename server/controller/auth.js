@@ -5,7 +5,6 @@ import * as userRepository from "../data/auth.js";
 
 export async function IsExist(username) {
     // 이미 가입한 사용자인지 판단 > 서버에서 사용하는 함수
-    console.log(username);
     const exist = await userRepository.findByUsername(username);
     return exist;
 }
@@ -15,7 +14,6 @@ export async function IsExistFromClient(req, res) {
     const username = req.headers.username;
     const exist = await userRepository.findByUsername(username);
     if (exist !== null) {
-        console.log(exist);
         return res.status(200).json({ data: exist });
     } else {
         return res.status(200).json({ data: false });
@@ -24,7 +22,6 @@ export async function IsExistFromClient(req, res) {
 
 export async function signup(req, res) {
     // req.body의 사용할 데이터를 가져오기
-    console.log(req.body);
     const { username, password, email } = req.body;
 
     const exist = await IsExist(username);
@@ -58,7 +55,6 @@ export async function login(req, res) {
 
     // 데이터베이스의 사용자 정보들과 조회 하여 일치하는거 찾기
     const user = await userRepository.findByUsername(username);
-    console.log(user);
 
     // 존재하는 유저라면 해당 유저의 비밀번호가 맞는지 체크
     if (!user) {

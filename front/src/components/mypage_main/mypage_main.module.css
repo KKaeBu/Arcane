@@ -15,7 +15,7 @@
 }
 
 .mainContainer {
-    width: 65%;
+    width: 70%;
     margin: auto;
     color: white;
 
@@ -35,6 +35,7 @@
     color: white;
     font-family: "Community";
     font-size: 32px;
+    font-weight: bolder;
 }
 .leftMenu {
     width: 30%;
@@ -42,38 +43,14 @@
     flex-direction: column;
 }
 
-.info {
-    margin-bottom: 10vh;
-    padding: 3vh 1vw 3vh 1vw;
-    border-radius: 10px;
-
-    width: 20vh;
-
-    background-color: rgba(255, 255, 255, 0.9);
-    /* background-color: white; */
-    font-family: "diary";
+.accountInfo {
+    margin-bottom: 2vh;
+    width: fit-content;
 }
 
-.userName {
-    margin-left: 1vw;
-    margin-bottom: 1vh;
-    font-weight: bolder;
-
-    color: black;
-}
-
-.userEmail {
-    margin-left: 1vw;
-    margin-bottom: 1vh;
-
-    color: black;
-    font-size: 12px;
-}
-
-.signupDate {
-    margin-left: 1vw;
-    color: black;
-    font-size: 12px;
+.accountInfo:hover {
+    cursor: pointer;
+    color: blue;
 }
 
 .userLiked {
@@ -94,11 +71,23 @@
     display: flex;
     flex-direction: column;
     width: fit-content;
+    margin-bottom: 2vh;
 }
 
 .changePW:hover {
     cursor: pointer;
     color: blue;
+}
+
+.deleteAccount {
+    color: red;
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+.deleteAccount:hover {
+    cursor: pointer;
+    color: red;
 }
 
 .rightMenu {
