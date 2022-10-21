@@ -18,14 +18,19 @@
     display: flex;
     justify-content: space-between;
 
-    margin-bottom: 10vh;
+    /* margin-bottom: 10vh; */
     border-radius: 10px;
 
-    width: 70vh;
+    /* width: 70vh; */
     height: 25vh;
 
     background-color: rgba(255, 255, 255, 0.9);
     font-family: "diary";
+
+    transform: scale(0);
+    transition: all ease 0.5s;
+
+    box-shadow: 0 0 25px white;
 }
 
 .infoLeft {
@@ -34,14 +39,16 @@
     padding-left: 3vh;
 
     color: black;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: white;
+    border-radius: 10px;
 
     font-size: 28px;
 }
 
 .infoRight {
     width: 70%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: aliceblue;
+    border-radius: 10px;
 
     padding-top: 1vh;
 }
@@ -101,4 +108,8 @@
 
     font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
+}
+
+.show {
+    transform: scale(1);
 }

@@ -11,7 +11,7 @@ import Signup from "./page/signup/Signup.jsx";
 import Community from "./page/community/Community.jsx";
 import Summoners from "./page/summoners/Summoners.jsx";
 import MyPage from "./page/mypage/Mypage";
-import ChangePassword from "./components/Mypage_changePW/Mypage_changePW";
+import ChangePW from "./page/change_pw/ChangePW";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -77,10 +77,7 @@ function App() {
                 />
                 <Route path="/summoners" element={<Search />} />
                 <Route path="/mypage" element={<MyPage />} />
-                <Route
-                    path="/mypage/changePassword"
-                    element={<ChangePassword />}
-                />
+                <Route path="/mypage/changePassword" element={<ChangePW />} />
 
                 <Route
                     path="/"

@@ -63,36 +63,38 @@ function ChangePassword() {
 
     return (
         <>
-            <div className={style.ChangePassword}>
-                UserName is {username} and I'm password change div
+            <div className={style.changePasswordWrapper}>
+                <div className={style.title}>
+                    {username} 님의 비밀번호를 변경합니다
+                </div>
+                <form className={style.pwBox} onSubmit={onSubmit}>
+                    <input
+                        type="Password"
+                        placeholder="현재 비밀번호"
+                        className={style.changePWInput}
+                        onChange={changeCurrentPW}
+                        autoComplete="new-password"
+                        ref={currentPWInput}
+                    />
+                    <input
+                        placeholder="새 비밀번호"
+                        type="text"
+                        className={style.changePWInput}
+                        onChange={changeNewPW}
+                        autoComplete="new-password"
+                        ref={newPWInput}
+                    />
+                    <input
+                        placeholder="새 비밀번호 확인"
+                        type="Password"
+                        className={style.changePWInput}
+                        onChange={changeNewPWConfirm}
+                        autoComplete="new-password"
+                        ref={newPWInputConfirm}
+                    />
+                    <button className={style.loginButton}>변경하기</button>
+                </form>
             </div>
-            <form className={style.pwBox} onSubmit={onSubmit}>
-                <input
-                    type="Password"
-                    placeholder="현재 비밀번호"
-                    className={style.changePWInput}
-                    onChange={changeCurrentPW}
-                    autoComplete="new-password"
-                    ref={currentPWInput}
-                />
-                <input
-                    placeholder="새 비밀번호"
-                    type="text"
-                    className={style.changePWInput}
-                    onChange={changeNewPW}
-                    autoComplete="new-password"
-                    ref={newPWInput}
-                />
-                <input
-                    placeholder="새 비밀번호 확인"
-                    type="Password"
-                    className={style.changePWInput}
-                    onChange={changeNewPWConfirm}
-                    autoComplete="new-password"
-                    ref={newPWInputConfirm}
-                />
-                <button className={style.loginButton}>비밀번호 변경하기</button>
-            </form>
         </>
     );
 }

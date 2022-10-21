@@ -15,7 +15,7 @@
 }
 
 .mainContainer {
-    width: 70%;
+    width: 100%;
     margin: auto;
     color: white;
 
@@ -26,7 +26,7 @@
     font-family: "Community";
 }
 .title {
-    width: 70%;
+    width: 100%;
     margin: auto;
     margin-bottom: 5vh;
     padding-bottom: 1vh;
@@ -91,6 +91,7 @@
 }
 
 .rightMenu {
+    width: 80%;
 }
 
 .likelist {

@@ -1,14 +1,59 @@
-.ChangePassword {
-    margin: 10%;
+.changePasswordWrapper {
+    width: 70%;
+
+    margin: auto;
+    padding-top: 100px;
+}
+
+.title {
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 10vh;
+    color: white;
+
+    font-size: 28px;
 }
 
 .pwBox {
     margin: auto;
+    margin-bottom: 0;
+    padding: 20px;
     width: 300px;
+    border-radius: 10px;
+
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
+    background-color: aliceblue;
 }
 
 .changePWInput {
-    margin-bottom: 2%;
+    height: 40px;
+
+    border-radius: 10px;
+    border: 0;
+    font-size: 18px;
+
+    padding-left: 10px;
+    margin-bottom: 5vh;
+
+    transition: all ease 0.5s;
+}
+
+.changePWInput:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.loginButton {
+    width: fit-content;
+    border: 0;
+
+    background-color: transparent;
+
+    cursor: pointer;
+
+    margin: auto;
+    font-size: 16px;
+    color: rgb(27, 0, 124);
 }

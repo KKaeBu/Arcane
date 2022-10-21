@@ -31,7 +31,6 @@ function LoginMain() {
 
         if (inputUsername === "") {
         } else {
-            console.log("here");
             pw_box.current.classList.add(style.visible);
             pw_input.current.classList.add(style.visible);
         }

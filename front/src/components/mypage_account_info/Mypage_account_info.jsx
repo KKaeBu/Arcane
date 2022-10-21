@@ -7,10 +7,17 @@ import { tz } from "moment-timezone";
 
 function MyPageAccountInfo(props) {
     const signup_div = useRef(null);
+    const info_div = useRef(null);
+
+    useEffect(() => {
+        setTimeout(() => {
+            info_div.current.classList.add(style.show);
+        }, 100);
+    }, []);
 
     return (
         <>
-            <div className={style.info}>
+            <div className={style.info} ref={info_div}>
                 <div className={style.infoLeft}>계정정보</div>
                 <div className={style.infoRight}>
                     <div className={style.userName}>

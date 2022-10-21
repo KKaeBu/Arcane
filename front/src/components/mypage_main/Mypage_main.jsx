@@ -12,8 +12,6 @@ function MyPageMain() {
     const navigate = useNavigate();
     moment.tz.setDefault("Asia/Seoul");
 
-    const like_list_div = useRef(null);
-
     const [userEmail, setEmail] = useState("");
     const [signup_date, setDate] = useState("");
     const [liked_post, setLiked] = useState([{}]);
@@ -112,10 +110,7 @@ function MyPageMain() {
                     ) : isLikeComponent ? (
                         <MyPageLikePost data={liked_post} />
                     ) : (
-                        <div
-                            className={style.likelist}
-                            ref={like_list_div}
-                        ></div>
+                        <div>Click the Menu</div>
                     )}
                 </div>
             </div>
