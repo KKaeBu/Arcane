@@ -84,6 +84,7 @@ function SignupMain() {
                 },
             })
             .then((res) => {
+                console.log(res.data.data);
                 setExist(res.data.data);
             })
             .catch((e) => {

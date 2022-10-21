@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", authController.me);
 
-router.get("/info", authController.IsExist);
+router.get("/info", authController.IsExistFromClient);
 
 router.get("/login", authController.login);
 

@@ -103,12 +103,14 @@ function Main() {
             td_date.setAttribute("class", style.date);
 
             if (
-                moment(data[i].date).format("YYYY-MM-DD") ===
+                moment(data[i].createDate).format("YYYY-MM-DD") ===
                 moment().format("YYYY-MM-DD")
             ) {
-                td_date.innerText = moment(data[i].date).format("HH:mm");
+                td_date.innerText = moment(data[i].createDate).format("HH:mm");
             } else {
-                td_date.innerText = moment(data[i].date).format("YYYY-MM-DD");
+                td_date.innerText = moment(data[i].createDate).format(
+                    "YYYY-MM-DD"
+                );
             }
 
             const td_view = document.createElement("td");
@@ -223,7 +225,7 @@ function Main() {
                 setuserName(res.data.username);
                 setLogin(true);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     };
 
     const onLeftClick = async () => {

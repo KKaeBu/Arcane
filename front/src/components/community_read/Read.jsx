@@ -151,7 +151,7 @@ function Read(props) {
                     },
                 })
                 .then((res) => {
-                    window.location.replace(`http://localhost:3000/community`);
+                    navigate(`/community?page=${localStorage.getItem("page")}`);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -233,6 +233,7 @@ function Read(props) {
         for (let i = 0; i < login_user_likedpost.length; i++) {
             if (login_user_likedpost[i]._id === id.state) {
                 setisLiked(true);
+                break;
             } else {
                 setisLiked(false);
             }

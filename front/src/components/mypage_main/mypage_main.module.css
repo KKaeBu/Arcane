@@ -1,22 +1,98 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "나눔고딕";
+    src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
+}
+@font-face {
+    font-family: "diary";
+    src: url(../../../assets/fonts/EF_Diary.ttf) format("truetype");
+}
+
 .mainContainer {
-    width: 60%;
+    width: 100%;
     margin: auto;
     color: white;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
 
+    font-family: "Community";
+}
+.title {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 5vh;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid gray;
+
+    color: white;
+    font-family: "Community";
+    font-size: 32px;
+    font-weight: bolder;
+}
 .leftMenu {
+    width: 30%;
     display: flex;
     flex-direction: column;
 }
 
-.userName {
+.accountInfo {
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+.accountInfo:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.userLiked {
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+.userLiked:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.userLikedLink {
+    display: block;
 }
 
 .changePW {
     display: flex;
     flex-direction: column;
+    width: fit-content;
+    margin-bottom: 2vh;
+}
+
+.changePW:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.deleteAccount {
+    color: red;
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+.deleteAccount:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.rightMenu {
+    width: 80%;
+}
+
+.likelist {
 }

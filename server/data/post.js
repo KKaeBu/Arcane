@@ -5,7 +5,7 @@ export async function findByID(id) {
 }
 
 export async function findAllPost() {
-    return Post.find({}).sort({ date: 1 });
+    return Post.find({}).sort({ createDate: 1 });
 }
 
 export async function findPostByView() {
@@ -56,7 +56,11 @@ export async function updatePostLike(id, new_like, user, isliked) {
 export async function updatePostContent(new_title, new_content, id) {
     console.log(Date.now());
     const filter = { _id: id };
-    const update = { title: new_title, content: new_content, date: Date.now() };
+    const update = {
+        title: new_title,
+        content: new_content,
+        createDate: Date.now(),
+    };
     await Post.findOneAndUpdate(filter, update);
 }
 

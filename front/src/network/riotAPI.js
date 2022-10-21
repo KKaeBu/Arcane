@@ -251,8 +251,10 @@ class Riot_API {
     async getItemImgLink(item) {
         let link = "";
         if (item !== 0)
-            link = `http://ddragon.leagueoflegends.com/cdn/${this.#Version}/img/item/${item}.png`;
-        
+            link = `http://ddragon.leagueoflegends.com/cdn/${
+                this.#Version
+            }/img/item/${item}.png`;
+
         return link;
     }
 
