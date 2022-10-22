@@ -245,7 +245,6 @@ function Summoners() {
     };
 
     const isRefresh = async (r) => {
-        // 이거 끝나면 전적 갱신도 해야댐
         // 전적 갱신 버튼은 클릭시 기존 전적은 그대로 두되
         // 새롭게 추가되는 데이터가 있다면 해당 데이터를 가장 위에다 추가
         // 단, 이때 데이터가 2개 이상이라면 역순으로 추가 해줘야함
@@ -258,6 +257,7 @@ function Summoners() {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 있을경우
             const newMatchIdList = matchIdListData.slice(0, pos + 1);
             if (newMatchIdList.length === 1) {
+                // 가장 최근 전적이 가장 첫번째일 경우(즉, 새로운 전적이 없음)
                 setNewMatchData([]);
                 return;
             }
@@ -271,6 +271,7 @@ function Summoners() {
             );
 
             const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
+            
 
             setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
             setNewMatchData(newMatchList);
@@ -303,6 +304,8 @@ function Summoners() {
 
         }
 
+        const rankData = await riot.getSummonerLeague(summonerJsonData.id);
+        await db.updateRankData(summonerJsonData.name, rankData);
         return;
     }
 

@@ -124,6 +124,38 @@ export async function addNewMatchHistory(req, res, next) {
     return res.status(201).json(mList);
 }
 
+export async function updateRankData(req, res, next) {
+    const { summonerName, rankData } = req.body;
+
+    let soloRank = {
+        soloRankQueueType: "Unranked",
+        soloRankTier: "Unranked",
+        soloRankRank: "",
+        soloRankLP: 0,
+        soloRankWinNum: 0,
+        soloRankLoseNum: 0,
+    };
+    let flexRank = {
+        flexRankQueueType: "Unranked",
+        flexRankTier: "Unranked",
+        flexRankRank: "",
+        flexRankLP: 0,
+        flexRankWinNum: 0,
+        flexRankLoseNum: 0,
+    };
+
+    for (const r in rankData) {
+        if (rankData[r].queueType === "RANKED_SOLO_5x5") soloRank = rankData[r];
+        else flexRank = rankData[r];
+    }
+
+    const rank = { ...soloRank, ...flexRank };
+
+    await userRepository.updateRank(summonerName, rank);
+
+    
+}
+
 async function saveMatchHistroy(matchHistoryList) {
     let matchList = [];
     for (const m in matchHistoryList) {

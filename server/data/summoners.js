@@ -30,3 +30,9 @@ export async function createMatchHistory(matchHistory) {
         .then((data) => data.id)
         .catch((err) => console.log(err));
 }
+
+export async function updateRank(name, rank) {
+    const filter = { summonerName: name };
+    
+    await Summoner.findOneAndUpdate(filter, rank);
+}
