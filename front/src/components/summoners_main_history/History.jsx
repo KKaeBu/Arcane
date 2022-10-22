@@ -223,7 +223,7 @@ function History(props) {
         const kdaScoreLabel = document.createElement("span");
         const csLabel = document.createElement("span");
 
-        const kda = parseInt(data.kda);
+        const kda = parseFloat(data.kda);
         // 값 조정
         const calcKDA = Math.round((kda + Number.EPSILON) * 100) / 100;
 
