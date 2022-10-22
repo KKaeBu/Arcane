@@ -1,5 +1,7 @@
 .userContainer {
-    background-color: #302E2E;
+    margin-top: 5vh;
+
+    background-color: #302e2e;
     min-height: 200px;
 
     display: flex;
@@ -67,7 +69,7 @@
 .refreshHistory {
     width: 130px;
     height: 30px;
-    background-color: #3682F1;
+    background-color: #3682f1;
     border-radius: 15px;
 
     font-weight: bold;

@@ -1,8 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loop } from "@mui/icons-material";
 import style from "./summoners.module.css";
-import Topbar from "../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
 import Rank from "../../components/summoners_main_rank/Rank.jsx";
 import Most from "../../components/summoners_main_most/Most";
@@ -10,6 +9,7 @@ import History from "../../components/summoners_main_history/History.jsx";
 import Footer from "../../components/summoners_footer/Footer.jsx";
 import Riot_API from "../../network/riotAPI";
 import DB from "../../db/db";
+import Topbar from "./../../components/main_topbar/Topbar";
 
 function Summoners() {
     const summoner = useLocation().state.summoner;
@@ -26,6 +26,8 @@ function Summoners() {
     const [queueTypeJsonData, setQueueTypeJsontData] = useState({});
     const [spellJsonData, setSpellJsonData] = useState({});
     const [runesJsonData, setRunesJsonData] = useState({});
+
+    const topbar = useRef(null);
 
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
@@ -44,16 +46,18 @@ function Summoners() {
         setSpellJsonData(spellJson);
         setRunesJsonData(runesJson);
 
-        try{
+        try {
             const summonerJson = await riot.getSummoner(user);
             setSummonerJsonData(summonerJson);
-            
-            if (summonerJson && await db.isSummoner(summonerJson.name)) {
+
+            if (summonerJson && (await db.isSummoner(summonerJson.name))) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
                 const DB_summoner = await db.getSummonerInfo(summonerJson.name);
                 console.log("유저가 있군요!: ", DB_summoner);
                 if (DB_summoner.matchList.length <= matchCount) {
-                    setCurrentMatchNum(currentMatchNum + DB_summoner.matchList.length);
+                    setCurrentMatchNum(
+                        currentMatchNum + DB_summoner.matchList.length
+                    );
                 }
                 setSummonerData(DB_summoner);
                 setCurrentMatchNum(currentMatchNum + matchCount);
@@ -63,18 +67,26 @@ function Summoners() {
                 // 데베에 검색한 유저가 없다면 -> 해당 유저의 데이터를 디비에 저장함
                 // 즉, 처음 검색해보는 유저일 경우
                 const rankData = await riot.getSummonerLeague(summonerJson.id);
-                const matchIdListData = await riot.getMatchIdList(summonerJson.puuid, matchStart, matchCount);                
+                const matchIdListData = await riot.getMatchIdList(
+                    summonerJson.puuid,
+                    matchStart,
+                    matchCount
+                );
 
                 if (matchIdListData.length != 0)
                     setLastestMatch(matchIdListData[0]);
 
                 const matchHistoryList = await Promise.all(
-                    matchIdListData.map(m => {
+                    matchIdListData.map((m) => {
                         return getMatchInfo(m, summonerJson);
                     })
-                )
- 
-                const DB_summoner = await db.saveSummonerInfo(summonerJson, await rankData, matchHistoryList);
+                );
+
+                const DB_summoner = await db.saveSummonerInfo(
+                    summonerJson,
+                    await rankData,
+                    matchHistoryList
+                );
                 console.log("첨 검색했군요!: ", DB_summoner);
                 setSummonerData(DB_summoner);
                 setCurrentMatchNum(currentMatchNum + matchIdListData.length);
@@ -116,7 +128,9 @@ function Summoners() {
         // 게임 큐 타입 확인하기
         for (const k in queueTypeData) {
             if (queueTypeData[k].queueId === queueId) {
-                data.queueType = queueTypeConverter(queueTypeData[k].description);
+                data.queueType = queueTypeConverter(
+                    queueTypeData[k].description
+                );
                 break;
             }
         }
@@ -184,10 +198,10 @@ function Summoners() {
     };
 
     const summonersInfo = (participant) => {
-        const championLink = riot.getChampionIcon(participant.championName)
+        const championLink = riot.getChampionIcon(participant.championName);
         const pInfo = {
-            "summonerName": participant.summonerName,
-            "champion": championLink,
+            summonerName: participant.summonerName,
+            champion: championLink,
         };
 
         return pInfo;
@@ -195,8 +209,7 @@ function Summoners() {
 
     const checkSpell = (spell1, spell2) => {
         let spellTypeData = spellJsonData;
-        if (Object.keys(spellJsonData).length === 0)
-            spellTypeData = spellJson;
+        if (Object.keys(spellJsonData).length === 0) spellTypeData = spellJson;
 
         let spells = new Array(2);
         for (const s in spellTypeData.data) {
@@ -216,8 +229,7 @@ function Summoners() {
 
     const checkRune = (mainRuneId, mainRuneDetailId, subRuneId) => {
         let runesTypeData = runesJsonData;
-        if (Object.keys(runesJsonData).length === 0)
-            runesTypeData = runesJson;
+        if (Object.keys(runesJsonData).length === 0) runesTypeData = runesJson;
 
         let runes = new Array(3);
         for (const r in runesTypeData) {
@@ -225,7 +237,10 @@ function Summoners() {
                 case mainRuneId:
                     runes[0] = runesTypeData[r].key;
                     for (const sr in runesTypeData[r].slots[0].runes) {
-                        if (runesTypeData[r].slots[0].runes[sr].id === mainRuneDetailId) {
+                        if (
+                            runesTypeData[r].slots[0].runes[sr].id ===
+                            mainRuneDetailId
+                        ) {
                             runes[1] = runesTypeData[r].slots[0].runes[sr].key;
                             break;
                         }
@@ -248,7 +263,11 @@ function Summoners() {
         // 단, 이때 데이터가 2개 이상이라면 역순으로 추가 해줘야함
         // 받아온 데이터는 [1, 2, 3] 순으로 되있으면 원래 1 넣고 -> 2넣고 -> 3넣고 하는 순선데
         // 이를 역순으로 3, 2, 1 순으로 집어 넣어줘야 가장 최근게 위로 가게됨
-        let matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchStart, matchCount);
+        let matchIdListData = await riot.getMatchIdList(
+            summonerJsonData.puuid,
+            matchStart,
+            matchCount
+        );
 
         let pos = matchIdListData.indexOf(lastestMatch);
         if (pos != -1) {
@@ -258,24 +277,31 @@ function Summoners() {
                 setNewMatchData([]);
                 return;
             }
-        
+
             newMatchIdList.reverse();
 
             const matchHistoryList = await Promise.all(
-                newMatchIdList.map(m => {
+                newMatchIdList.map((m) => {
                     return getMatchInfo(m, summonerJsonData);
                 })
             );
 
-            const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
+            const newMatchList = await db.addNewMatchHistory(
+                summonerJsonData.name,
+                matchHistoryList
+            );
 
             setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
             setNewMatchData(newMatchList);
         } else {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 없을경우
             let checkNum = 1;
-            for (let i = 1; i <= 4; i++){
-                matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchCount * i, matchCount);
+            for (let i = 1; i <= 4; i++) {
+                matchIdListData = await riot.getMatchIdList(
+                    summonerJsonData.puuid,
+                    matchCount * i,
+                    matchCount
+                );
                 pos = matchIdListData.indexOf(lastestMatch);
                 if (pos != -1) {
                     checkNum += matchCount * i + pos;
@@ -283,34 +309,48 @@ function Summoners() {
                 }
             }
 
-            matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, matchStart, checkNum);
-        
+            matchIdListData = await riot.getMatchIdList(
+                summonerJsonData.puuid,
+                matchStart,
+                checkNum
+            );
+
             matchIdListData.reverse();
 
             const matchHistoryList = await Promise.all(
-                matchIdListData.map(m => {
+                matchIdListData.map((m) => {
                     return getMatchInfo(m, summonerJsonData);
                 })
             );
 
-            const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
+            const newMatchList = await db.addNewMatchHistory(
+                summonerJsonData.name,
+                matchHistoryList
+            );
 
             setCurrentMatchNum(currentMatchNum + matchIdListData.length);
             setNewMatchData(newMatchList);
-
         }
-    }
+    };
 
     const isMoreMatch = async () => {
         // 데이터베이스에 추가 전적이 있을 경우
-        const DB_matchHistory = await db.checkDBHistory(summonerJsonData.name, currentMatchNum, matchCount);
+        const DB_matchHistory = await db.checkDBHistory(
+            summonerJsonData.name,
+            currentMatchNum,
+            matchCount
+        );
         if (DB_matchHistory.length !== 0) {
             setCurrentMatchNum(currentMatchNum + DB_matchHistory.length);
             return DB_matchHistory;
         }
 
         // 데이터베이스에 추가 전적이 없을 경우
-        const matchIdListData = await riot.getMatchIdList(summonerJsonData.puuid, currentMatchNum, matchCount);
+        const matchIdListData = await riot.getMatchIdList(
+            summonerJsonData.puuid,
+            currentMatchNum,
+            matchCount
+        );
         if (matchIdListData.length === 0) {
             // 라이엇에서도 추가 전적이 없을 경우
             return false;
@@ -318,15 +358,18 @@ function Summoners() {
 
         // 라이엇에서 불러온 추가 전적을 디비에 추가하고 화면상에 추가함
         const matchHistoryList = await Promise.all(
-            matchIdListData.map(m => {
+            matchIdListData.map((m) => {
                 return getMatchInfo(m, summonerJsonData);
             })
-        )
-        const moreMatchList = await db.addMatchHistory(summonerJsonData.name, matchHistoryList);
+        );
+        const moreMatchList = await db.addMatchHistory(
+            summonerJsonData.name,
+            matchHistoryList
+        );
 
         setCurrentMatchNum(currentMatchNum + matchIdListData.length);
         return moreMatchList;
-    }
+    };
 
     useEffect(() => {
         findSummoner();
@@ -334,10 +377,14 @@ function Summoners() {
 
     return (
         <div className={style.summonersContainer}>
-            {isLoading ?
+            {isLoading ? (
                 <div className={style.summonersWrapper}>
-                    <Topbar />
-                    <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
+                    <Topbar ref={topbar} />
+                    <User
+                        summonerData={summonerData}
+                        isRefresh={isRefresh}
+                        isDB={isDB}
+                    />
                     <Rank summonerData={summonerData} isDB={isDB} />
                     <History
                         summonerData={summonerData}
@@ -347,13 +394,13 @@ function Summoners() {
                         isMoreMatch={isMoreMatch}
                     />
                 </div>
-                :
+            ) : (
                 <div className={style.loadingBox}>
-                    <Topbar />
+                    <Topbar ref={topbar} />
                     <Loop className={style.loadingIcon} />
                     <span>새로운 소환사 정보를 불러오는 중입니다...</span>
                 </div>
-            }
+            )}
             <Footer />
         </div>
     );

@@ -3,7 +3,7 @@
     min-height: 100vh;
     min-width: 1200px;
     height: 100%;
-    background-color: #191B1B;
+    background-color: #191b1b;
 }
 
 .summonersWrapper {
@@ -12,10 +12,9 @@
     min-width: 1000px;
     height: 100%;
     display: flex;
-    background-color: #302E2E;
+    background-color: #302e2e;
 
     margin: 0 auto;
-    margin-top: 70px;
 
     display: flex;
     flex-direction: column;
