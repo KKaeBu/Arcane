@@ -112,6 +112,8 @@ export async function checkMarking(req, res, next) {
     const username = req.headers.username;
     let result = false;
 
+    console.log("mUser: " + mUser);
+    console.log("username: " + username);
     const user = await userRepository.findByUsername(username);
 
     const pos = user.bookMark.indexOf(mUser);

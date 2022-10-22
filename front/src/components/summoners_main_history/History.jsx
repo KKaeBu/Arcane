@@ -344,6 +344,7 @@ function History(props) {
                 summoner: summonerName,
             }
         })
+        window.location.reload();
     }
 
     const moreMatch = async () => {

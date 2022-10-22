@@ -20,20 +20,25 @@ function User(props) {
     const bmTag = document.querySelector("." + style["bookMark"]);
 
     const summ = props.summonerData;
+    const login = props.isLogin;
+    const username = props.userName;
 
     const getSummonerInfo = async () => {
         const profile = await riot.getSummonerProfileIcon(summ.profileIconId);
         setSummonerName(summ.summonerName);
         setProfileLink(profile);
         setLevel(summ.level);
+        setLogin(login);
+        setuserName(username);
 
         // topbar를 통해 유저 검색시 남아있을 active 클래스를 지워주고
         // 로그인된 유저의 디비에서 북마크 정보를 가져와서 북마크에
         // active 추가 여부 결정
         bmTag.classList.remove(style.active);
-        if (isLogin) {
+        if (login && username !== "") {
+            console.log("로그인된 유저임");
             const sn = summ.summonerName;
-            const un = userName;
+            const un = username;
             await db.checkMarking(sn, un)
                 .then((res) => {
                     if (res)
@@ -47,8 +52,12 @@ function User(props) {
     }
 
     const refresh = () => {
-        props.isRefresh(true);
-    }
+        const refreshIcon = document.querySelector("." + style["refreshIcon"]);
+        refreshIcon.classList.add(style.active);
+
+        const isEnd = props.isRefresh(true);
+        isEnd.then((res) => refreshIcon.classList.remove(style.active));
+    }   
 
     const marking = (e) => {
         if (!isLogin) {
@@ -58,37 +67,16 @@ function User(props) {
         
         if (bookToggle) {
             // 북마크 해제시
-            db.bookMarkingDB(summoner.name, userName)
+            db.bookMarkingDB(summoner.summonerName, userName)
                 .then(bmTag.classList.remove(style.active));
         } else {
             // 북마크 설정시
-            db.bookMarkingDB(summoner.name, userName)
+            db.bookMarkingDB(summoner.summonerName, userName)
                 .then(bmTag.classList.add(style.active));
         }
 
         setBookToggle(!bookToggle);
     }
-
-    const isValidToken = async () => {
-        const tokenStorage = new TokenStorage();
-        const token = tokenStorage.getToken();
-
-        await axios
-            .get("/auth", {
-                headers: {
-                    token: token,
-                },
-            })
-            .then((res) => {
-                setuserName(res.data.username);
-                setLogin(true);
-            })
-            .catch((err) => console.log(err));
-    };
-
-    useEffect(() => {
-        isValidToken();
-    }, []);
 
     useEffect(() => {
         getSummonerInfo();

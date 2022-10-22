@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Loop } from "@mui/icons-material";
+import { Loop, WarningAmber } from "@mui/icons-material";
 import style from "./summoners.module.css";
 import Topbar from "../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
@@ -10,11 +10,14 @@ import History from "../../components/summoners_main_history/History.jsx";
 import Footer from "../../components/summoners_footer/Footer.jsx";
 import Riot_API from "../../network/riotAPI";
 import DB from "../../db/db";
+import TokenStorage from "../../db/token";
 
 function Summoners() {
     const summoner = useLocation().state.summoner;
     localStorage.setItem("summoner", summoner);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const [userName, setUserName] = useState("");
     const [summonerJsonData, setSummonerJsonData] = useState({}); // riot에서 가져온 소환사 기본 정보
     const [summonerData, setSummonerData] = useState({}); // summonerJson에서 필요한 정보만 뽑아서 모은 정보
     const [newMatchData, setNewMatchData] = useState([]);
@@ -73,7 +76,7 @@ function Summoners() {
                         return getMatchInfo(m, summonerJson);
                     })
                 )
- 
+
                 const DB_summoner = await db.saveSummonerInfo(summonerJson, await rankData, matchHistoryList);
                 console.log("첨 검색했군요!: ", DB_summoner);
                 setSummonerData(DB_summoner);
@@ -299,6 +302,8 @@ function Summoners() {
             setNewMatchData(newMatchList);
 
         }
+
+        return;
     }
 
     const isMoreMatch = async () => {
@@ -328,6 +333,21 @@ function Summoners() {
         return moreMatchList;
     }
 
+    const isValidToken = async () => {
+        const tokenStorage = new TokenStorage();
+        const token = tokenStorage.getToken();
+
+        db.isValidToken(token)
+            .then(res => {
+                setUserName(res);
+                setIsLogin(true);
+            });
+    };
+
+    useEffect(() => {
+        isValidToken();
+    }, []);
+
     useEffect(() => {
         findSummoner();
     }, [summoner]);
@@ -337,7 +357,13 @@ function Summoners() {
             {isLoading ?
                 <div className={style.summonersWrapper}>
                     <Topbar />
-                    <User summonerData={summonerData} isRefresh={isRefresh} isDB={isDB} />
+                    <User
+                        summonerData={summonerData}
+                        isRefresh={isRefresh}
+                        isDB={isDB}
+                        isLogin={isLogin}
+                        userName={userName}
+                    />
                     <Rank summonerData={summonerData} isDB={isDB} />
                     <History
                         summonerData={summonerData}
@@ -352,6 +378,13 @@ function Summoners() {
                     <Topbar />
                     <Loop className={style.loadingIcon} />
                     <span>새로운 소환사 정보를 불러오는 중입니다...</span>
+                    <div className={style.noticeBox}>
+                        <span>(&nbsp;</span>
+                        <WarningAmber className={style.noticeIcon} />
+                        <span>
+                            &nbsp;: 처음 검색하는 경우 다소 시간이 걸릴 수 있습니다.)
+                        </span>
+                    </div>
                 </div>
             }
             <Footer />

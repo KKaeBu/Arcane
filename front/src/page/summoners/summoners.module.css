@@ -41,8 +41,36 @@
     animation: rotate_image 2s linear infinite;
 }
 
+.noticeBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 24px;
+    font-weight: normal;
+
+    color: rgb(198, 136, 23);
+    animation: fade_in 5s ease-in-out;
+}
+
+.noticeIcon {
+    font-size: 24px !important;
+}
+
 @keyframes rotate_image {
     100% {
         transform: rotate(-180deg);
+    }
+}
+
+@keyframes fade_in {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

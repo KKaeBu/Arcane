@@ -1,6 +1,22 @@
 import axios from "axios";
 
 export default class DB {
+    /**토큰의 유효성 검사를 해줌 */
+    async isValidToken(token) {
+        let username = await axios
+            .get("/auth", {
+                headers: {
+                    token: token,
+                },
+            })
+            .then((res) => {
+                return res.data.username;
+            })
+            .catch((err) => console.log(err));
+        
+        return await username;
+    }
+
     /**서버를 통해 북마크를 on/off 해줌 (return boolean)*/
     async bookMarkingDB(markingUser, userName) {
         let result = await axios//

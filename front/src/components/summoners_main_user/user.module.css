@@ -84,6 +84,16 @@
     font-size: 22px !important;
 }
 
+.refreshIcon.active {
+    animation: rotate_image 0.7s linear infinite;
+}
+
 .refreshLabel {
     line-height: 30px;
+}
+
+@keyframes rotate_image {
+    100% {
+        transform: rotate(180deg);
+    }
 }

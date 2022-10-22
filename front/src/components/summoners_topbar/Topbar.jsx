@@ -22,6 +22,7 @@ function Topbar() {
                     summoner: inputValue,
                 }
             })
+            window.location.reload();
         }else
             alert("소환사명을 입력해주세요!");
     };
