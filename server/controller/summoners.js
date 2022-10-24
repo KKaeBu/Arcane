@@ -145,13 +145,29 @@ export async function updateRankData(req, res, next) {
     };
 
     for (const r in rankData) {
-        if (rankData[r].queueType === "RANKED_SOLO_5x5") soloRank = rankData[r];
-        else flexRank = rankData[r];
+        if (rankData[r].queueType === "RANKED_SOLO_5x5") {
+            soloRank.soloRankQueueType = rankData[r].queueType;
+            soloRank.soloRankTier = rankData[r].tier;
+            soloRank.soloRankRank = rankData[r].rank;
+            soloRank.soloRankLP = rankData[r].leaguePoints;
+            soloRank.soloRankWinNum = rankData[r].wins;
+            soloRank.soloRankLoseNum = rankData[r].losses;
+        }
+        else {
+            flexRank.flexRankQueueType = rankData[r].queueType;
+            flexRank.flexRankTier = rankData[r].tier;
+            flexRank.flexRankRank = rankData[r].rank;
+            flexRank.flexRankLP = rankData[r].leaguePoints;
+            flexRank.flexRankWinNum = rankData[r].wins;
+            flexRank.flexRankLoseNum = rankData[r].losses;
+        }
     }
 
     const rank = { ...soloRank, ...flexRank };
 
-    await userRepository.updateRank(summonerName, rank);
+    const result = await userRepository.updateRank(summonerName, rank);
+
+    return res.status(200).json(result);
 
     
 }

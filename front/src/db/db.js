@@ -168,15 +168,18 @@ export default class DB {
 
     /**전적 갱신시 변경될 랭크 데이터를 업데이트 */
     async updateRankData(summonerName, rankData) {
-        await axios
+        let result = await axios
             .patch("/api/summoners/updaterank", {
                 summonerName: summonerName,
                 rankData: rankData,
             })
             .then((res) => {
                 console.log("랭크 데이터 업데이트: ", res.data);
+                return res.data;
             })
             .catch((err) => console.log("updateRankData error: " + err));
+
+        return await result;
     }
 
 }

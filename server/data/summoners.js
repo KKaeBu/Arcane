@@ -34,5 +34,5 @@ export async function createMatchHistory(matchHistory) {
 export async function updateRank(name, rank) {
     const filter = { summonerName: name };
     
-    await Summoner.findOneAndUpdate(filter, rank);
+    return await Summoner.findOneAndUpdate(filter, rank, { returnDocument: "after" });
 }

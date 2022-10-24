@@ -13,10 +13,20 @@ import DB from "../../db/db";
 import TokenStorage from "../../db/token";
 
 function Summoners() {
-    const summoner = useLocation().state.summoner;
+    let summoner;
+    const location = useLocation();
+    const summonerParams = useParams();
+    if (location.state !== null)
+        summoner = location.state.summoner;
+    else
+        summoner = summonerParams.summoner;
+    
     localStorage.setItem("summoner", summoner);
+    
+    
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
+    const [isRe, setIsRe] = useState(false);
     const [userName, setUserName] = useState("");
     const [summonerJsonData, setSummonerJsonData] = useState({}); // riot에서 가져온 소환사 기본 정보
     const [summonerData, setSummonerData] = useState({}); // summonerJson에서 필요한 정보만 뽑아서 모은 정보
@@ -51,7 +61,7 @@ function Summoners() {
             const summonerJson = await riot.getSummoner(user);
             setSummonerJsonData(summonerJson);
             
-            if (summonerJson && await db.isSummoner(summonerJson.name)) {
+            if (summonerJson && await db.isSummoner(summonerJson.name) !== false) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
                 const DB_summoner = await db.getSummonerInfo(summonerJson.name);
                 console.log("유저가 있군요!: ", DB_summoner);
@@ -255,10 +265,16 @@ function Summoners() {
         let pos = matchIdListData.indexOf(lastestMatch);
         if (pos != -1) {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 있을경우
-            const newMatchIdList = matchIdListData.slice(0, pos + 1);
+            const newMatchIdList = matchIdListData.slice(0, pos);
             if (newMatchIdList.length === 1) {
                 // 가장 최근 전적이 가장 첫번째일 경우(즉, 새로운 전적이 없음)
                 setNewMatchData([]);
+
+                const rankData = await riot.getSummonerLeague(summonerJsonData.id);
+                const result = await db.updateRankData(summonerJsonData.name, rankData);
+                setSummonerData(result);
+                setIsRe(!isRe);
+
                 return;
             }
         
@@ -301,12 +317,17 @@ function Summoners() {
 
             setCurrentMatchNum(currentMatchNum + matchIdListData.length);
             setNewMatchData(newMatchList);
-
         }
 
         const rankData = await riot.getSummonerLeague(summonerJsonData.id);
-        await db.updateRankData(summonerJsonData.name, rankData);
+        const result = await db.updateRankData(summonerJsonData.name, rankData);
+        setSummonerData(result);
+        setIsRe(!isRe);
         return;
+    }
+
+    const initialRefresh = () => {
+        setNewMatchData([]);
     }
 
     const isMoreMatch = async () => {
@@ -367,11 +388,12 @@ function Summoners() {
                         isLogin={isLogin}
                         userName={userName}
                     />
-                    <Rank summonerData={summonerData} isDB={isDB} />
+                    <Rank summonerData={summonerData} isDB={isDB} isRe={isRe} />
                     <History
                         summonerData={summonerData}
                         count={matchCount}
                         isRefresh={newMatchData}
+                        isinitial={initialRefresh}
                         isDB={isDB}
                         isMoreMatch={isMoreMatch}
                     />
