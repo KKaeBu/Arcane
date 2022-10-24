@@ -28,8 +28,11 @@ function User(props) {
         setSummonerName(summ.summonerName);
         setProfileLink(profile);
         setLevel(summ.level);
-        setLogin(login);
-        setuserName(username);
+        if (username !== undefined && login === true) {
+            setLogin(login);
+            setuserName(username);            
+        }
+
 
         // topbar를 통해 유저 검색시 남아있을 active 클래스를 지워주고
         // 로그인된 유저의 디비에서 북마크 정보를 가져와서 북마크에
@@ -59,6 +62,7 @@ function User(props) {
     }   
 
     const marking = (e) => {
+        console.log("isLogin: " + isLogin);
         if (!isLogin) {
             alert("로그인이 필요한 기능입니다!");
             return;

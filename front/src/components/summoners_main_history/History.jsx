@@ -11,7 +11,6 @@ function History(props) {
     let newMatchList = props.isRefresh;
 
     const getMatchHistory = async () => {
-        console.log("newMathc: ", newMatchList);
         const matchHistoryUl = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
         if (matchHistoryUl) {
             removeAllchild(matchHistoryUl);
@@ -30,8 +29,6 @@ function History(props) {
             })
             props.isinitial();
         }
-
-        console.log("aaaa match: " + newMatchList);
     }
     
     const createMatchBox = (data, isNew) => {
