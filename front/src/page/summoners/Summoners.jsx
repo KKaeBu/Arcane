@@ -1,7 +1,8 @@
 import { useLocation, useParams } from "react-router-dom";
 import { Loop, WarningAmber } from "@mui/icons-material";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import style from "./summoners.module.css";
+import Topbar from "./../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
 import Rank from "../../components/summoners_main_rank/Rank.jsx";
 import Most from "../../components/summoners_main_most/Most";
@@ -10,20 +11,16 @@ import Footer from "../../components/summoners_footer/Footer.jsx";
 import Riot_API from "../../network/riotAPI";
 import DB from "../../db/db";
 import TokenStorage from "../../db/token";
-import Topbar from "./../../components/main_topbar/Topbar";
 
 function Summoners() {
     let summoner;
     const location = useLocation();
     const summonerParams = useParams();
-    if (location.state !== null)
-        summoner = location.state.summoner;
-    else
-        summoner = summonerParams.summoner;
-    
+    if (location.state !== null) summoner = location.state.summoner;
+    else summoner = summonerParams.summoner;
+
     localStorage.setItem("summoner", summoner);
-    
-    
+
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [isRe, setIsRe] = useState(false);
@@ -39,8 +36,6 @@ function Summoners() {
     const [queueTypeJsonData, setQueueTypeJsontData] = useState({});
     const [spellJsonData, setSpellJsonData] = useState({});
     const [runesJsonData, setRunesJsonData] = useState({});
-
-    const topbar = useRef(null);
 
     let queueTypeJson; // ddragon에서 가져온 모든 큐 타입 정보
     let spellJson; // ddragon에서 가져온 모든 스펠 정보
@@ -62,8 +57,11 @@ function Summoners() {
         try {
             const summonerJson = await riot.getSummoner(user);
             setSummonerJsonData(summonerJson);
-            
-            if (summonerJson && await db.isSummoner(summonerJson.name) !== false) {
+
+            if (
+                summonerJson &&
+                (await db.isSummoner(summonerJson.name)) !== false
+            ) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
                 const DB_summoner = await db.getSummonerInfo(summonerJson.name);
                 console.log("유저가 있군요!: ", DB_summoner);
@@ -289,8 +287,13 @@ function Summoners() {
                 // 가장 최근 전적이 가장 첫번째일 경우(즉, 새로운 전적이 없음)
                 setNewMatchData([]);
 
-                const rankData = await riot.getSummonerLeague(summonerJsonData.id);
-                const result = await db.updateRankData(summonerJsonData.name, rankData);
+                const rankData = await riot.getSummonerLeague(
+                    summonerJsonData.id
+                );
+                const result = await db.updateRankData(
+                    summonerJsonData.name,
+                    rankData
+                );
                 setSummonerData(result);
                 setIsRe(!isRe);
 
@@ -305,8 +308,10 @@ function Summoners() {
                 })
             );
 
-            const newMatchList = await db.addNewMatchHistory(summonerJsonData.name, matchHistoryList);
-            
+            const newMatchList = await db.addNewMatchHistory(
+                summonerJsonData.name,
+                matchHistoryList
+            );
 
             setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
             setNewMatchData(newMatchList);
@@ -358,7 +363,7 @@ function Summoners() {
 
     const initialRefresh = () => {
         setNewMatchData([]);
-    }
+    };
 
     const isMoreMatch = async () => {
         // 데이터베이스에 추가 전적이 있을 경우
@@ -403,6 +408,7 @@ function Summoners() {
         const token = tokenStorage.getToken();
 
         db.isValidToken(token).then((res) => {
+            console.log("sds: " + res);
             setUserName(res);
             setIsLogin(true);
         });
@@ -420,7 +426,7 @@ function Summoners() {
         <div className={style.summonersContainer}>
             {isLoading ? (
                 <div className={style.summonersWrapper}>
-                    <Topbar ref={topbar} />
+                    <Topbar isLogin={isLogin} userName={userName} />
                     <User
                         summonerData={summonerData}
                         isRefresh={isRefresh}
@@ -440,7 +446,7 @@ function Summoners() {
                 </div>
             ) : (
                 <div className={style.loadingBox}>
-                    <Topbar ref={topbar} />
+                    <Topbar isLogin={isLogin} userName={userName} />
                     <Loop className={style.loadingIcon} />
                     <span>새로운 소환사 정보를 불러오는 중입니다...</span>
                     <div className={style.noticeBox}>

@@ -1,3 +1,11 @@
+@font-face {
+    font-family: "Community";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .topbarContainer {
     position: absolute;
     top: 0;
@@ -74,8 +82,8 @@
 }
 
 /* input에 마우스가 focus되면 검색 아이콘을 검정색으로 변경 */
-.searchInput:focus~.searchButton {
-    color: black
+.searchInput:focus ~ .searchButton {
+    color: black;
 }
 
 .searchButton {
@@ -105,14 +113,112 @@
 }
 
 .userProfile {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 
     color: white;
+
+    transition: all ease 0.2s;
 }
 
 .defaultProfile {
-    font-size: 50px !important;
+    font-size: 48px !important;
     cursor: pointer;
+}
+
+.dropMenu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: "Community";
+
+    border-radius: 10px;
+    cursor: default;
+
+    opacity: 0;
+    color: white;
+
+    width: 100px;
+    height: 0px;
+    padding: 0px;
+    background: #000000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: #fbceb1 solid 1px;
+
+    transition: all ease 0.2s;
+    transform: translateX(0%);
+    transform: translateY(80%);
+}
+
+/* 드롭메뉴의 말풍선 모양 구현을 위함 */
+.dropMenu::after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #000000 transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -15px;
+    left: 35px;
+}
+
+/* 드롭메뉴의 말풍선 모양 구현을 위함 */
+.dropMenu::before {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #fbceb1 transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    top: -16px;
+    left: 35px;
+}
+
+.username {
+    margin: 10px 0 10px 0;
+    border-bottom: 1px solid #fbceb1;
+}
+.userInfo {
+    margin: 0px 0 10px 0;
+    border-bottom: 1px solid #fbceb1;
+}
+.islogin {
+    margin: 0px 0 10px 0;
+}
+
+.username:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.userInfo:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.islogin:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* 안보이던 드롭메뉴를 보이도록 */
+.active {
+    height: 150px;
+    opacity: 1;
+}
+
+/* myPageDiv 이동 */
+.move {
+    transform: translateX(-100%);
 }

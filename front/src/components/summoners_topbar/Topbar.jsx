@@ -1,50 +1,94 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Search, AccountCircle } from "@mui/icons-material";
 import style from "./topbar.module.css";
 import tokenStorage from "../../db/token";
 
-
-function Topbar() {
+function Topbar(props) {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState("");
     const [isLogin, setisLogin] = useState(false);
-    const tks = new tokenStorage();
+    const [active, setActive] = useState(false);
+    const [username, setUsername] = useState("");
+
+    const myPageIcon = useRef(null);
+    const dropMenuDiv = useRef(null);
+    const myPageDiv = useRef(null);
+
+    const name = props.userName;
+    const login = props.isLogin;
+    console.log("login: " + login);
+
+    const setting = () => {
+        if (name !== undefined && login === true) {
+            setUsername(name);
+            setisLogin(login);
+        }
+    };
 
     const onSubmit = async (event) => {
         event.preventDefault(); // 새로고침 방지
         console.log(inputValue);
-        if (inputValue !== ""){
+        if (inputValue !== "") {
             // navigate(`/summoners/${inputValue}`);
             navigate(`/summoners/${inputValue}`, {
                 state: {
                     summoner: inputValue,
-                }
-            })
+                },
+            });
             window.location.reload();
-        }else
-            alert("소환사명을 입력해주세요!");
+        } else alert("소환사명을 입력해주세요!");
     };
 
     const onChange = (event) => {
         setInputValue(event.target.value);
     };
 
-    const loginCheck = () => {
-        // 로그인된 토큰이 있으면 토근 유무에 따라 로그인 여부를 확인
-        // 로그인 여부에 따라 로그인 버튼과 사용자 프로필을 보여줌
-        const token = tks.getToken();
-        if (token) {
-            setisLogin(true);
+    const myPageClick = async () => {
+        if (active) {
+            setActive(false);
+            dropMenuDiv.current.classList.remove(style.active);
+            myPageIcon.current.classList.remove(style.myPageActive);
+            setTimeout(() => {
+                myPageDiv.current.classList.remove(style.move);
+                dropMenuDiv.current.style.display = "none";
+            }, 500);
         } else {
-            setisLogin(false);
+            setActive(true);
+            setTimeout(() => {
+                dropMenuDiv.current.classList.add(style.active);
+                dropMenuDiv.current.style.display = "flex";
+            }, 500);
+            myPageDiv.current.classList.add(style.move);
+            myPageIcon.current.classList.add(style.myPageActive);
         }
-    }
+    };
+
+    const ClickMyPage = () => {
+        if (isLogin) {
+            navigate("/mypage", {
+                state: username,
+            });
+        } else {
+            window.alert("로그인이 필요한 서비스입니다.");
+        }
+    };
+
+    const LoginClick = () => {
+        if (username) {
+            const token = new tokenStorage();
+            token.clearToken();
+            setisLogin(false);
+            window.location.reload();
+        } else {
+            navigate("/login");
+        }
+    };
 
     useEffect(() => {
-        loginCheck();
-    }, []);
+        setting();
+    }, [login, name]);
 
     return (
         <div className={style.topbarContainer}>
@@ -65,23 +109,49 @@ function Topbar() {
                             className={style.searchInput}
                             onChange={onChange}
                         />
-                        <Search className={style.searchButton} onSubmit={onSubmit}/>
+                        <Search
+                            className={style.searchButton}
+                            onSubmit={onSubmit}
+                        />
                     </form>
                 </div>
                 <div className={style.topbarRight}>
-                    {isLogin ? 
-                        <div className={style.userProfile}>
+                    {isLogin ? (
+                        <div className={style.userProfile} ref={myPageDiv}>
                             <AccountCircle
                                 className={style.defaultProfile}
+                                onClick={myPageClick}
+                                ref={myPageIcon}
                             />
+                            <div
+                                className={`${style.dropMenu}`}
+                                ref={dropMenuDiv}
+                                style={{ display: "none" }}
+                            >
+                                <div className={style.username}>
+                                    {username ? username : "로그인하세요"}
+                                </div>
+                                <div
+                                    className={style.userInfo}
+                                    onClick={ClickMyPage}
+                                >
+                                    내 정보
+                                </div>
+                                <div
+                                    className={style.islogin}
+                                    onClick={LoginClick}
+                                >
+                                    {username ? "로그아웃" : "로그인"}
+                                </div>
+                            </div>
                         </div>
-                        :
+                    ) : (
                         <div className={style.auth}>
                             <Link to="/login" className={style.login}>
                                 <span>Login</span>
                             </Link>
                         </div>
-                    }
+                    )}
                 </div>
             </div>
         </div>

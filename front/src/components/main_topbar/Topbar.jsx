@@ -41,11 +41,13 @@ function Topbar() {
             myPageIcon.current.classList.remove(style.myPageActive);
             setTimeout(() => {
                 myPageDiv.current.classList.remove(style.move);
+                dropMenuDiv.current.style.display = "none";
             }, 500);
         } else {
             setActive(true);
             setTimeout(() => {
                 dropMenuDiv.current.classList.add(style.active);
+                dropMenuDiv.current.style.display = "flex";
             }, 500);
             myPageDiv.current.classList.add(style.move);
             myPageIcon.current.classList.add(style.myPageActive);
@@ -130,7 +132,11 @@ function Topbar() {
                         onClick={myPageClick}
                         ref={myPageIcon}
                     />
-                    <div className={`${style.dropMenu}`} ref={dropMenuDiv}>
+                    <div
+                        className={`${style.dropMenu}`}
+                        ref={dropMenuDiv}
+                        style={{ display: "none" }}
+                    >
                         <div className={style.username}>
                             {username ? username : "로그인하세요"}
                         </div>
