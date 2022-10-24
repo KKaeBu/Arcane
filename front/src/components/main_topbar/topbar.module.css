@@ -43,9 +43,11 @@
 
 .topbarContainer {
     position: absolute;
-    height: 100px;
+    height: 70px;
     width: 100%;
-    /* background-color: inherit; */
+    top: 0;
+    left: 0;
+    /* background-color: transparent; */
     background: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0) 0%,
