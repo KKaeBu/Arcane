@@ -3,7 +3,7 @@ import axios from "axios";
 class Riot_API {
     // API_Key는 만료될때마다 바꿔 적어줘야함 (발급 후 24시간 후 만료)
     // Version 업데이트마다 변경해줘야함
-    #Riot_API_Key = "RGAPI-eeecbc27-485f-4be6-80f3-154c6100a8fc";
+    #Riot_API_Key = "RGAPI-429b916f-9974-4935-8c92-f2b92571f885";
     #Language = "ko_KR";
     #Version = "12.19.1";
     #headers = {
@@ -101,6 +101,7 @@ class Riot_API {
     }
 
     async getChampionSquareAssetsLink(champion) {
+        if (champion === "FiddleSticks") champion = "Fiddlesticks";
         return `http://ddragon.leagueoflegends.com/cdn/${
             this.#Version
         }/img/champion/${champion}.png`;

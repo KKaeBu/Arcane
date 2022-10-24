@@ -35,7 +35,7 @@ function User(props) {
         // 로그인된 유저의 디비에서 북마크 정보를 가져와서 북마크에
         // active 추가 여부 결정
         bmTag.classList.remove(style.active);
-        if (login && username !== "") {
+        if (login && username !== undefined) {
             console.log("로그인된 유저임");
             const sn = summ.summonerName;
             const un = username;
@@ -54,7 +54,6 @@ function User(props) {
     const refresh = () => {
         const refreshIcon = document.querySelector("." + style["refreshIcon"]);
         refreshIcon.classList.add(style.active);
-
         const isEnd = props.isRefresh(true);
         isEnd.then((res) => refreshIcon.classList.remove(style.active));
     }   

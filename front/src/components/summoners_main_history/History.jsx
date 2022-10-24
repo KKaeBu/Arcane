@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 function History(props) {
     const navigate = useNavigate();
-    const matchHistoryUl = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
 
     const summData = props.summonerData;
     const count = props.count;
-    const newMatchList = props.isRefresh;
+    let newMatchList = props.isRefresh;
 
     const getMatchHistory = async () => {
+        console.log("newMathc: ", newMatchList);
+        const matchHistoryUl = document.querySelector("." + style["matchHistory"]); // 매치 전적 ul
         if (matchHistoryUl) {
             removeAllchild(matchHistoryUl);
         }
@@ -27,7 +28,10 @@ function History(props) {
             newMatchList.forEach(m => {
                 createMatchBox(m, true);
             })
+            props.isinitial();
         }
+
+        console.log("aaaa match: " + newMatchList);
     }
     
     const createMatchBox = (data, isNew) => {
@@ -224,6 +228,7 @@ function History(props) {
         const csLabel = document.createElement("span");
 
         const kda = parseFloat(data.kda);
+        
         // 값 조정
         const calcKDA = Math.round((kda + Number.EPSILON) * 100) / 100;
 

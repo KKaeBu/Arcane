@@ -124,6 +124,54 @@ export async function addNewMatchHistory(req, res, next) {
     return res.status(201).json(mList);
 }
 
+export async function updateRankData(req, res, next) {
+    const { summonerName, rankData } = req.body;
+
+    let soloRank = {
+        soloRankQueueType: "Unranked",
+        soloRankTier: "Unranked",
+        soloRankRank: "",
+        soloRankLP: 0,
+        soloRankWinNum: 0,
+        soloRankLoseNum: 0,
+    };
+    let flexRank = {
+        flexRankQueueType: "Unranked",
+        flexRankTier: "Unranked",
+        flexRankRank: "",
+        flexRankLP: 0,
+        flexRankWinNum: 0,
+        flexRankLoseNum: 0,
+    };
+
+    for (const r in rankData) {
+        if (rankData[r].queueType === "RANKED_SOLO_5x5") {
+            soloRank.soloRankQueueType = rankData[r].queueType;
+            soloRank.soloRankTier = rankData[r].tier;
+            soloRank.soloRankRank = rankData[r].rank;
+            soloRank.soloRankLP = rankData[r].leaguePoints;
+            soloRank.soloRankWinNum = rankData[r].wins;
+            soloRank.soloRankLoseNum = rankData[r].losses;
+        }
+        else {
+            flexRank.flexRankQueueType = rankData[r].queueType;
+            flexRank.flexRankTier = rankData[r].tier;
+            flexRank.flexRankRank = rankData[r].rank;
+            flexRank.flexRankLP = rankData[r].leaguePoints;
+            flexRank.flexRankWinNum = rankData[r].wins;
+            flexRank.flexRankLoseNum = rankData[r].losses;
+        }
+    }
+
+    const rank = { ...soloRank, ...flexRank };
+
+    const result = await userRepository.updateRank(summonerName, rank);
+
+    return res.status(200).json(result);
+
+    
+}
+
 async function saveMatchHistroy(matchHistoryList) {
     let matchList = [];
     for (const m in matchHistoryList) {

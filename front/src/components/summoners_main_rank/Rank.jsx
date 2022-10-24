@@ -3,16 +3,19 @@ import style from "./rank.module.css";
 
 function Rank(props) {
     const [summoner, setSummoner] = useState({});
+    const [isRefresh, setIsRefresh] = useState(false);
 
     const summData = props.summonerData;
+    const isRe = props.isRe;
 
     const getLeague = async () => {
         setSummoner(summData);
+        setIsRefresh(isRe);
     }
 
     useEffect(() => {
         getLeague();
-    }, [summData]);
+    }, [summData, isRe]);
 
     return (
         <div className={style.rankContainer}>
