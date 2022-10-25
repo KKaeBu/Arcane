@@ -43,7 +43,7 @@ export default class DB {
                 }
             })
             .then((res) => {
-                console.log("bookMarking되어있음: " + res.data);
+                // console.log("bookMarking되어있음: " + res.data);
                 return res.data;
             })
             .catch((err) => {
@@ -66,7 +66,7 @@ export default class DB {
                 }
             })
             .then((res) => {
-                console.log("이미 디비에 있는 소환사임: " + res.data);
+                // console.log("이미 디비에 있는 소환사임: " + res.data);
                 return res.data;
             })
             .catch(err => console.log("isSummoner error: " + err));
@@ -86,7 +86,7 @@ export default class DB {
                 matchHistoryList: matchHistoryList,
             })
             .then((res) => {
-                console.log("검색한 소환사의 정보를 저장함: " + res.data);
+                // console.log("검색한 소환사의 정보를 저장함: " + res.data);
                 return res.data;
             })
             .catch(err => console.log("saveSummonerInfo error: " + err));
@@ -105,7 +105,7 @@ export default class DB {
                 }
             })
             .then((res) => {
-                console.log("소환사 정보 가져옴: " + res.data);
+                // console.log("소환사 정보 가져옴: " + res.data);
                 return res.data
             })
             .catch(err => console.log("getSummonerInfo func error"));
@@ -126,7 +126,7 @@ export default class DB {
                 }
             })
             .then((res) => {
-                console.log("받아온 전적 데이터: " + res.data);
+                // console.log("받아온 전적 데이터: " + res.data);
                 return res.data;
             })
             .catch(err => console.log("checkDBHistory error: " + err));
@@ -142,7 +142,7 @@ export default class DB {
                 matchHistoryList: matchHistoryList,
             })
             .then((res) => {
-                console.log("새롭게 불러온 기존 전적들을 추가함: " + res.data);
+                // console.log("새롭게 불러온 기존 전적들을 추가함: " + res.data);
                 return res.data;
             })
             .catch(err => console.log("addMatchHistory error: " + err));
@@ -158,7 +158,7 @@ export default class DB {
                 matchHistoryList: matchHistoryList,
             })
             .then((res) => {
-                console.log("새롭게 불러온 뉴 전적들을 추가함: " + res.data);
+                // console.log("새롭게 불러온 뉴 전적들을 추가함: " + res.data);
                 return res.data;
             })
             .catch(err => console.log("addMatchHistory error: " + err));
@@ -174,7 +174,7 @@ export default class DB {
                 rankData: rankData,
             })
             .then((res) => {
-                console.log("랭크 데이터 업데이트: ", res.data);
+                // console.log("랭크 데이터 업데이트: ", res.data);
                 return res.data;
             })
             .catch((err) => console.log("updateRankData error: " + err));

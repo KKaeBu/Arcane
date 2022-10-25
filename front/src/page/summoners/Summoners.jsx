@@ -64,7 +64,7 @@ function Summoners() {
             ) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
                 const DB_summoner = await db.getSummonerInfo(summonerJson.name);
-                console.log("유저가 있군요!: ", DB_summoner);
+                // console.log("유저가 있군요!: ", DB_summoner);
                 if (DB_summoner.matchList.length <= matchCount) {
                     setCurrentMatchNum(
                         currentMatchNum + DB_summoner.matchList.length
@@ -98,7 +98,7 @@ function Summoners() {
                     await rankData,
                     matchHistoryList
                 );
-                console.log("첨 검색했군요!: ", DB_summoner);
+                // console.log("첨 검색했군요!: ", DB_summoner);
                 setSummonerData(DB_summoner);
                 setCurrentMatchNum(currentMatchNum + matchIdListData.length);
                 setIsDB(false);
@@ -408,9 +408,10 @@ function Summoners() {
         const token = tokenStorage.getToken();
 
         db.isValidToken(token).then((res) => {
-            console.log("sds: " + res);
-            setUserName(res);
-            setIsLogin(true);
+            if (res !== undefined) {
+                setUserName(res);
+                setIsLogin(true);
+            }
         });
     };
 

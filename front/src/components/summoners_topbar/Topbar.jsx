@@ -18,7 +18,6 @@ function Topbar(props) {
 
     const name = props.userName;
     const login = props.isLogin;
-    console.log("login: " + login);
 
     const setting = () => {
         if (name !== undefined && login === true) {
