@@ -12,6 +12,7 @@ import axios from "axios";
 import moment from "moment/moment";
 import { tz } from "moment-timezone";
 import queryString from "query-string";
+// import { config } from "../../config.js";
 
 function Main() {
     const page_query = queryString.parse(useLocation().search);
@@ -26,7 +27,7 @@ function Main() {
     const [userName, setuserName] = useState("");
 
     let data = []; // 게시물 object 배열
-    const socket = io.connect("http://localhost:5000");
+    const socket = io.connect("http://54.180.163.42:5000");
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);

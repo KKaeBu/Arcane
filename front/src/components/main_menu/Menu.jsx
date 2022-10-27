@@ -12,11 +12,12 @@ import { Link } from "react-router-dom";
 import TokenStorage from "../../db/token";
 import style from "./menu.module.css";
 import { io } from "socket.io-client";
+// import { config } from "../../config.js";
 
 function Menu() {
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
-    const socket = io.connect("http://localhost:5000");
+    const socket = io.connect("http://54.180.163.42:5000");
 
     const onClick = (e) => {
         if (isLogin) {
