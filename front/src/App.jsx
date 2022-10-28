@@ -11,7 +11,7 @@ import Signup from "./page/signup/Signup.jsx";
 import Community from "./page/community/Community.jsx";
 import Summoners from "./page/summoners/Summoners.jsx";
 import MyPage from "./page/mypage/Mypage";
-import ChangePW from "./page/change_pw/ChangePW";
+import ChangePW from "./page/change_pw/changePW";
 
 function App() {
     const [loading, setLoading] = useState(false);
