@@ -46,6 +46,10 @@ function Menu() {
             .catch((err) => console.log(err));
     };
 
+    const warnning = () => {
+        alert("아직 작업 중입니다. :)")
+    }
+
     useEffect(() => {
         isValidToken();
     }, []);
@@ -79,7 +83,7 @@ function Menu() {
             <div
                 className={`${style.menuSubButtonItem} ${style.menuSubItemBtn}`}
             >
-                <div className={style.menuSubItemContainer}>
+                <div onClick={warnning} className={style.menuSubItemContainer}>
                     <Category className={style.icon} />
                     <p>아이템 조합</p>
                 </div>
@@ -87,7 +91,7 @@ function Menu() {
             <div
                 className={`${style.menuSubButtonItem} ${style.menuSubRankingBtn}`}
             >
-                <div className={style.menuSubItemContainer}>
+                <div onClick={warnning} className={style.menuSubItemContainer}>
                     <EmojiEvents className={style.icon} />
                     <p>랭킹</p>
                 </div>
@@ -95,7 +99,7 @@ function Menu() {
             <div
                 className={`${style.menuSubButtonItem} ${style.menuSubBuildBtn}`}
             >
-                <div className={style.menuSubItemContainer}>
+                <div onClick={warnning} className={style.menuSubItemContainer}>
                     <Construction className={style.icon} />
                     <p>빌드</p>
                 </div>
@@ -103,7 +107,7 @@ function Menu() {
             <div
                 className={`${style.menuSubButtonItem} ${style.menuStatisticsBtn}`}
             >
-                <div className={style.menuSubItemContainer}>
+                <div onClick={warnning} className={style.menuSubItemContainer}>
                     <Equalizer className={style.icon} />
                     <p>통계</p>
                 </div>
