@@ -1,9 +1,9 @@
 import style from "./mypage_account_info.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
-import axios from "axios";
+// import { useLocation, useNavigate } from "react-router-dom";
+import { useRef, useEffect } from "react";
+// import axios from "axios";
 import moment from "moment/moment";
-import { tz } from "moment-timezone";
+// import { tz } from "moment-timezone";
 
 function MyPageAccountInfo(props) {
     const signup_div = useRef(null);

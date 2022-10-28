@@ -1,5 +1,5 @@
-import { ErrorOutline, Loop } from "@mui/icons-material"
-import { useState, useEffect } from "react";
+import { ErrorOutline} from "@mui/icons-material"
+import { useEffect } from "react";
 import style from "./history.module.css";
 import { useNavigate } from "react-router-dom";
 

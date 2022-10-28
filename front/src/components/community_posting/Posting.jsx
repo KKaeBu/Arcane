@@ -4,7 +4,7 @@ import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useLocation, useNavigate } from "react-router-dom";
-import { history } from "./../../history";
+// import { history } from "./../../history";
 
 function Posting(props) {
     const navigate = useNavigate();
@@ -15,12 +15,12 @@ function Posting(props) {
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
-    const ul = document.querySelector("." + style["postingAttachList"]);
+    // const ul = document.querySelector("." + style["postingAttachList"]);
     const postingMain = document.getElementById("postingMain");
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
 
-    const [isblocking, setBlocking] = useState(false);
+    // const [isblocking, setBlocking] = useState(false);
 
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
@@ -241,7 +241,7 @@ function Posting(props) {
         window.addEventListener("popstate", preventGoBack);
 
         return () => window.removeEventListener("popstate", preventGoBack);
-    }, []);
+    });
 
     return (
         <div className={style.postingContainer}>

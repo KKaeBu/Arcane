@@ -2,7 +2,6 @@ import style from "./champion_info_about.module.css";
 import Riot from "../../network/riotAPI.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useState } from "react";
 import { useRef } from "react";
 
 function ChampionInfoAbout() {
@@ -31,7 +30,6 @@ function ChampionInfoAbout() {
         // 챔피언 정보 객체와 id를 getSkill 함수에 인자로 넘겨 해당 챔피언의 정보를 가져옴
 
         const about_div = document.querySelector("." + style["about"]);
-        const about_title = document.querySelector("." + style["aboutTitle"]);
 
         Title.current.innerHTML = `스토리`;
 
@@ -159,7 +157,7 @@ function ChampionInfoAbout() {
 
     useEffect(() => {
         showChampAbout();
-    }, []);
+    });
 
     return (
         <>

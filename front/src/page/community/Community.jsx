@@ -6,14 +6,14 @@ import Posting from "../../components/community_posting/Posting.jsx";
 import Read from "../../components/community_read/Read.jsx";
 import Correcting from "../../components/community_correct/Correct.jsx";
 
-import { useState } from "react";
+// import { useState } from "react";
 
 function Community(props) {
-    const [user_id, setID] = useState("");
+    // const [user_id, setID] = useState("");
 
-    const isClick = (selected_id) => {
-        setID(selected_id);
-    };
+    // const isClick = (selected_id) => {
+    //     setID(selected_id);
+    // };
 
     return (
         <div className={style.community}>

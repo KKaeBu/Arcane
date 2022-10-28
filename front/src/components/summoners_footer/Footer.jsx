@@ -20,6 +20,7 @@ function Footer() {
                 <a
                     href="https://github.com/GGeaBu"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className={style.github}
                 >
                     <GitHub className={style.githubIcon} />
@@ -28,6 +29,7 @@ function Footer() {
                 <a
                     href="https://github.com/ysh038"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className={style.github}
                 >
                     <GitHub className={style.githubIcon} />

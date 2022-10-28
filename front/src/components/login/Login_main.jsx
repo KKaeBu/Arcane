@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import style from "./login_main.module.css";
 import axios from "axios";

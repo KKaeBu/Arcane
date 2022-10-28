@@ -2,7 +2,6 @@ import style from "./champion_info_tip.module.css";
 import Riot from "../../network/riotAPI.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useState } from "react";
 import { useRef } from "react";
 
 function ChampionInfoTip() {
@@ -237,7 +236,7 @@ function ChampionInfoTip() {
 
     useEffect(() => {
         showTips();
-    }, []);
+    });
 
     return (
         <>

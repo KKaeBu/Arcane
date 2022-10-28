@@ -19,6 +19,7 @@ function Footer() {
             <div className={style.footerRight}>
                 <a
                     href="https://github.com/GGeaBu"
+                    rel="noopener noreferrer"
                     target="_blank"
                     className={style.github}
                 >
@@ -28,6 +29,7 @@ function Footer() {
                 <a
                     href="https://github.com/ysh038"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className={style.github}
                 >
                     <GitHub className={style.githubIcon} />

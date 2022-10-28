@@ -5,7 +5,7 @@ import style from "./summoners.module.css";
 import Topbar from "./../../components/summoners_topbar/Topbar.jsx";
 import User from "../../components/summoners_main_user/User.jsx";
 import Rank from "../../components/summoners_main_rank/Rank.jsx";
-import Most from "../../components/summoners_main_most/Most";
+// import Most from "../../components/summoners_main_most/Most";
 import History from "../../components/summoners_main_history/History.jsx";
 import Footer from "../../components/summoners_footer/Footer.jsx";
 import Riot_API from "../../network/riotAPI";
@@ -30,8 +30,8 @@ function Summoners() {
     const [newMatchData, setNewMatchData] = useState([]);
     const [isDB, setIsDB] = useState(false);
     const [lastestMatch, setLastestMatch] = useState("");
-    const [matchStart, setMatchStart] = useState(0); // 불러올 전적의 시작 index (default: 0)
-    const [matchCount, setMatchCount] = useState(20); // 불러올 전적의 개수
+    const matchStart = 0; // 불러올 전적의 시작 index (default: 0)
+    const matchCount = 20; // 불러올 전적의 개수
     const [currentMatchNum, setCurrentMatchNum] = useState(0); // 현재까지 불러온 전적리스트 개수
     const [queueTypeJsonData, setQueueTypeJsontData] = useState({});
     const [spellJsonData, setSpellJsonData] = useState({});
@@ -84,7 +84,7 @@ function Summoners() {
                     matchCount
                 );
 
-                if (matchIdListData.length != 0)
+                if (matchIdListData.length !== 0)
                     setLastestMatch(matchIdListData[0]);
 
                 const matchHistoryList = await Promise.all(
@@ -232,6 +232,9 @@ function Summoners() {
                 case spell2:
                     spells[1] = spellTypeData.data[s].image.full;
                     break;
+                
+                default:
+                    break;
             }
         }
 
@@ -261,6 +264,9 @@ function Summoners() {
                 case subRuneId:
                     runes[2] = runesTypeData[r].key;
                     break;
+                
+                default:
+                    break;
             }
         }
 
@@ -280,7 +286,7 @@ function Summoners() {
         );
 
         let pos = matchIdListData.indexOf(lastestMatch);
-        if (pos != -1) {
+        if (pos !== -1) {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 있을경우
             const newMatchIdList = matchIdListData.slice(0, pos);
             if (newMatchIdList.length === 1) {
@@ -325,7 +331,7 @@ function Summoners() {
                     matchCount
                 );
                 pos = matchIdListData.indexOf(lastestMatch);
-                if (pos != -1) {
+                if (pos !== -1) {
                     checkNum += matchCount * i + pos;
                     break;
                 }
@@ -471,9 +477,9 @@ function Unix_timestamp(t) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
+    // const hour = date.getHours();
+    // const minute = date.getMinutes();
+    // const second = date.getSeconds();
 
     return year + "-" + month + "-" + day;
 }
@@ -490,9 +496,9 @@ function calcPlayedTime(gStartTime, gEndTime) {
     // 플레이 시간중 시 구하기
     const pHours = get.getHours() - gst.getHours();
     // 게임 시작 날짜 중 일
-    const gsDays = gst.getDay();
+    // const gsDays = gst.getDay();
     // 게임 종료 날짜 중 일
-    const geDays = get.getDay();
+    // const geDays = get.getDay();
 
     let resultSeconds;
     let resultMinutes;

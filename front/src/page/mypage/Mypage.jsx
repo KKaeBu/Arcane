@@ -1,11 +1,11 @@
 import style from "./mypage.module.css";
 import MyPageMain from "./../../components/mypage_main/Mypage_main";
 import Topbar from "./../../components/main_topbar/Topbar";
-import Riot from "../../network/riotAPI";
-import { useRef, useEffect } from "react";
+// import Riot from "../../network/riotAPI";
+import { useRef } from "react";
 
 function MyPage() {
-    const riot = new Riot();
+    // const riot = new Riot();
     const myPage_wrapper = useRef(null);
 
     // const SetBackgroundImg = async () => {

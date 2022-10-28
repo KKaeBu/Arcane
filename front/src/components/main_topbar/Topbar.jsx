@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Search,
-    LightMode,
-    DarkMode,
-    Language,
+    // LightMode,
+    // DarkMode,
+    // Language,
     AccountCircle,
 } from "@mui/icons-material";
 import style from "./topbar.module.css";

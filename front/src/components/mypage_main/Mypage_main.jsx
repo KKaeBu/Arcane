@@ -1,9 +1,9 @@
 import style from "./mypage_main.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
-import { tz } from "moment-timezone";
+// import { tz } from "moment-timezone";
 import MyPageLikePost from "../mypage_like_post/Mypage_like_post";
 import MyPageAccountInfo from "../mypage_account_info/Mypage_account_info";
 
@@ -15,7 +15,7 @@ function MyPageMain() {
     const [userEmail, setEmail] = useState("");
     const [signup_date, setDate] = useState("");
     const [liked_post, setLiked] = useState([{}]);
-    const [write_post, setWrite] = useState([{}]);
+    // const [write_post, setWrite] = useState([{}]);
     const [isLikeComponent, setLikeComponent] = useState(false);
     const [isAccountInfoComponent, setAccountComponent] = useState(false);
 

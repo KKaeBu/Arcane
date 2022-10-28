@@ -78,7 +78,7 @@ function ChampionInfo() {
 
     useEffect(() => {
         showChampInfo();
-    }, []);
+    });
 
     return (
         <>

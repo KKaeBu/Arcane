@@ -57,7 +57,7 @@ class Riot_API {
 
     /**모든 매치에서 참가한 유저들의 리스트를 배열로 하여 반환해줌 */
     async getMatchInfoParticipantsList(matchIdLsit) {
-        let participatnsArr = new Array();
+        let participatnsArr = [];
         await matchIdLsit.forEach(async (m) => {
             const link = `https://asia.api.riotgames.com/lol/match/v5/matches/${m}?api_key=${
                 this.#Riot_API_Key

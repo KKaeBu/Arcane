@@ -2,7 +2,6 @@ import style from "./champion_info_skills.module.css";
 import { useParams } from "react-router-dom";
 import Riot from "../../network/riotAPI.js";
 import { useEffect, useRef } from "react";
-import { useState } from "react";
 
 function ChampionSkills() {
     const riot = new Riot(); // riotAPI 클래스 객체 riot을 생성
@@ -264,7 +263,7 @@ function ChampionSkills() {
 
     useEffect(() => {
         showSkills();
-    }, []);
+    });
 
     return (
         <>

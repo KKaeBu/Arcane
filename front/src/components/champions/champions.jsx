@@ -20,7 +20,6 @@ function Champion() {
         const rotation_data = await riot.getRotationChampion();
         const free_champion_ids = rotation_data.freeChampionIds;
         const free_for_newPlayers = rotation_data.freeChampionIdsForNewPlayers;
-        const max_free_level = rotation_data.maxNewPlayerLevel;
 
         const champArr = Object.values(champions).sort((a, b) =>
             a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
@@ -88,7 +87,7 @@ function Champion() {
 
     useEffect(() => {
         getChamp();
-    }, []); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
+    }); // 컴포넌트가 마운트 되거나 렌더링,리렌더링 될때 getChamp함수 1회 실행함
 
     useEffect(() => {
         showChampBtn();

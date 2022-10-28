@@ -6,11 +6,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import { io } from "socket.io-client";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
 import axios from "axios";
 import moment from "moment/moment";
-import { tz } from "moment-timezone";
+// import { tz } from "moment-timezone";
 import queryString from "query-string";
 // import { config } from "../../config.js";
 
@@ -263,7 +263,7 @@ function Main() {
 
     useEffect(() => {
         isValidToken();
-    }, [page_query]);
+    });
 
     /*
      ***** socket의 on 메소드는 거의 항상 useEffect안에 넣는것이 맞는듯하다
@@ -277,7 +277,7 @@ function Main() {
                 newPostDiv[0].removeAttribute("id");
             }
         });
-    }, [isLogin]);
+    }, [isLogin, newPostDiv, socket, userName]);
 
     return (
         <div className={style.mainContainer}>
