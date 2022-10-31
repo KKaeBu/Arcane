@@ -30,6 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://project-arcane.netlify.app/",
   "eslintConfig": {
     "extends": [
       "react-app",
