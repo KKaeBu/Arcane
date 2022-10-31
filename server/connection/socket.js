@@ -56,6 +56,7 @@ class Socket {
 
     listen(server) {
         this.io.listen(server);
+        console.log(`app listening on port ${config.host.port}!`);
     }
 }
 

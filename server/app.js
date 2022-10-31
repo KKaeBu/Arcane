@@ -55,7 +55,7 @@ connectDB() //
         // const socket = initSocket(server);
         const httpSocket = initSocket(httpServer);
         // socket.listen(server);
-        httpServer.listen(config.host.port, () => console.log(`app listening on port ${config.host.port}!`))
+        httpSocket.listen(config.host.port, () => console.log(`app listening on port ${config.host.port}!`))
     })
     .catch((err) => {
         console.log(err);
