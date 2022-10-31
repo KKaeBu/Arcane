@@ -52,7 +52,9 @@ class Socket {
                 views++;
             });
         });
+    }
 
+    listen(server) {
         this.io.listen(server);
     }
 }
@@ -62,7 +64,7 @@ class Socket {
 let socket;
 export function initSocket(server) {
     if (!socket) {
-        socket = new Socket(server);
+        return socket = new Socket(server);
     }
 }
 

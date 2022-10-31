@@ -50,7 +50,8 @@ connectDB() //
     .then(() => {
         console.log("db 연결 완료");
         const server = app.listen(config.host.port);
-        initSocket(server);
+        const socket = initSocket(server);
+        socket.listen(server);
     })
     .catch((err) => {
         console.log(err);
