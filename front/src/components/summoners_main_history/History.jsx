@@ -171,7 +171,7 @@ function History(props) {
         // 요소 생성
         const infoMiddle1 = document.createElement("div");
         const itemBuild = document.createElement("ul");
-        const wardItem = document.createElement("img");
+        let wardItem = document.createElement("img");
         const itemIds = [
             data.item0,
             data.item1,
@@ -193,7 +193,12 @@ function History(props) {
             const link = itemIds[i];
             
             if (i === itemIds.length - 1) {
-                wardItem.setAttribute("src", link);
+                if (itemIds[i] === "") {
+                    wardItem = document.createElement("div");
+                    wardItem.setAttribute("class", `${style.item} ${style.wardItem}`);
+                } else
+                    wardItem.setAttribute("src", link);
+                
                 break;
             }
             

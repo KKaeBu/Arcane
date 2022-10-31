@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
 import axios from "axios";
 import moment from "moment/moment";
-// import { tz } from "moment-timezone";
+import { tz } from "moment-timezone";
 import queryString from "query-string";
 // import { config } from "../../config.js";
 
@@ -27,7 +27,7 @@ function Main() {
     const [userName, setuserName] = useState("");
 
     let data = []; // 게시물 object 배열
-    const socket = io.connect("http://43.201.140.217:5000");
+    const socket = io({ autoConnect: false }).connect("http://43.201.140.217:5000");
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
