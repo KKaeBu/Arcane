@@ -52,6 +52,8 @@ class Socket {
                 views++;
             });
         });
+
+        this.io.listen(server);
     }
 }
 
