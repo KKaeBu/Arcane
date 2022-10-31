@@ -1,24 +1,24 @@
 [[redirects]]
 from = "/auth/*"
-to = "http://3.215.131.222:5000/auth/:splat"
+to = "http://43.201.140.217:5000/auth/:splat"
 status = 200
 force = true
 
 [[redirects]]
 from = "/api/summoners/*"
-to = "http://3.215.131.222:5000/api/summoners/:splat"
+to = "http://43.201.140.217:5000/api/summoners/:splat"
 status = 200
 force = true
 
 [[redirects]]
 from = "/post/*"
-to = "http://3.215.131.222:5000/post/:splat"
+to = "http://43.201.140.217:5000/post/:splat"
 status = 200
 force = true
 
 [[redirects]]
 from = "/api/*"
-to = "http://3.215.131.222:5000/api/:splat"
+to = "http://43.201.140.217:5000/api/:splat"
 status = 200
 force = true
 
