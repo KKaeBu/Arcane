@@ -221,6 +221,7 @@ function Main() {
                 headers: {
                     token: token,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setuserName(res.data.username);
