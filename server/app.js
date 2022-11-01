@@ -52,12 +52,8 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        let options = {
-            key: fs.readFileSync("path/to/ssl/key"),
-            cert: fs.readFileSync("path/to/ssl/.crt file")
-        };
         http.createServer(app).listen(80);
-        https.createServer(options, app).listen(443);
+        https.createServer(app).listen(443);
         // const httpServer = http.createServer(app);
 
         const server = app.listen(config.host.port);
