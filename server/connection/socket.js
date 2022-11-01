@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { config } from "../config.js";
 
 // 소켓이라는 클래스를 새롭게 정의
@@ -7,8 +7,6 @@ class Socket {
     // 어딘가에서 해당 클래스의 객체 생성시 constructor 실행
     // 새롭게 소켓을 만듬
     constructor(server) {
-        let username;
-
         this.io = new Server(server, {
             cors: {
                 origin: "*",
@@ -66,7 +64,9 @@ class Socket {
 let socket;
 export function initSocket(server) {
     if (!socket) {
-        return socket = new Socket(server);
+        console.log("in initSocket");
+        socket = new Socket(server);
+        return socket;
     }
 }
 
