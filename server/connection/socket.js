@@ -66,6 +66,7 @@ export function initSocket(server) {
     if (!socket) {
         console.log("in initSocket");
         socket = new Socket(server);
+        console.log("in server socket: ", socket);
         return socket;
     }
 }
