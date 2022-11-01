@@ -58,8 +58,8 @@ connectDB() //
         // initSocket(httpServer);
 
         var options = {
-            key: fs.readFileSync('./Arcane_key.pem'),
-            cert: fs.readFileSync('./Arcane_key.pem')
+            key: fs.readFileSync('./arcane.pem'),
+            cert: fs.readFileSync('./arcane.pem')
         };
         const httpsServer = https.createServer(options, app).listen(config.host.port, () => {
             console.log("listening on *: " + config.host.port);
