@@ -52,9 +52,13 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        // const httpServer = http.createServer(app);
-        const server = app.listen(config.host.port);
-        const socket = initSocket(server);
+        const httpServer = http.Server(app);
+        initSocket(httpServer);
+        httpServer.listen(config.host.port);
+
+        // const server = app.listen(config.host.port);
+        // const socket = initSocket(server);
+
         // const httpSocket = initSocket(httpServer);
         // socket.listen(server);
         // httpSocket.listen(config.host.port, () => console.log(`app listening on port ${config.host.port}!`))
