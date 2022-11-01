@@ -52,11 +52,11 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        const httpServer = http.createServer(app);
-        initSocket(httpServer);
-        httpServer.listen(config.host.port, () => {
+        const httpServer = http.createServer(app).listen(config.host.port, () => {
             console.log("listening on *: " + config.host.port);
         });
+        initSocket(httpServer);
+
 
         // const server = app.listen(config.host.port);
         // const socket = initSocket(server);
