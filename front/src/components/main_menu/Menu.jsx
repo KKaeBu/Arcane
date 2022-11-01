@@ -17,7 +17,9 @@ import { io } from "socket.io-client";
 function Menu() {
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
-    const socket = io.connect("http://43.201.140.217:5000");
+    const socket = io("http://43.201.140.217:5000", {
+        rejectUnauthorized: false
+    }).connect();
 
     const onClick = (e) => {
         if (isLogin) {
