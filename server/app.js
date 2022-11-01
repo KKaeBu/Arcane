@@ -52,14 +52,8 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        http.createServer(app).listen(80);
-        https.createServer(app).listen(443);
         // const httpServer = http.createServer(app);
-
         const server = app.listen(config.host.port);
-
-        
-
         const socket = initSocket(server);
         // const httpSocket = initSocket(httpServer);
         // socket.listen(server);
