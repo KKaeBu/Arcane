@@ -4,7 +4,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import io from "socket.io-client";
+import {io} from "socket.io-client";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
@@ -27,7 +27,7 @@ function Main() {
     const [userName, setuserName] = useState("");
 
     let data = []; // 게시물 object 배열
-    const socket = io("http://43.201.140.217:5000");
+    const socket = io.connect("http://43.201.140.217:5000");
     // let socket = io.connect("http://43.201.140.217:5000");
     // console.log("socket: ", socket.io);
 

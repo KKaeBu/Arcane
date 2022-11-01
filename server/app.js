@@ -52,11 +52,19 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
-        const httpServer = http.createServer(app).listen(config.host.port, () => {
-            console.log("listening on *: " + config.host.port);
-        });
-        initSocket(httpServer);
+        // const httpServer = http.createServer(app).listen(config.host.port, () => {
+        //     console.log("listening on *: " + config.host.port);
+        // });
+        // initSocket(httpServer);
 
+        var options = {
+            key: fs.readFileSync('./Arcane_key.ppk'),
+            cert: fs.readFileSync('./Arcane_key.ppk')
+        };
+        const httpsServer = https.createServer(options, app).listen(config.host.port, () => {
+            console.log("listening on *: " + config.host.port);
+        })
+        initSocket(httpsServer);
 
         // const server = app.listen(config.host.port);
         // const socket = initSocket(server);
