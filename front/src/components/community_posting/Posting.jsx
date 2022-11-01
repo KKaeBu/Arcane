@@ -4,11 +4,13 @@ import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useLocation, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 // import { history } from "./../../history";
 
 function Posting(props) {
     const navigate = useNavigate();
     const page = useLocation();
+    const socket = io.connect("http://43.201.140.217:5000");
 
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
@@ -194,7 +196,11 @@ function Posting(props) {
                     content: text,
                     view: 0,
                 })
-                .then((res) => {})
+                .then((res) => {
+                    if (res.data.post.username !== "") {
+                        socket.emit("posting", res.data.post.username);
+                    }
+                })
                 .catch((error) => {
                     console.error(error);
                 });

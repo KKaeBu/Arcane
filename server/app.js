@@ -1,9 +1,11 @@
 import express from "express";
 import http from "http";
+import https from "https";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
+import fs from "fs";
 import history from "connect-history-api-fallback";
 import "express-async-errors";
 import summonersRouter from "./router/summoners.js";
@@ -50,8 +52,18 @@ app.use((error, req, res, next) => {
 connectDB() //
     .then(() => {
         console.log("db 연결 완료");
+        let options = {
+            key: fs.readFileSync("path/to/ssl/key"),
+            cert: fs.readFileSync("path/to/ssl/.crt file")
+        };
+        http.createServer(app).listen(80);
+        https.createServer(options, app).listen(443);
         // const httpServer = http.createServer(app);
+
         const server = app.listen(config.host.port);
+
+        
+
         const socket = initSocket(server);
         // const httpSocket = initSocket(httpServer);
         // socket.listen(server);
