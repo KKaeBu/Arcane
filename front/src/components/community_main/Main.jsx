@@ -4,7 +4,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
@@ -27,11 +27,23 @@ function Main() {
     const [userName, setuserName] = useState("");
 
     let data = []; // 게시물 object 배열
-    const socket = io.connect("http://43.201.140.217:5000");
+    const socket = io("http://43.201.140.217:5000");
+    // let socket = io.connect("http://43.201.140.217:5000");
+    // console.log("socket: ", socket.io);
 
     const newPostDiv = document.getElementsByClassName(style.newPost);
     const tbody = document.getElementsByClassName(style.tbody);
     const listSortItem = document.getElementsByClassName(style.listSortItem);
+
+
+    const connectSocket = () => {
+        socket.on("connect", () => {
+            console.log("connection server");
+        });
+        console.log("socket: ", socket);
+
+    }
+
 
     const isLastPage = (page) => {
         if (parseInt((data.length - 1) / 15) === page - 1) {
@@ -272,13 +284,14 @@ function Main() {
      ***** 그럼 서버의 emit메소드 한번에 여러번의 on메소드 실행을 하는 격
      */
     useEffect(() => {
-        socket.on("newPost", (data) => {
-            if (data !== userName && data !== "" && userName !== "") {
-                console.log(`${data} post`);
-                newPostDiv[0].removeAttribute("id");
-            }
-        });
-    }, [isLogin, newPostDiv, socket, userName]);
+        // socket.on("newPost", (data) => {
+        //     if (data !== userName && data !== "" && userName !== "") {
+        //         console.log(`${data} post`);
+        //         newPostDiv[0].removeAttribute("id");
+        //     }
+        // });
+        connectSocket();
+    }, []);
 
     return (
         <div className={style.mainContainer}>

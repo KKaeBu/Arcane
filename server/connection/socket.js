@@ -33,15 +33,16 @@ class Socket {
         // });
 
         this.io.on("connection", (socket) => {
-            socket.on("welcome", (data) => {
-                if (data !== "") {
-                    console.log(`${data} is login`);
-                    username = data;
-                    socket.broadcast.emit("alert", username);
-                    //this.io.sockets.emit("alert", username);
-                    //socket.emit("alert", username);
-                }
-            });
+            console.log(socket.id, "socket connected!");
+            // socket.on("welcome", (data) => {
+            //     if (data !== "") {
+            //         console.log(`${data} is login`);
+            //         username = data;
+            //         socket.broadcast.emit("alert", username);
+            //         //this.io.sockets.emit("alert", username);
+            //         //socket.emit("alert", username);
+            //     }
+            // });
             socket.on("posting", (data) => {
                 if (data !== "") {
                     console.log(`${data} is posting`);
