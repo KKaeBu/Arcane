@@ -80,6 +80,7 @@ export async function getSummonerInfo(req, res, next) {
     const summoner = await userRepository.findBySummonerName(summonerName);
 
     summoner.matchList.forEach(i => {
+        console.log("i: ", i);
         if (i == null) {
             let pos = summoner.matchList.indexOf(i);
             summoner.matchList.splice(pos, 1);
