@@ -4,7 +4,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import {io} from "socket.io-client";
+// import {io} from "socket.io-client";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TokenStorage from "./../../db/token";
@@ -36,13 +36,13 @@ function Main() {
     const listSortItem = document.getElementsByClassName(style.listSortItem);
 
 
-    const connectSocket = () => {
-        socket.on("connect", () => {
-            console.log("connection server");
-        });
-        console.log("socket: ", socket);
+    // const connectSocket = () => {
+    //     socket.on("connect", () => {
+    //         console.log("connection server");
+    //     });
+    //     console.log("socket: ", socket);
 
-    }
+    // }
 
 
     const isLastPage = (page) => {
@@ -290,7 +290,7 @@ function Main() {
         //         newPostDiv[0].removeAttribute("id");
         //     }
         // });
-        connectSocket();
+        // connectSocket();
     }, []);
 
     return (

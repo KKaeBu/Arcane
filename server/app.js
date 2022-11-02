@@ -57,16 +57,16 @@ connectDB() //
         // });
         // initSocket(httpServer);
 
-        var options = {
-            key: fs.readFileSync('./Arcane_key.pem'),
-            cert: fs.readFileSync('./Arcane_key.pem')
-        };
-        const httpsServer = https.createServer(options, app).listen(config.host.port, () => {
-            console.log("listening on *: " + config.host.port);
-        })
-        initSocket(httpsServer);
+        // var options = {
+        //     key: fs.readFileSync('./Arcane_key.pem'),
+        //     cert: fs.readFileSync('./Arcane_key.pem')
+        // };
+        // const httpsServer = https.createServer(options, app).listen(config.host.port, () => {
+        //     console.log("listening on *: " + config.host.port);
+        // })
+        // initSocket(httpsServer);
 
-        // const server = app.listen(config.host.port);
+        const server = app.listen(config.host.port);
         // const socket = initSocket(server);
 
         // const httpSocket = initSocket(httpServer);
