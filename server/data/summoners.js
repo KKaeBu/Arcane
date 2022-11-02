@@ -46,3 +46,7 @@ export async function updateRank(name, rank) {
     
     return await Summoner.findOneAndUpdate(filter, rank, { returnDocument: "after" });
 }
+
+export async function deleteHistory(matchId) {
+    return await MatchHistory.deleteOne({ matchId: matchId });
+}
