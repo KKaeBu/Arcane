@@ -200,7 +200,7 @@ export async function updateRankData(req, res, next) {
 }
 
 export async function getLastMatch(req, res, next) {
-    const summonerName = req.headers.name;
+    const summonerName = decodeURIComponent(req.headers.name);
 
     console.log("lm summonerName: " + summonerName);
     const summoner = await userRepository.findBySummonerName(summonerName);
