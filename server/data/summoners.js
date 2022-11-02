@@ -25,6 +25,11 @@ export async function createSummoner(summoner) {
 
 /**새롭게 검색한 소환사의 전적 정보 추가 */
 export async function createMatchHistory(matchHistory) {
+    // 중복체크 (MatchId 값이 같은 값이 있는지 확인)
+    const overlaped = MatchHistory.findOne({ matchId: matchHistory.matchId });
+    if (overlaped == null)
+        return null;
+    
     return new MatchHistory(matchHistory)//
         .save()
         .then((data) => data.id)

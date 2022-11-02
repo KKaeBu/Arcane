@@ -178,6 +178,9 @@ async function saveMatchHistroy(matchHistoryList) {
         const matchId = await userRepository.createMatchHistory(
             matchHistoryList[m]
         );
+        if (matchId == null)
+            continue;
+        
         const match = await userRepository.findByMatchId(matchId);
         matchList.push(match);
     }
