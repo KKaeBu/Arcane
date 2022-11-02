@@ -87,9 +87,9 @@ export async function getSummonerInfo(req, res, next) {
     //     }
     // });
 
-    // for (let i = 0; i < 6; i++){
-    //     summoner.matchList.shift();
-    // }
+    for (let i = 0; i < 6; i++){
+        summoner.matchList.shift();
+    }
 
     summoner.save();
 
