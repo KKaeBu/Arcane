@@ -81,7 +81,7 @@ export async function getSummonerInfo(req, res, next) {
 
     summoner.matchList.forEach(i => {
         console.log("i: ", typeof(i));
-        if (i === "null") {
+        if (i === null) {
             let pos = summoner.matchList.indexOf(i);
             summoner.matchList.splice(pos, 1);
         }
