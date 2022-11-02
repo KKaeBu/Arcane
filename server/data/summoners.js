@@ -31,7 +31,7 @@ export async function createMatchHistory(matchHistory) {
     const overlaped = MatchHistory.findOne({ matchId: id });
     console.log("overlaped: ", typeof (overlaped));
     console.log("overlaped.id: ", overlaped.id);
-    if (overlaped !== null)
+    if (overlaped.id !== undefined)
         return overlaped.id;
     
     return new MatchHistory(matchHistory)//
