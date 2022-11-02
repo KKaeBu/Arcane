@@ -83,6 +83,7 @@ function Summoners() {
                     matchStart,
                     matchCount
                 );
+                console.log("matchIdListData: ", matchIdListData);
 
                 if (matchIdListData.length !== 0)
                     setLastestMatch(matchIdListData[0]);
@@ -92,6 +93,7 @@ function Summoners() {
                         return getMatchInfo(m, summonerJson);
                     })
                 );
+                console.log("matchHistoryList: ", matchHistoryList);
 
                 const DB_summoner = await db.saveSummonerInfo(
                     summonerJson,
