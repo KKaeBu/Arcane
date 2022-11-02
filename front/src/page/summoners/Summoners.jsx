@@ -335,32 +335,34 @@ function Summoners() {
                 pos = matchIdListData.indexOf(lastestMatch);
                 if (pos !== -1) {
                     checkNum = matchCount * i + pos;
+                    matchIdListData = await riot.getMatchIdList(
+                        summonerJsonData.puuid,
+                        matchStart,
+                        checkNum
+                    );
+                    console.log("matchIdListData over 20: ", matchIdListData);
+
+                    matchIdListData.reverse();
+
+                    console.log("reverseList: ", matchIdListData);
+
+                    const matchHistoryList = await Promise.all(
+                        matchIdListData.map((m) => {
+                            return getMatchInfo(m, summonerJsonData);
+                        })
+                    );
+
+                    const newMatchList = await db.addNewMatchHistory(
+                        summonerJsonData.name,
+                        matchHistoryList
+                    );
+
+                    setCurrentMatchNum(currentMatchNum + matchIdListData.length);
+                    setNewMatchData(newMatchList);
+                    setLastestMatch(matchIdListData[0]);
                     break;
                 }
             }
-
-            matchIdListData = await riot.getMatchIdList(
-                summonerJsonData.puuid,
-                matchStart,
-                checkNum
-            );
-
-            matchIdListData.reverse();
-
-            const matchHistoryList = await Promise.all(
-                matchIdListData.map((m) => {
-                    return getMatchInfo(m, summonerJsonData);
-                })
-            );
-
-            const newMatchList = await db.addNewMatchHistory(
-                summonerJsonData.name,
-                matchHistoryList
-            );
-
-            setCurrentMatchNum(currentMatchNum + matchIdListData.length);
-            setNewMatchData(newMatchList);
-            setLastestMatch(matchIdListData[0]);
         }
 
         const rankData = await riot.getSummonerLeague(summonerJsonData.id);
