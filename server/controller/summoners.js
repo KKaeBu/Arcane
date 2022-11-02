@@ -87,9 +87,9 @@ export async function getSummonerInfo(req, res, next) {
     //     }
     // });
 
-    // for (let i = 0; i < 62; i++){
-    //     summoner.matchList.shift();
-    // }
+    for (let i = 0; i < 6; i++){
+        summoner.matchList.shift();
+    }
 
     summoner.save();
 
@@ -130,7 +130,10 @@ export async function addNewMatchHistory(req, res, next) {
     const summoner = await userRepository.findBySummonerName(summonerName);
 
     mList.reverse();
+    console.log("mList: ", mList);
     summoner.matchList = mList.concat(summoner.matchList);
+
+    console.log("summoner.matchList: ", summoner.matchList);
 
     summoner.save();
     mList.reverse();
