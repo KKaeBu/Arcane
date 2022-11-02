@@ -87,9 +87,9 @@ export async function getSummonerInfo(req, res, next) {
     //     }
     // });
 
-    // for (let i = 0; i < 3; i++){
-    //     summoner.matchList.shift();
-    // }
+    for (let i = 0; i < 6; i++){
+        summoner.matchList.shift();
+    }
 
     summoner.save();
 
@@ -197,6 +197,16 @@ export async function updateRankData(req, res, next) {
     return res.status(200).json(result);
 
     
+}
+
+export async function getLastMatch(req, res, next) {
+    const summonerName = req.headers.name;
+
+    const summoner = await userRepository.findBySummonerName(summonerName);
+
+    const lastMatchId = summoner.matchList[0].matchId;
+
+    return res.status(200).json(lastMatchId);
 }
 
 async function saveMatchHistroy(matchHistoryList) {

@@ -287,7 +287,8 @@ function Summoners() {
             matchCount
         );
 
-        let pos = matchIdListData.indexOf(lastestMatch);
+        const lastMatch = await db.getLastMatch(summonerJsonData.name);
+        let pos = matchIdListData.indexOf(lastMatch);
         if (pos !== -1) {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 있을경우
             const newMatchIdList = matchIdListData.slice(0, pos);

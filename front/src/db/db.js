@@ -182,4 +182,22 @@ export default class DB {
         return await result;
     }
 
+    async getLastMatch(summonerName) {
+        const name = encodeURIComponent(summonerName);
+
+        let data = await axios//
+            .get("/api/summoners/lastmatch", {
+                headers: {
+                    name: name, 
+                }
+            })
+            .then((res) => {
+                console.log("가장 최근 전적 id: " + res.data);
+                return res.data;
+            })
+            .catch(err => console.log("getLastMatch error: " + err));
+        
+        return await data;
+    }
+
 }
