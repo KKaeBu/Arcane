@@ -91,7 +91,7 @@ function Champion() {
 
     useEffect(() => {
         showChampBtn();
-    });
+    }, [champions]);
 
     return (
         <div className={style.mainDisplay}>
