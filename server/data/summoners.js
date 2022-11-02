@@ -28,8 +28,9 @@ export async function createMatchHistory(matchHistory) {
     // 중복체크 (MatchId 값이 같은 값이 있는지 확인)
     const id = matchHistory.matchId;
     console.log("id: ", id);
-    const overlaped = MatchHistory.findOne({ matchId: id });
-    console.log("overlaped: ", typeof (overlaped));
+    const overlaped = MatchHistory.findOne({ "matchId": id });
+    console.log("overlaped: ", overlaped);
+    console.log("overlaped-type: ", typeof (overlaped));
     console.log("overlaped.id: ", overlaped.id);
     if (overlaped.id !== undefined)
         return overlaped.id;

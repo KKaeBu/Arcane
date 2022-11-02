@@ -320,6 +320,7 @@ function Summoners() {
                 summonerJsonData.name,
                 matchHistoryList
             );
+            console.log("newMatchList: ", newMatchList);
 
             setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
             setNewMatchData(newMatchList);
