@@ -202,9 +202,11 @@ export async function updateRankData(req, res, next) {
 export async function getLastMatch(req, res, next) {
     const summonerName = req.headers.name;
 
+    console.log("lm summonerName: " + summonerName);
     const summoner = await userRepository.findBySummonerName(summonerName);
 
     const lastMatchId = summoner.matchList[0].matchId;
+    console.log("lastMatchId: " + lastMatchId);
 
     return res.status(200).json(lastMatchId);
 }
