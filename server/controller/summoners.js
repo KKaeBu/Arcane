@@ -87,9 +87,9 @@ export async function getSummonerInfo(req, res, next) {
     //     }
     // });
 
-    // for (let i = 0; i < 6; i++){
-    //     summoner.matchList.shift();
-    // }
+    for (let i = 0; i < 8; i++){
+        summoner.matchList.shift();
+    }
 
     summoner.save();
 
@@ -132,11 +132,13 @@ export async function addNewMatchHistory(req, res, next) {
     mList.reverse();
     console.log("mList: ", mList);
     for (const m in mList) {
-        const pos = summoner.matchList.indexOf(mList[m].matchId);
-        if (pos !== -1) {
-            summoner.matchList.splice(pos, 1);
-            const del = await userRepository.deleteHistory(mList[m].matchId);
-            console.log("del: ", del);
+        for (const sm in summoner.matchList) {
+            if (mList[m].matchId === summoner.matchList[sm]) {
+                summoner.matchList.splice(sm, 1);
+                const del = await userRepository.deleteHistory(mList[m].matchId);
+                console.log("del: ", del);
+                break;
+            }
         }
     }
     summoner.matchList = mList.concat(summoner.matchList);
