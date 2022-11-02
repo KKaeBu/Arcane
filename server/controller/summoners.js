@@ -133,7 +133,7 @@ export async function addNewMatchHistory(req, res, next) {
     console.log("mList: ", mList);
     summoner.matchList = mList.concat(summoner.matchList);
 
-    console.log("summoner.matchList: ", summoner.matchList);
+    console.log("mList2: ", mList);
 
     summoner.save();
     mList.reverse();
