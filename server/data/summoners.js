@@ -34,7 +34,7 @@ export async function createMatchHistory(matchHistory) {
     if (overlaped.id !== undefined)
         return overlaped.id;
     
-    return new MatchHistory(matchHistory)//
+    return await new MatchHistory(matchHistory)//
         .save()
         .then((data) => data.id)
         .catch((err) => console.log(err));

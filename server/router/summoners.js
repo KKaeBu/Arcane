@@ -20,5 +20,4 @@ router.post("/addnewhistory", summonersController.addNewMatchHistory);
 
 router.patch("/updaterank", summonersController.updateRankData);
 
-
 export default router;
