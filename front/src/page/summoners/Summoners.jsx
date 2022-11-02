@@ -359,7 +359,7 @@ function Summoners() {
                         matchHistoryList
                     );
 
-                    setCurrentMatchNum(currentMatchNum + matchIdListData.length);
+                    setCurrentMatchNum(matchCount);
                     setNewMatchData(newMatchList);
                     setLastestMatch(matchIdListData[0]);
                     break;
