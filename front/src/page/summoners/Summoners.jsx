@@ -321,6 +321,8 @@ function Summoners() {
 
             setCurrentMatchNum(currentMatchNum + newMatchIdList.length);
             setNewMatchData(newMatchList);
+            setLastestMatch(matchIdListData[0]);
+            
         } else {
             // 불러온 전적중에 디비에 있는 가장 최근 전적이 없을경우
             let checkNum = 1;
@@ -332,7 +334,7 @@ function Summoners() {
                 );
                 pos = matchIdListData.indexOf(lastestMatch);
                 if (pos !== -1) {
-                    checkNum += matchCount * i + pos;
+                    checkNum = matchCount * i + pos;
                     break;
                 }
             }
@@ -358,6 +360,7 @@ function Summoners() {
 
             setCurrentMatchNum(currentMatchNum + matchIdListData.length);
             setNewMatchData(newMatchList);
+            setLastestMatch(matchIdListData[0]);
         }
 
         const rankData = await riot.getSummonerLeague(summonerJsonData.id);
