@@ -87,9 +87,9 @@ export async function getSummonerInfo(req, res, next) {
     //     }
     // });
 
-    // for (let i = 0; i < 3; i++){
-    //     summoner.matchList.shift();
-    // }
+    for (let i = 0; i < 6; i++){
+        summoner.matchList.shift();
+    }
 
     summoner.save();
 
@@ -130,10 +130,13 @@ export async function addNewMatchHistory(req, res, next) {
     const summoner = await userRepository.findBySummonerName(summonerName);
 
     mList.reverse();
-    console.log("mList: ", mList);
+    // console.log("mList: ", mList);
     for (const m in mList) {
         for (const sm in summoner.matchList) {
-            if (mList[m].matchId === summoner.matchList[sm]) {
+            console.log("summoner.matchId: " + summoner.matchList[sm].matchId);
+            console.log("mList.matchId: " + mList[m].matchId);
+            console.log("===================================");
+            if (mList[m].matchId === summoner.matchList[sm].matchId) {
                 summoner.matchList.splice(sm, 1);
                 const del = await userRepository.deleteHistory(mList[m].matchId);
                 console.log("del: ", del);
@@ -141,9 +144,10 @@ export async function addNewMatchHistory(req, res, next) {
             }
         }
     }
+
     summoner.matchList = mList.concat(summoner.matchList);
 
-    console.log("mList2: ", mList);
+    // console.log("mList2: ", mList);
 
     summoner.save();
     mList.reverse();
