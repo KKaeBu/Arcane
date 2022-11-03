@@ -571,7 +571,7 @@ function queueTypeConverter(queue) {
             convertedQueue = "무작위 총력전";
             break;
         case "Ultimate Spellbook games":
-            convertedQueue = "궁국기 주문서";
+            convertedQueue = "궁극기 주문서";
             break;
 
         case "Pick URF games":
