@@ -1,7 +1,5 @@
 import style from "./mypage_account_info.module.css";
-// import { useLocation, useNavigate } from "react-router-dom";
 import { useRef, useEffect } from "react";
-// import axios from "axios";
 import moment from "moment/moment";
 // import { tz } from "moment-timezone";
 

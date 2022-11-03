@@ -1,14 +1,15 @@
 @font-face {
     font-family: "Community";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff")
-        format("woff");
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: "나눔고딕";
     src: url(../../../assets/fonts/나눔고딕.ttf) format("truetype");
 }
+
 @font-face {
     font-family: "diary";
     src: url(../../../assets/fonts/EF_Diary.ttf) format("truetype");
@@ -22,7 +23,7 @@
     border-radius: 10px;
 
     /* width: 70vh; */
-    height: 25vh;
+    min-height: 25vh;
 
     background-color: rgba(255, 255, 255, 0.9);
     font-family: "diary";
