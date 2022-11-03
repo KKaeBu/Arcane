@@ -4,25 +4,19 @@ import style from "./posting.module.css";
 import axios from "axios";
 import TokenStorage from "../../db/token";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { io } from "socket.io-client";
-// import { history } from "./../../history";
 
 function Posting(props) {
     const navigate = useNavigate();
     const page = useLocation();
-    // const socket = io.connect("http://43.201.140.217:5000");
 
     const maxListNum = 4; //최대 파일 첨부 개수
     const [count, setCount] = useState(0); //현재 등록된 이미지 파일 개수
     const [restLength, setRestLength] = useState(4); //마저 등록할 수 있는 이미지 파일의 개수
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
-    // const ul = document.querySelector("." + style["postingAttachList"]);
     const postingMain = document.getElementById("postingMain");
     const [isLogin, setLogin] = useState(false);
     const [userName, setuserName] = useState("");
-
-    // const [isblocking, setBlocking] = useState(false);
 
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
@@ -196,11 +190,6 @@ function Posting(props) {
                     content: text,
                     view: 0,
                 })
-                .then((res) => {
-                    if (res.data.post.username !== "") {
-                        // socket.emit("posting", res.data.post.username);
-                    }
-                })
                 .catch((error) => {
                     console.error(error);
                 });
@@ -247,7 +236,7 @@ function Posting(props) {
         window.addEventListener("popstate", preventGoBack);
 
         return () => window.removeEventListener("popstate", preventGoBack);
-    });
+    }, [navigate, page.state]);
 
     return (
         <div className={style.postingContainer}>

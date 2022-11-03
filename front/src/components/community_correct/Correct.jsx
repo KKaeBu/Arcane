@@ -239,7 +239,7 @@ function Correcting(props) {
 
     useEffect(() => {
         isValidToken();
-    });
+    }, []);
 
     return (
         <div className={style.postingContainer}>
