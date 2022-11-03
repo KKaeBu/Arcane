@@ -13,7 +13,7 @@ function Footer() {
                     목표이다.
                 </p>
                 <p>develope by GGeaBu, SangHoon</p>
-                <p>tel: 010-8907-4995, 010-9010-8325</p>
+                <p>email: gghss0924@naver.com, ysh038@naver.com</p>
             </div>
             <div className={style.footerCenter}></div>
             <div className={style.footerRight}>
