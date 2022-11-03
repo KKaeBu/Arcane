@@ -20,7 +20,8 @@
     flex-direction: column;
 }
 
-.loadingBox {
+.loadingBox, 
+.notFoundBox {
     width: 100%;
     min-height: inherit;
     margin: 0 auto;
@@ -33,11 +34,22 @@
     font-size: 24px;
 }
 
-.loadingIcon {
+.loadingIcon,
+.errorIcon {
     color: rgb(188, 185, 185);
     font-size: 242px !important;
     margin-bottom: 50px;
     animation: rotate_image 2s linear infinite;
+}
+
+.errorIcon {
+    animation: semi_rotate_image 3s ease-in-out infinite;
+}
+
+.errorMsg {
+    font-size: 28px;
+    color: red;
+    animation: fade_up 3s ease-in-out infinite;
 }
 
 .noticeBox {
@@ -49,7 +61,7 @@
     font-weight: normal;
 
     color: rgb(198, 136, 23);
-    animation: fade_in 5s ease-in-out;
+    animation: fade_in 5s ease-in-out infinite;
 }
 
 .noticeIcon {
@@ -62,6 +74,20 @@
     }
 }
 
+@keyframes semi_rotate_image {
+    0% {
+        transform: rotate(-45deg);
+    }
+
+    50% {
+        transform: rotate(45deg);
+    }
+
+    100% {
+        transform: rotate(-45deg);
+    }
+}
+
 @keyframes fade_in {
     0% {
         transform: translateY(20px);
@@ -71,5 +97,18 @@
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+@keyframes fade_up {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(15px);
+    }
+
+    100% {
+        transform: translateY(0px);
     }
 }
