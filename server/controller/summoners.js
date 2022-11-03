@@ -41,7 +41,7 @@ export async function saveSummonerInfo(req, res, next) {
 
     for (const r in rankData) {
         if (rankData[r].queueType === "RANKED_SOLO_5x5") soloRank = rankData[r];
-        else flexRank = rankData[r];
+        else if(rankData[r].queueType === "RANKED_FLEX_SR") flexRank = rankData[r];
     }
 
     const mList = await saveMatchHistroy(matchHistoryList);
@@ -184,7 +184,7 @@ export async function updateRankData(req, res, next) {
             soloRank.soloRankWinNum = rankData[r].wins;
             soloRank.soloRankLoseNum = rankData[r].losses;
         }
-        else {
+        else if(rankData[r].queueType === "RANKED_FLEX_SR") {
             flexRank.flexRankQueueType = rankData[r].queueType;
             flexRank.flexRankTier = rankData[r].tier;
             flexRank.flexRankRank = rankData[r].rank;

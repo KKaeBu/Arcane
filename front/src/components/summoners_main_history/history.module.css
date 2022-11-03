@@ -294,6 +294,7 @@
     border: 2px solid black;
     background-color: rgb(188, 185, 185);
     margin-right: 6px;
+    animation: rotate_image 2s linear infinite;
 }
 
 .innerLoadingCircle {
@@ -301,10 +302,6 @@
     height: 23px;
     border-radius: 25%;
     background-color: rgb(188, 185, 185);
-}
-
-.loadingCircle {
-    animation: rotate_image 2s linear infinite;
 }
 
 .notMatchList {
