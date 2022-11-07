@@ -20,6 +20,6 @@ router.post("/addhistory", summonersController.addMatchHistory);
 
 router.post("/addnewhistory", summonersController.addNewMatchHistory);
 
-router.patch("/updaterank", summonersController.updateRankData);
+router.patch("/updatesummoner", summonersController.updateSummonerInfo);
 
 export default router;
