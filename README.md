@@ -9,7 +9,7 @@
 때문에, 이 게임의 각종 통계치를 보여주는 전적 검색사이트들이 실제로 많이 서비스되고있습니다.
 우리 주위에서 친숙한 소재이기도 하고 참고할 만한 사이트들도 많다는 것을 이유로들어, 첫 번째 프로젝트 주제로 삼게되었습니다.
 
-페이지 URL : https://golden-chimera-76d804.netlify.app/
+페이지 URL : https://project-arcane.netlify.app
 
 # :sunglasses: 주요 기능
 **League Of Legends**<sup>[[1]](#footnote_1)</sup> 게임의 유저 전적 검색 사이트인 만큼 전적 검색 기능이 가장 주요한 기능입니다.
