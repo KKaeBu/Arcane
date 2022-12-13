@@ -166,20 +166,20 @@ export default class DB {
         return await data;
     }
 
-    /**전적 갱신시 변경될 랭크 데이터를 업데이트 */
-    async updateRankData(summonerName, rankData) {
+    /**전적 갱신시 변경될 소환사 데이터를 업데이트 */
+    async updateSummonerInfo(summonerJson, rankData) {
         let result = await axios
-            .patch("/api/summoners/updaterank", {
-                summonerName: summonerName,
-                rankData: rankData,
-            })
-            .then((res) => {
-                console.log("랭크 데이터 업데이트: ", res.data);
-                return res.data;
-            })
-            .catch((err) => console.log("updateRankData error: " + err));
+        .patch("/api/summoners/updatesummoner", {
+            summonerJson: summonerJson,
+            rankData: rankData,
+        })
+        .then((res) => {
+            console.log("소환사 정보 업데이트: ", res.data);
+            return res.data;
+        })
+        .catch((err) => console.log("updateSummonerInfo error: " + err));
 
-        return await result;
+    return await result;
     }
 
     async getLastMatch(summonerName) {

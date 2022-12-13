@@ -64,8 +64,12 @@ function Summoners() {
                 (await db.isSummoner(summonerJson.name)) !== false
             ) {
                 // 데베에 검색한 유저가 있다면 -> 해당 유저의 데이터를 가져옴
-                const DB_summoner = await db.getSummonerInfo(summonerJson.name);
+                let DB_summoner = await db.getSummonerInfo(summonerJson.name);
                 // console.log("유저가 있군요!: ", DB_summoner);
+
+                // 유저 정보 업데이트
+                const rankData = await riot.getSummonerLeague(summonerJson.id);
+                DB_summoner = await db.updateSummonerInfo(summonerJson, rankData);
                 if (DB_summoner.matchList.length <= matchCount) {
                     setCurrentMatchNum(
                         currentMatchNum + DB_summoner.matchList.length
@@ -299,11 +303,12 @@ function Summoners() {
                 // 가장 최근 전적이 가장 첫번째일 경우(즉, 새로운 전적이 없음)
                 setNewMatchData([]);
 
+                const summonerJson = await riot.getSummoner(summonerJsonData.name);
                 const rankData = await riot.getSummonerLeague(
                     summonerJsonData.id
                 );
-                const result = await db.updateRankData(
-                    summonerJsonData.name,
+                const result = await db.updateSummonerInfo(
+                    summonerJson,
                     rankData
                 );
                 setSummonerData(result);
@@ -372,9 +377,11 @@ function Summoners() {
             }
         }
 
-        const rankData = await riot.getSummonerLeague(summonerJsonData.id);
-        const result = await db.updateRankData(summonerJsonData.name, rankData);
+        const summonerJson = await riot.getSummoner(summonerJsonData.name);
+        const rankData = await riot.getSummonerLeague(summonerJson.id);
+        const result = await db.updateSummonerInfo(summonerJson, rankData);
         setSummonerData(result);
+        setSummonerJsonData(summonerJson);
         setIsRe(!isRe);
         return;
     };

@@ -41,10 +41,10 @@ export async function createMatchHistory(matchHistory) {
         .catch((err) => console.log(err));
 }
 
-export async function updateRank(name, rank) {
+export async function updateSummonerInfo(name, update) {
     const filter = { summonerName: name };
     
-    return await Summoner.findOneAndUpdate(filter, rank, { returnDocument: "after" });
+    return await Summoner.findOneAndUpdate(filter, update, { returnDocument: "after" });
 }
 
 export async function deleteHistory(matchId) {

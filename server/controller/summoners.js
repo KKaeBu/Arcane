@@ -155,8 +155,14 @@ export async function addNewMatchHistory(req, res, next) {
     return res.status(201).json(mList);
 }
 
-export async function updateRankData(req, res, next) {
-    const { summonerName, rankData } = req.body;
+
+export async function updateSummonerInfo(req, res, next) {
+    const {summonerJson, rankData} = req.body;
+
+    const info = {
+        profileIconId: summonerJson.profileIconId,
+        level: summonerJson.summonerLevel
+    }
 
     let soloRank = {
         soloRankQueueType: "Unranked",
@@ -195,12 +201,11 @@ export async function updateRankData(req, res, next) {
     }
 
     const rank = { ...soloRank, ...flexRank };
+    const update = {...info, ...rank};
 
-    const result = await userRepository.updateRank(summonerName, rank);
+    const result = await userRepository.updateSummonerInfo(summonerJson.name, update);
 
     return res.status(200).json(result);
-
-    
 }
 
 export async function getLastMatch(req, res, next) {
