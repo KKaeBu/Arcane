@@ -236,7 +236,7 @@ class Riot_API {
         //     return `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png`;
 
         // const link = `https://ddragon.canisback.com/img/perk-images/Styles/${number}_${rune}.png`;
-        const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${number}_${rune}.png`
+        const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${number}_${rune}.png`;
         return link;
     }
 
