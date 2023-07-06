@@ -5,7 +5,7 @@ class Riot_API {
     // Version 업데이트마다 변경해줘야함
     #Riot_API_Key = "RGAPI-bc2f0ab8-839a-437e-916d-e4f88615257c";
     #Language = "ko_KR";
-    #Version = "12.23.1";
+    #Version = "13.13.1";
     #headers = {
         "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
