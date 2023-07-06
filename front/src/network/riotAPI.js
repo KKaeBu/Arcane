@@ -203,7 +203,8 @@ class Riot_API {
             detailRune = "VeteranAftershock";
             detailRunePng = "VeteranAftershock";
         }
-        const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`;
+        // const link = `https://ddragon.canisback.com/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`;
+        const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune}/${detailRune}/${detailRunePng}.png`;
         return link;
     }
 
