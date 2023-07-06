@@ -533,11 +533,8 @@ function calcPlayedTime(gStartTime, gEndTime) {
     let resultHours;
 
     resultHours = pHours;
-    if (pHours < 0) {
-        resultHours = pHours + 12;
-        if (pHours <= -12)
-            resultHours += 12;
-    }
+    if (pHours < 0) resultHours = pHours + 24;
+
     resultMinutes = pMinutes;
     resultSeconds = pSeconds;
 
