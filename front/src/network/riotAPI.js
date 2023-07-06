@@ -232,8 +232,8 @@ class Riot_API {
                 break;
         }
 
-        if (number === 0)
-            return `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png`;
+        // if (number === 0)
+        //     return `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png`;
 
         // const link = `https://ddragon.canisback.com/img/perk-images/Styles/${number}_${rune}.png`;
         const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${number}_${rune}.png`
