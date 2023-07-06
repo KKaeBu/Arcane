@@ -211,6 +211,7 @@ class Riot_API {
     /**룬 이름을 통해 서브 룬 이미지를 가져옴 (룬 마다의 번호 값이 다르기에 룬 이름에 따라 번호값을 설정해둠) */
     async getSubRuneImgLink(rune) {
         let number;
+        let runPng = rune;
         switch (rune) {
             case "Domination":
                 number = "7200";
@@ -223,7 +224,7 @@ class Riot_API {
                 break;
             case "Inspiration":
                 number = "7203";
-                rune = "Whimsy";
+                runPng = "Whimsy";
                 break;
             case "Resolve":
                 number = "7204";
@@ -237,7 +238,7 @@ class Riot_API {
         //     return `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png`;
 
         // const link = `https://ddragon.canisback.com/img/perk-images/Styles/${number}_${rune}.png`;
-        const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${number}_${rune}.png`;
+        const link = `https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${number}_${runPng}.png`;
         return link;
     }
 
