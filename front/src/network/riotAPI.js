@@ -221,8 +221,9 @@ class Riot_API {
             case "Sorcery":
                 number = "7202";
                 break;
-            case "Whimsy":
+            case "Inspiration":
                 number = "7203";
+                rune = "Whimsy";
                 break;
             case "Resolve":
                 number = "7204";
