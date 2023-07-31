@@ -7,7 +7,6 @@ module.exports = (app) => {
         "/api/summoners",
         createProxyMiddleware({
             //도메인 api로 호출
-            // target: "http://43.201.140.217:5000", //통신할 서버의 도메인주소
             target: config.serverURL, //통신할 서버의 도메인주소
             changeOrigin: true,
         })
@@ -16,8 +15,7 @@ module.exports = (app) => {
         "/auth",
         createProxyMiddleware({
             //도메인 api로 호출
-            // target: "http://43.201.140.217:5000", //통신할 서버의 도메인주소
-            target: config.serverURL,
+            target: config.serverURL, //통신할 서버의 도메인주소
             changeOrigin: true,
         })
     );
@@ -25,8 +23,7 @@ module.exports = (app) => {
         "/post",
         createProxyMiddleware({
             //도메인 api로 호출
-            // target: "http://43.201.140.217:5000", //통신할 서버의 도메인주소
-            target: config.serverURL,
+            target: config.serverURL, //통신할 서버의 도메인주소
             changeOrigin: true,
         })
     );
@@ -34,8 +31,7 @@ module.exports = (app) => {
         "/api",
         createProxyMiddleware({
             //도메인 api로 호출
-            // target: "http://43.201.140.217:5000", //통신할 서버의 도메인주소
-            target: config.serverURL,
+            target: config.serverURL, //통신할 서버의 도메인주소
             changeOrigin: true,
         })
     );
