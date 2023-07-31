@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #개인 키 보호
-.env
-setupProxy.js
+front\src\.env
+front\src\setupProxy.js
