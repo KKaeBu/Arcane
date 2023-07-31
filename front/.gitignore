@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#개인 키 보호
+.env
+setupProxy.js
