@@ -19,13 +19,17 @@ function History(props) {
         if (summData && count) {
             const sliceMatchList = summData.matchList.slice(0, count);
             sliceMatchList.forEach((m) => {
-                createMatchBox(m, false);
+                /**2023.07.31 아레나 모드 제거용 if문 추가 */
+                if (m !== null)
+                    createMatchBox(m, false);
             })
         }
             
         if (newMatchList.length !== 0) {
             newMatchList.forEach(m => {
-                createMatchBox(m, true);
+                /**2023.07.31 아레나 모드 제거용 if문 추가 */
+                if(m !== null)
+                    createMatchBox(m, true);
             })
             props.isinitial();
         }

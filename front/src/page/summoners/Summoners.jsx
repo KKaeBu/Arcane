@@ -154,6 +154,10 @@ function Summoners() {
             }
         }
 
+        /**2023.07.31 아레나 데이터 임시 제거 */
+        if (data.queueType === "아레나")
+            return null;
+
         // 내가 속한 팀의 번호 확인
         // 내가 플레이한 챔프 확인
         // 내가 플레이한 챔프 레벨 확인
@@ -360,7 +364,9 @@ function Summoners() {
 
                     const matchHistoryList = await Promise.all(
                         matchIdListData.map((m) => {
-                            return getMatchInfo(m, summonerJsonData);
+                            /** 2023.07.31 아레나 모드 제거 임시 방편 */
+                            if (getMatchInfo(m, summonerJsonData) !== null)
+                                return getMatchInfo(m, summonerJsonData);
                         })
                     );
 
@@ -584,6 +590,10 @@ function queueTypeConverter(queue) {
 
         case "Pick URF games":
             convertedQueue = "U.R.F.";
+            break;
+        
+        case "CHERRY":
+            convertedQueue = "아레나";
             break;
 
         default:
