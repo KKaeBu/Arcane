@@ -2,239 +2,243 @@ import axios from "axios";
 import * as userRepository from "../data/summoners.js";
 
 export async function getRiotApi(req, res, next) {
-    const result = await getApi(req.headers.link);
+  const result = await getApi(req.headers.link);
 
-    res.status(200).json(result.data);
+  res.status(200).json(result.data);
 }
 
 /**검색한 소환사가 디비에 이미 있는지 여부를 반환 (return boolean) */
 export async function isSummoner(req, res, next) {
-    const summonerName = decodeURIComponent(req.headers.summonername);
+  const summonerName = decodeURIComponent(req.headers.summonername);
 
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    if (summoner) return res.status(200).json(true);
+  if (summoner) return res.status(200).json(true);
 
-    return res.status(200).json(false);
+  return res.status(200).json(false);
 }
 
 /**처음 검색한 소환사의 정보를 디비에 저장해줌 (return json) */
 export async function saveSummonerInfo(req, res, next) {
-    const { summoner, rankData, matchHistoryList } = req.body;
+  const { summoner, rankData, matchHistoryList } = req.body;
 
-    let soloRank = {
-        queueType: "Unranked",
-        tier: "Unranked",
-        rank: "",
-        leaguePoints: 0,
-        wins: 0,
-        losses: 0,
-    };
-    let flexRank = {
-        queueType: "Unranked",
-        tier: "Unranked",
-        rank: "",
-        leaguePoints: 0,
-        wins: 0,
-        losses: 0,
-    };
+  let soloRank = {
+    queueType: "Unranked",
+    tier: "Unranked",
+    rank: "",
+    leaguePoints: 0,
+    wins: 0,
+    losses: 0,
+  };
+  let flexRank = {
+    queueType: "Unranked",
+    tier: "Unranked",
+    rank: "",
+    leaguePoints: 0,
+    wins: 0,
+    losses: 0,
+  };
 
-    for (const r in rankData) {
-        if (rankData[r].queueType === "RANKED_SOLO_5x5") soloRank = rankData[r];
-        else if(rankData[r].queueType === "RANKED_FLEX_SR") flexRank = rankData[r];
-    }
+  for (const r in rankData) {
+    if (rankData[r].queueType === "RANKED_SOLO_5x5") soloRank = rankData[r];
+    else if (rankData[r].queueType === "RANKED_FLEX_SR") flexRank = rankData[r];
+  }
 
-    const mList = await saveMatchHistroy(matchHistoryList);
+  const mList = await saveMatchHistroy(matchHistoryList);
 
-    const summId = await userRepository.createSummoner({
-        summonerName: summoner.name,
-        profileIconId: summoner.profileIconId,
-        level: summoner.summonerLevel,
+  const summId = await userRepository.createSummoner({
+    summonerName: summoner.name,
+    profileIconId: summoner.profileIconId,
+    level: summoner.summonerLevel,
 
-        soloRankQueueType: soloRank.queueType,
-        soloRankTier: soloRank.tier,
-        soloRankRank: soloRank.rank,
-        soloRankLP: soloRank.leaguePoints,
-        soloRankWinNum: soloRank.wins,
-        soloRankLoseNum: soloRank.losses,
+    soloRankQueueType: soloRank.queueType,
+    soloRankTier: soloRank.tier,
+    soloRankRank: soloRank.rank,
+    soloRankLP: soloRank.leaguePoints,
+    soloRankWinNum: soloRank.wins,
+    soloRankLoseNum: soloRank.losses,
 
-        flexRankQueueType: flexRank.queueType,
-        flexRankTier: flexRank.tier,
-        flexRankRank: flexRank.rank,
-        flexRankLP: flexRank.leaguePoints,
-        flexRankWinNum: flexRank.wins,
-        flexRankLoseNum: flexRank.losses,
+    flexRankQueueType: flexRank.queueType,
+    flexRankTier: flexRank.tier,
+    flexRankRank: flexRank.rank,
+    flexRankLP: flexRank.leaguePoints,
+    flexRankWinNum: flexRank.wins,
+    flexRankLoseNum: flexRank.losses,
 
-        matchList: mList,
-    });
+    matchList: mList,
+  });
 
-    const summ = await userRepository.findById(summId);  
+  const summ = await userRepository.findById(summId);
 
-    return res.status(201).json(summ);
+  return res.status(201).json(summ);
 }
 
 /**검색한 소환사의 데이터를 디비에서 가져와서 반환해줌 (return json) */
 export async function getSummonerInfo(req, res, next) {
-    const summonerName = decodeURIComponent(req.headers.summonername);
+  const summonerName = decodeURIComponent(req.headers.summonername);
 
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    // summoner.matchList.forEach(i => {
-    //     console.log("i: ", i);
-    //     if (i === null) {
-    //         let pos = summoner.matchList.indexOf(i);
-    //         summoner.matchList.splice(pos, 1);
-    //     }
-    // });
+  // summoner.matchList.forEach(i => {
+  //     console.log("i: ", i);
+  //     if (i === null) {
+  //         let pos = summoner.matchList.indexOf(i);
+  //         summoner.matchList.splice(pos, 1);
+  //     }
+  // });
 
-    // for (let i = 0; i < 6; i++){
-    //     summoner.matchList.shift();
-    // }
+  // for (let i = 0; i < 6; i++){
+  //     summoner.matchList.shift();
+  // }
 
-    summoner.save();
+  summoner.save();
 
-    return res.status(200).json(summoner);
+  return res.status(200).json(summoner);
 }
 
 export async function checkMatchHistory(req, res, next) {
-    const { name, start, count } = req.headers;
-    const summonerName = decodeURIComponent(name);
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  const { name, start, count } = req.headers;
+  const summonerName = decodeURIComponent(name);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    const matchList = summoner.matchList;
+  const matchList = summoner.matchList;
 
-    const sliceMatchList = matchList.slice(start, (parseInt(start) + parseInt(count)));
+  const sliceMatchList = matchList.slice(
+    start,
+    parseInt(start) + parseInt(count)
+  );
 
-    return res.status(200).json(sliceMatchList);
+  return res.status(200).json(sliceMatchList);
 }
 
 export async function addMatchHistory(req, res, next) {
-    const { summonerName, matchHistoryList } = req.body;
+  const { summonerName, matchHistoryList } = req.body;
 
-    const mList = await saveMatchHistroy(matchHistoryList);
+  const mList = await saveMatchHistroy(matchHistoryList);
 
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    summoner.matchList = summoner.matchList.concat(mList);
+  summoner.matchList = summoner.matchList.concat(mList);
 
-    summoner.save();
+  summoner.save();
 
-    return res.status(201).json(mList);
+  return res.status(201).json(mList);
 }
 
 export async function addNewMatchHistory(req, res, next) {
-    const { summonerName, matchHistoryList } = req.body;
+  const { summonerName, matchHistoryList } = req.body;
 
-    const mList = await saveMatchHistroy(matchHistoryList);
+  const mList = await saveMatchHistroy(matchHistoryList);
 
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    mList.reverse();
-    // console.log("mList: ", mList);
-    for (const m in mList) {
-        for (const sm in summoner.matchList) {
-            console.log("summoner.matchId: " + summoner.matchList[sm].matchId);
-            console.log("mList.matchId: " + mList[m].matchId);
-            console.log("===================================");
-            if (mList[m].matchId === summoner.matchList[sm].matchId) {
-                summoner.matchList.splice(sm, 1);
-                const del = await userRepository.deleteHistory(mList[m].matchId);
-                console.log("del: ", del);
-                break;
-            }
-        }
+  mList.reverse();
+  // console.log("mList: ", mList);
+  for (const m in mList) {
+    for (const sm in summoner.matchList) {
+      console.log("summoner.matchId: " + summoner.matchList[sm].matchId);
+      console.log("mList.matchId: " + mList[m].matchId);
+      console.log("===================================");
+      if (mList[m].matchId === summoner.matchList[sm].matchId) {
+        summoner.matchList.splice(sm, 1);
+        const del = await userRepository.deleteHistory(mList[m].matchId);
+        console.log("del: ", del);
+        break;
+      }
     }
+  }
 
-    summoner.matchList = mList.concat(summoner.matchList);
+  summoner.matchList = mList.concat(summoner.matchList);
 
-    // console.log("mList2: ", mList);
+  // console.log("mList2: ", mList);
 
-    summoner.save();
-    mList.reverse();
+  summoner.save();
+  mList.reverse();
 
-    return res.status(201).json(mList);
+  return res.status(201).json(mList);
 }
 
-
 export async function updateSummonerInfo(req, res, next) {
-    const {summonerJson, rankData} = req.body;
+  const { summonerJson, rankData } = req.body;
 
-    const info = {
-        profileIconId: summonerJson.profileIconId,
-        level: summonerJson.summonerLevel
+  const info = {
+    profileIconId: summonerJson.profileIconId,
+    level: summonerJson.summonerLevel,
+  };
+
+  let soloRank = {
+    soloRankQueueType: "Unranked",
+    soloRankTier: "Unranked",
+    soloRankRank: "",
+    soloRankLP: 0,
+    soloRankWinNum: 0,
+    soloRankLoseNum: 0,
+  };
+  let flexRank = {
+    flexRankQueueType: "Unranked",
+    flexRankTier: "Unranked",
+    flexRankRank: "",
+    flexRankLP: 0,
+    flexRankWinNum: 0,
+    flexRankLoseNum: 0,
+  };
+
+  for (const r in rankData) {
+    if (rankData[r].queueType === "RANKED_SOLO_5x5") {
+      soloRank.soloRankQueueType = rankData[r].queueType;
+      soloRank.soloRankTier = rankData[r].tier;
+      soloRank.soloRankRank = rankData[r].rank;
+      soloRank.soloRankLP = rankData[r].leaguePoints;
+      soloRank.soloRankWinNum = rankData[r].wins;
+      soloRank.soloRankLoseNum = rankData[r].losses;
+    } else if (rankData[r].queueType === "RANKED_FLEX_SR") {
+      flexRank.flexRankQueueType = rankData[r].queueType;
+      flexRank.flexRankTier = rankData[r].tier;
+      flexRank.flexRankRank = rankData[r].rank;
+      flexRank.flexRankLP = rankData[r].leaguePoints;
+      flexRank.flexRankWinNum = rankData[r].wins;
+      flexRank.flexRankLoseNum = rankData[r].losses;
     }
+  }
 
-    let soloRank = {
-        soloRankQueueType: "Unranked",
-        soloRankTier: "Unranked",
-        soloRankRank: "",
-        soloRankLP: 0,
-        soloRankWinNum: 0,
-        soloRankLoseNum: 0,
-    };
-    let flexRank = {
-        flexRankQueueType: "Unranked",
-        flexRankTier: "Unranked",
-        flexRankRank: "",
-        flexRankLP: 0,
-        flexRankWinNum: 0,
-        flexRankLoseNum: 0,
-    };
+  const rank = { ...soloRank, ...flexRank };
+  const update = { ...info, ...rank };
 
-    for (const r in rankData) {
-        if (rankData[r].queueType === "RANKED_SOLO_5x5") {
-            soloRank.soloRankQueueType = rankData[r].queueType;
-            soloRank.soloRankTier = rankData[r].tier;
-            soloRank.soloRankRank = rankData[r].rank;
-            soloRank.soloRankLP = rankData[r].leaguePoints;
-            soloRank.soloRankWinNum = rankData[r].wins;
-            soloRank.soloRankLoseNum = rankData[r].losses;
-        }
-        else if(rankData[r].queueType === "RANKED_FLEX_SR") {
-            flexRank.flexRankQueueType = rankData[r].queueType;
-            flexRank.flexRankTier = rankData[r].tier;
-            flexRank.flexRankRank = rankData[r].rank;
-            flexRank.flexRankLP = rankData[r].leaguePoints;
-            flexRank.flexRankWinNum = rankData[r].wins;
-            flexRank.flexRankLoseNum = rankData[r].losses;
-        }
-    }
+  const result = await userRepository.updateSummonerInfo(
+    summonerJson.name,
+    update
+  );
 
-    const rank = { ...soloRank, ...flexRank };
-    const update = {...info, ...rank};
-
-    const result = await userRepository.updateSummonerInfo(summonerJson.name, update);
-
-    return res.status(200).json(result);
+  return res.status(200).json(result);
 }
 
 export async function getLastMatch(req, res, next) {
-    const summonerName = decodeURIComponent(req.headers.name);
+  const summonerName = decodeURIComponent(req.headers.name);
 
-    console.log("lm summonerName: " + summonerName);
-    const summoner = await userRepository.findBySummonerName(summonerName);
+  console.log("lm summonerName: " + summonerName);
+  const summoner = await userRepository.findBySummonerName(summonerName);
 
-    const lastMatchId = summoner.matchList[0].matchId;
-    console.log("lastMatchId: " + lastMatchId);
+  const lastMatchId = summoner.matchList[0].matchId;
+  console.log("lastMatchId: " + lastMatchId);
 
-    return res.status(200).json(lastMatchId);
+  return res.status(200).json(lastMatchId);
 }
 
 async function saveMatchHistroy(matchHistoryList) {
-    let matchList = [];
-    for (const m in matchHistoryList) {
-        const matchId = await userRepository.createMatchHistory(
-            matchHistoryList[m]
-        );     
-        const match = await userRepository.findByMatchId(matchId);
-        matchList.push(match);
-    }
+  let matchList = [];
+  for (const m in matchHistoryList) {
+    const matchId = await userRepository.createMatchHistory(
+      matchHistoryList[m]
+    );
+    const match = await userRepository.findByMatchId(matchId);
+    matchList.push(match);
+  }
 
-    return matchList;
+  return matchList;
 }
 
 async function getApi(data) {
-    const response = await axios.get(data);
+  const response = await axios.get(data);
 
-    return response;
+  return response;
 }
